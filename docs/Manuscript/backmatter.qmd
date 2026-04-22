@@ -1,0 +1,40 @@
+<!-- backmatter.qmd — Conclusions through Acknowledgements + References -->
+
+# Conclusions
+
+This study shows that, within the calibrated tropical C-GEM application, seasonal bloom expression in the Saigon River Estuary is governed primarily by hydraulic residence time rather than by seasonal nutrient delivery. In the calibrated model, blooms emerge when urban residence time approaches or exceeds a system-specific threshold near $RT_{crit} \approx 32$ d, and both SHAP attribution and carbonate diagnostics support the same retention-driven interpretation. Wastewater reduction remains the durable solution, whereas hydraulic management may offer only a constrained interim complement in regulated tropical estuaries when dry-season residence time approaches this transition range. More broadly, the Saigon illustrates a growth--flushing problem likely to recur in nutrient-saturated, monsoon-forced tropical estuaries with strong along-channel confinement, although the numerical threshold itself should be treated as system-specific.
+
+
+# Code and data availability {.unnumbered}
+
+The transient C-GEM source code used in this study is available from the public GitHub repository https://github.com/NguyenTruongAnLab/CGEM_Saigon. The study-specific configuration files and analysis inputs used for the submitted manuscript will be archived in a permanent release prior to final publication. All monitoring data from the CARE programmes used in this study are available at https://doi.org/10.23708/KMFNNY.
+
+
+# Author contributions {.unnumbered}
+
+A.T. Nguyen: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review & editing, Visualization.
+
+J. Némery: Conceptualization, Validation, Investigation, Resources, Data curation, Writing -- review & editing, Supervision, Project administration, Funding acquisition.
+
+N. Gratiot: Conceptualization, Investigation, Resources, Writing -- review & editing, Supervision.
+
+J. Garnier: Validation, Data curation, Writing -- review & editing, Supervision.
+
+T.S. Dao: Investigation, Writing -- review & editing.
+
+V. Thieu: Validation, Writing -- review & editing, Visualization.
+
+G.G. Laruelle: Methodology, Software, Writing -- review & editing.
+
+
+# Competing interests {.unnumbered}
+
+The authors declare no competing interests.
+
+
+# Acknowledgements {.unnumbered}
+
+This study was funded by the NUTRIM project (EC2CO Bioheffect Structurante Initiative, 2017--2018) and the TROPECOS project under the FairCarboN exploratory research program (Grant No. ANR-22-PEXF-00012). Additional research support was provided by the International Joint Laboratory CARE (Asian Center for Water Research). The authors gratefully acknowledge the Center for Environmental Monitoring (CEM) of the Department of Natural Resources and Environment for providing the water quality data used in this study.
+
+:::{#refs}
+:::

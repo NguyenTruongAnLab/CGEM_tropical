@@ -1,0 +1,127 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: C_GEM_Tropical-linux-x64
+            ext: ""
+          - os: windows-latest
+            artifact: C_GEM_Tropical-windows-x64
+            ext: ".exe"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCGEM_ENABLE_CALIBRATION=OFF
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p pkg/${{ matrix.artifact }}
+          cp bin/Release/C_GEM_Daily pkg/${{ matrix.artifact }}/
+          cp -r INPUT pkg/${{ matrix.artifact }}/
+          cp -r tools pkg/${{ matrix.artifact }}/
+          cp -r docs pkg/${{ matrix.artifact }}/
+          cp README.md LICENSE pkg/${{ matrix.artifact }}/
+          cd pkg && tar czf ../${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "pkg/${{ matrix.artifact }}"
+          Copy-Item "bin/Release/C_GEM_Daily.exe" "pkg/${{ matrix.artifact }}/"
+          Copy-Item -Recurse "INPUT" "pkg/${{ matrix.artifact }}/INPUT"
+          Copy-Item -Recurse "tools" "pkg/${{ matrix.artifact }}/tools"
+          Copy-Item -Recurse "docs" "pkg/${{ matrix.artifact }}/docs"
+          Copy-Item "README.md","LICENSE" "pkg/${{ matrix.artifact }}/"
+          Compress-Archive -Path "pkg/${{ matrix.artifact }}" -DestinationPath "${{ matrix.artifact }}.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: |
+            ${{ matrix.artifact }}.tar.gz
+            ${{ matrix.artifact }}.zip
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "TAG=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "TAG=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.TAG }}
+          name: C-GEM Tropical ${{ steps.tag.outputs.TAG }}
+          body: |
+            ## Portable release — no compilation needed
+
+            Download the archive for your platform, extract it, and run the model:
+
+            **Linux:**
+            ```bash
+            tar xzf C_GEM_Tropical-linux-x64.tar.gz
+            cd C_GEM_Tropical-linux-x64
+            ./C_GEM_Daily
+            ```
+
+            **Windows:**
+            Extract `C_GEM_Tropical-windows-x64.zip`, then run `C_GEM_Daily.exe`.
+
+            ### Customizing for your own estuary
+
+            Edit the files in the `INPUT/` folder:
+            - `params.txt` — model parameters (grid, calibration)
+            - `config_input.txt` — boundary condition file paths
+            - `Boundary/`, `Tributaries/` — forcing CSV files
+            - `Geometry/river_bed_profile.txt` — bathymetry
+
+            Python analysis helpers are bundled under `tools/`, and extended documentation is bundled under `docs/`.
+
+          files: |
+            dist/**/*.tar.gz
+            dist/**/*.zip
+          draft: false
+          prerelease: false

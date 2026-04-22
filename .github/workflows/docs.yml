@@ -1,0 +1,109 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - CGEM_RIVE
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/docs.yml'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy (e.g., 1.0, 2.0, dev)'
+        required: false
+        default: 'dev'
+      alias:
+        description: 'Alias for this version (e.g., latest, stable)'
+        required: false
+        default: ''
+      clean_start:
+        description: 'Delete existing gh-pages and start fresh'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r docs/requirements.txt
+          pip install mike
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      # Clean start option - delete gh-pages branch
+      - name: Clean start (if requested)
+        if: ${{ github.event.inputs.clean_start == 'true' }}
+        run: |
+          git push origin --delete gh-pages || true
+          echo "Deleted gh-pages branch for clean start"
+      
+      # Determine version
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+            ALIAS="${{ github.event.inputs.alias }}"
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            TAG="${{ github.ref_name }}"
+            VERSION=$(echo "$TAG" | sed -E 's/^v([0-9]+\.[0-9]+).*/\1/')
+            ALIAS="latest"
+          else
+            VERSION="dev"
+            ALIAS=""
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "alias=$ALIAS" >> $GITHUB_OUTPUT
+          echo "Deploying version: $VERSION (alias: $ALIAS)"
+      
+      # Deploy with mike
+      - name: Deploy documentation with mike
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ALIAS="${{ steps.version.outputs.alias }}"
+          
+          # Fetch gh-pages branch if it exists
+          git fetch origin gh-pages --depth=1 2>/dev/null || echo "gh-pages branch does not exist yet"
+          
+          if [[ -n "$ALIAS" ]]; then
+            mike deploy --push --update-aliases "$VERSION" "$ALIAS"
+          else
+            mike deploy --push "$VERSION"
+          fi
+          
+          # Set default version
+          mike set-default --push latest 2>/dev/null || mike set-default --push "$VERSION"

@@ -1,0 +1,46 @@
+stage,param_name,group,default_value,min_value,max_value,units,transform,in_use,description
+1,Chezy1,hydro,50.0,20.0,80.0,m^0.5/s,linear,1,Chezy roughness segment 1
+1,Chezy2,hydro,50.0,20.0,80.0,m^0.5/s,linear,1,Chezy roughness segment 2
+1,LC1,hydro,60000.0,50000.0,150000.0,m,linear,1,Width convergence length segment 1
+1,LC2,hydro,60000.0,50000.0,80000.0,m,linear,1,Width convergence length segment 2
+1,Rs1,hydro,1.2,1.0,2.0,-,linear,1,Storage width ratio segment 1
+1,Rs2,hydro,1.2,1.0,2.0,-,linear,1,Storage width ratio segment 2
+1,C_VDB,transport,0.5,0.1,2.0,-,linear,1,Scaling factor for Van der Burgh K predictor
+1,D0_CORRECTION,transport,1.0,0.2,2.5,-,linear,1,Multiplier on mouth dispersion D0
+1,AMPL_CORRECTION,hydro,1.0,0.8,1.2,-,linear,1,Tidal amplitude correction factor
+2,Mero1,sediment,2.0e-05,1e-07,0.0001,kg/(m^2 s Pa),log10,1,Erosion coefficient segment 1
+2,tau_ero1,sediment,0.5,0.1,3.0,Pa,linear,1,Critical shear stress for erosion segment 1
+2,tau_dep1,sediment,0.852,0.1,2.0,Pa,linear,1,Critical shear stress for deposition segment 1
+2,Mero2,sediment,7.0e-07,1e-07,0.0001,kg/(m^2 s Pa),log10,1,Erosion coefficient segment 2
+2,tau_ero2,sediment,0.319,0.1,3.0,Pa,linear,1,Critical shear stress for erosion segment 2
+2,tau_dep2,sediment,0.852,0.1,2.0,Pa,linear,1,Critical shear stress for deposition segment 2
+2,Mero3,sediment,1.7e-05,1e-07,0.0001,kg/(m^2 s Pa),log10,1,Erosion coefficient segment 3
+2,tau_ero3,sediment,0.319,0.1,3.0,Pa,linear,1,Critical shear stress for erosion segment 3
+2,tau_dep3,sediment,0.852,0.1,2.0,Pa,linear,1,Critical shear stress for deposition segment 3
+2,Mero4,sediment,2.0e-07,1e-08,1e-05,kg/(m^2 s Pa),log10,1,Erosion coefficient segment 4 (far upstream)
+2,tau_ero4,sediment,2.0,0.5,5.0,Pa,linear,1,Critical shear stress for erosion segment 4
+2,tau_dep4,sediment,0.5,0.1,2.0,Pa,linear,1,Critical shear stress for deposition segment 4
+2,P_ac,biogeo,10.0,10.0,150.0,mmol/kg,linear,0,Adsorption capacity (FROZEN for SPM-only)
+2,K_ps,biogeo,5.0,0.1,5.0,mmol/m3,linear,0,Half-saturation for P adsorption (FROZEN for SPM-only)
+2,k_ads,biogeo,1e-05,1e-05,0.001,s-1,log10,0,Adsorption rate constant (FROZEN for SPM-only)
+3,scale_kbg,biogeo,1.0,0.7,1.5,-,log10,1,Background attenuation (Kirk 2010: kbg 0.014-0.030 m-1)
+3,scale_kspm,biogeo,1.0,0.7,1.5,-,log10,1,SPM light attenuation (Kirk 2010: 0.007-0.015 m-1/(g/m3))
+3,scale_KD_Phy,biogeo,1.0,0.5,1.5,-,log10,1,Self-shading (Cloern 1987: base=0.008; range 0.004-0.012)
+3,scale_Pb_phy,biogeo,1.0,0.7,1.3,-,log10,1,Max photosynthesis TIGHT (Cloern 1996: Pb 1.4e-4 to 2.6e-4)
+3,scale_alpha,biogeo,1.0,0.7,1.3,-,log10,1,P-I slope TIGHT (Kirk 2010: 3.3e-6 to 6.1e-6 s-1/(W/m2))
+3,scale_kmort_phy,biogeo,1.0,0.5,2.0,-,log10,1,Linear mortality (Eppley 1972; most uncertain loss term)
+3,scale_ws_phy,biogeo,1.0,0.7,2.0,-,log10,1,Settling velocity (Smayda 1970: 1.8-5.2 m/d; base=2.6)
+3,scale_KN,biogeo,1.0,0.8,1.2,-,log10,0,N half-sat FIXED (well-constrained by Collos 2005)
+3,scale_KPO4,biogeo,1.0,0.8,1.2,-,log10,0,P half-sat FIXED (well-constrained)
+3,scale_KSi,biogeo,1.0,0.8,1.2,-,log10,0,Si half-sat FIXED (well-constrained)
+3,scale_KTOC,biogeo,1.0,0.5,2.0,-,log10,0,TOC half-sat FIXED (less sensitive; keep at 60)
+3,scale_kox,biogeo,1.0,0.5,3.0,-,log10,1,Aerobic degradation (Arndt 2011; range 0.5e-6 to 3e-6)
+3,scale_knit,biogeo,1.0,0.5,2.0,-,log10,1,Nitrification (Blackburne 2007; range 6.75e-5 to 2.7e-4)
+3,scale_kdenit,biogeo,1.0,0.5,2.0,-,log10,1,Denitrification (Seitzinger 2006; range 1.7e-5 to 6.9e-5)
+3,scale_K_NH4_switch,biogeo,1.0,0.5,2.0,-,linear,0,NH4 switch FIXED (Lomas & Glibert 1999; base=1.0)
+3,SOD_rate,biogeo,0.003,0.001,0.008,mmol O2/m2/s,linear,1,SOD (Van Kessel 2011: 2.8-22 gO2/m2/d)
+3,kmort2_Phy1,biogeo,5e-08,2e-08,5e-07,s-1/(mmolC/m3),log10,1,Quadratic grazing (Fennel 2006; bloom cap essential)
+3,kcbod_fast,biogeo,1.5e-06,5e-07,5e-06,s-1,log10,1,Fast labile-C O2 demand (preserve TOC)
+3,kCDOM,biogeo,0.015,0.005,0.04,m-1/(mgC/L),linear,1,CDOM absorption (Kirk 2010; Fichot & Benner 2012)
+3,CN_toc,biogeo,13.0,10.0,25.0,molC/molN,linear,1,Allochthonous C:N (Hedges 1997: 10-25 for mixed sources)
+4,scale_piston_velocity,carbonate,1.0,0.5,5.0,-,linear,1,Gas exchange piston velocity multiplier (1D depth-avg correction: H/H_mix)

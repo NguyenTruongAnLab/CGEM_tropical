@@ -1,0 +1,45 @@
+name: CI Build + Smoke Run
+
+on:
+  push:
+    branches: [ main, develop]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/ci_build_and_smoke.yml"
+  pull_request:
+    branches: [ main, develop]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/ci_build_and_smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure (no calibration)
+        run: cmake -S . -B build/ci -DCMAKE_BUILD_TYPE=Release -DCGEM_ENABLE_CALIBRATION=OFF
+
+      - name: Build
+        run: cmake --build build/ci --config Release
+
+      - name: Run unit tests (ctest)
+        run: ctest --test-dir build/ci -C Release --output-on-failure

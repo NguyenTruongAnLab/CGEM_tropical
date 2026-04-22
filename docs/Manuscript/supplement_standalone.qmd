@@ -1,0 +1,98 @@
+---
+title: "Supporting information: Evidence of hydrodynamic control of phytoplankton seasonality in a tropical urban estuary"
+author:
+  - name: Truong-An Nguyen
+    corresponding: true
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Julien Némery
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Nicolas Gratiot
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Josette Garnier
+    affiliations:
+      - ref: metis
+  - name: Thanh-Son Dao
+    affiliations:
+      - ref: fern
+  - name: Vincent Thieu
+    affiliations:
+      - ref: metis
+  - name: Goulven G. Laruelle
+    affiliations:
+      - ref: ulb
+affiliations:
+  - id: uge
+    name: Université Grenoble Alpes, CNRS, IRD, INRAE, Grenoble-INP, IGE
+    city: Grenoble
+    postal-code: "38000"
+    country: France
+  - id: care
+    name: Centre for Asian Research on Water (CARE), Ho Chi Minh City University of Technology (HCMUT)
+    address: 268 Ly Thuong Kiet Street, Dien Hong Ward
+    city: Ho Chi Minh City
+    country: Vietnam
+  - id: metis
+    name: Sorbonne Université, CNRS, EPHE, UMR 7619 METIS
+    address: 4 Place Jussieu
+    city: Paris
+    postal-code: "75005"
+    country: France
+  - id: fern
+    name: Faculty of Environment and Natural Resources (FERN), Ho Chi Minh City University of Technology (HCMUT), VNU-HCM
+    address: 268 Ly Thuong Kiet Street, Dien Hong Ward
+    city: Ho Chi Minh City
+    country: Vietnam
+  - id: ulb
+    name: Department of Geoscience, Environment & Society (DGES)-BGEOSYS, Université Libre de Bruxelles
+    city: Brussels
+    postal-code: "1050"
+    country: Belgium
+date: today
+date-format: "D MMMM YYYY"
+bibliography: zotero.bib
+csl: copernicus.csl
+format:
+  pdf:
+    documentclass: article
+    classoption:
+      - 11pt
+      - oneside
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=2.5cm
+      - right=2.5cm
+    fontsize: 11pt
+    linestretch: 1.5
+    toc: false
+    number-sections: false
+    cite-method: citeproc
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    default-image-extension: pdf
+  docx:
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    default-image-extension: png
+crossref:
+  chapters: false
+  fig-prefix: "Fig."
+  tbl-prefix: "Table"
+  sec-prefix: "Sect."
+  eq-prefix: "Eq."
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-dpi: 300
+---
+
+{{< include supplement.qmd >}}
+
+# References

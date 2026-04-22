@@ -1,0 +1,571 @@
+Date,Station,Distance_km,Season
+2017-01-02,Vam Sat,24,dry
+2017-01-02,Vam Sat,24,dry
+2017-01-02,Ben Suc,156,dry
+2017-01-02,Ben Suc,156,dry
+2017-01-10,Phu Cuong,114,dry
+2017-01-11,Nha Be,44,dry
+2017-01-11,Bach Dang,70,dry
+2017-01-15,Nga Bay,0,dry
+2017-01-15,Nga Bay,0,dry
+2017-01-15,Vam Sat,24,dry
+2017-01-15,Vam Sat,24,dry
+2017-01-15,Bach Dang,70,dry
+2017-01-15,Bach Dang,70,dry
+2017-01-15,Binh Loi,88,dry
+2017-01-15,Binh Loi,88,dry
+2017-01-15,Phu Cuong,114,dry
+2017-01-15,Phu Cuong,114,dry
+2017-01-15,Ben Suc,156,dry
+2017-01-15,Ben Suc,156,dry
+2017-02-07,Phu Cuong,114,dry
+2017-02-08,Nha Be,44,dry
+2017-02-08,Bach Dang,70,dry
+2017-02-12,Nga Bay,0,dry
+2017-02-12,Nga Bay,0,dry
+2017-02-12,Vam Sat,24,dry
+2017-02-12,Vam Sat,24,dry
+2017-02-12,Bach Dang,70,dry
+2017-02-12,Bach Dang,70,dry
+2017-02-12,Binh Loi,88,dry
+2017-02-12,Binh Loi,88,dry
+2017-02-12,Phu Cuong,114,dry
+2017-02-12,Phu Cuong,114,dry
+2017-02-12,Ben Suc,156,dry
+2017-02-12,Ben Suc,156,dry
+2017-02-21,Phu Cuong,114,dry
+2017-02-22,Nha Be,44,dry
+2017-02-22,Bach Dang,70,dry
+2017-02-26,Vam Sat,24,dry
+2017-02-26,Vam Sat,24,dry
+2017-02-26,Ben Suc,156,dry
+2017-02-26,Ben Suc,156,dry
+2017-03-08,Nha Be,44,dry
+2017-03-08,Bach Dang,70,dry
+2017-03-09,Phu Cuong,114,dry
+2017-03-15,Vam Sat,24,dry
+2017-03-15,Vam Sat,24,dry
+2017-03-15,Ben Suc,156,dry
+2017-03-15,Ben Suc,156,dry
+2017-03-22,Phu Cuong,114,dry
+2017-03-23,Nha Be,44,dry
+2017-03-23,Bach Dang,70,dry
+2017-03-27,Nga Bay,0,dry
+2017-03-27,Nga Bay,0,dry
+2017-03-27,Vam Sat,24,dry
+2017-03-27,Vam Sat,24,dry
+2017-03-27,Bach Dang,70,dry
+2017-03-27,Bach Dang,70,dry
+2017-03-27,Binh Loi,88,dry
+2017-03-27,Binh Loi,88,dry
+2017-03-27,Phu Cuong,114,dry
+2017-03-27,Phu Cuong,114,dry
+2017-03-27,Ben Suc,156,dry
+2017-03-27,Ben Suc,156,dry
+2017-04-10,Nha Be,44,dry
+2017-04-10,Bach Dang,70,dry
+2017-04-11,Phu Cuong,114,dry
+2017-04-12,Vam Sat,24,dry
+2017-04-12,Vam Sat,24,dry
+2017-04-12,Ben Suc,156,dry
+2017-04-12,Ben Suc,156,dry
+2017-04-24,Phu Cuong,114,dry
+2017-04-25,Bach Dang,70,dry
+2017-04-26,Nha Be,44,dry
+2017-04-28,Nga Bay,0,dry
+2017-04-28,Nga Bay,0,dry
+2017-04-28,Vam Sat,24,dry
+2017-04-28,Vam Sat,24,dry
+2017-04-28,Bach Dang,70,dry
+2017-04-28,Bach Dang,70,dry
+2017-04-28,Binh Loi,88,dry
+2017-04-28,Binh Loi,88,dry
+2017-04-28,Phu Cuong,114,dry
+2017-04-28,Phu Cuong,114,dry
+2017-04-28,Ben Suc,156,dry
+2017-04-28,Ben Suc,156,dry
+2017-05-08,Nha Be,44,wet
+2017-05-08,Bach Dang,70,wet
+2017-05-09,Phu Cuong,114,wet
+2017-05-15,Vam Sat,24,wet
+2017-05-15,Vam Sat,24,wet
+2017-05-15,Ben Suc,156,wet
+2017-05-15,Ben Suc,156,wet
+2017-05-22,Nha Be,44,wet
+2017-05-22,Bach Dang,70,wet
+2017-05-23,Phu Cuong,114,wet
+2017-05-29,Nga Bay,0,wet
+2017-05-29,Nga Bay,0,wet
+2017-05-29,Vam Sat,24,wet
+2017-05-29,Vam Sat,24,wet
+2017-05-29,Bach Dang,70,wet
+2017-05-29,Bach Dang,70,wet
+2017-05-29,Binh Loi,88,wet
+2017-05-29,Binh Loi,88,wet
+2017-05-29,Phu Cuong,114,wet
+2017-05-29,Phu Cuong,114,wet
+2017-05-29,Ben Suc,156,wet
+2017-05-29,Ben Suc,156,wet
+2017-06-05,Nha Be,44,wet
+2017-06-05,Bach Dang,70,wet
+2017-06-06,Phu Cuong,114,wet
+2017-06-12,Vam Sat,24,wet
+2017-06-12,Vam Sat,24,wet
+2017-06-12,Ben Suc,156,wet
+2017-06-12,Ben Suc,156,wet
+2017-06-19,Nha Be,44,wet
+2017-06-19,Bach Dang,70,wet
+2017-06-20,Phu Cuong,114,wet
+2017-06-26,Nga Bay,0,wet
+2017-06-26,Nga Bay,0,wet
+2017-06-26,Vam Sat,24,wet
+2017-06-26,Vam Sat,24,wet
+2017-06-26,Bach Dang,70,wet
+2017-06-26,Bach Dang,70,wet
+2017-06-26,Binh Loi,88,wet
+2017-06-26,Binh Loi,88,wet
+2017-06-26,Phu Cuong,114,wet
+2017-06-26,Phu Cuong,114,wet
+2017-06-26,Ben Suc,156,wet
+2017-06-26,Ben Suc,156,wet
+2017-07-03,Phu Cuong,114,wet
+2017-07-04,Nha Be,44,wet
+2017-07-04,Bach Dang,70,wet
+2017-07-11,Vam Sat,24,wet
+2017-07-11,Vam Sat,24,wet
+2017-07-11,Ben Suc,156,wet
+2017-07-11,Ben Suc,156,wet
+2017-07-19,Phu Cuong,114,wet
+2017-07-20,Nha Be,44,wet
+2017-07-20,Bach Dang,70,wet
+2017-07-25,Nga Bay,0,wet
+2017-07-25,Nga Bay,0,wet
+2017-07-25,Vam Sat,24,wet
+2017-07-25,Vam Sat,24,wet
+2017-07-25,Bach Dang,70,wet
+2017-07-25,Bach Dang,70,wet
+2017-07-25,Binh Loi,88,wet
+2017-07-25,Binh Loi,88,wet
+2017-07-25,Phu Cuong,114,wet
+2017-07-25,Phu Cuong,114,wet
+2017-07-25,Ben Suc,156,wet
+2017-07-25,Ben Suc,156,wet
+2017-08-02,Phu Cuong,114,wet
+2017-08-03,Nha Be,44,wet
+2017-08-03,Bach Dang,70,wet
+2017-08-10,Vam Sat,24,wet
+2017-08-10,Vam Sat,24,wet
+2017-08-10,Ben Suc,156,wet
+2017-08-10,Ben Suc,156,wet
+2017-08-16,Nha Be,44,wet
+2017-08-16,Bach Dang,70,wet
+2017-08-16,Phu Cuong,114,wet
+2017-08-24,Nga Bay,0,wet
+2017-08-24,Nga Bay,0,wet
+2017-08-24,Vam Sat,24,wet
+2017-08-24,Vam Sat,24,wet
+2017-08-24,Bach Dang,70,wet
+2017-08-24,Bach Dang,70,wet
+2017-08-24,Binh Loi,88,wet
+2017-08-24,Binh Loi,88,wet
+2017-08-24,Phu Cuong,114,wet
+2017-08-24,Phu Cuong,114,wet
+2017-08-24,Ben Suc,156,wet
+2017-08-24,Ben Suc,156,wet
+2017-08-29,Nha Be,44,wet
+2017-08-29,Bach Dang,70,wet
+2017-08-30,Phu Cuong,114,wet
+2017-09-07,Vam Sat,24,wet
+2017-09-07,Vam Sat,24,wet
+2017-09-07,Ben Suc,156,wet
+2017-09-07,Ben Suc,156,wet
+2017-09-18,Phu Cuong,114,wet
+2017-09-19,Nha Be,44,wet
+2017-09-19,Bach Dang,70,wet
+2017-09-22,Nga Bay,0,wet
+2017-09-22,Nga Bay,0,wet
+2017-09-22,Vam Sat,24,wet
+2017-09-22,Vam Sat,24,wet
+2017-09-22,Bach Dang,70,wet
+2017-09-22,Bach Dang,70,wet
+2017-09-22,Binh Loi,88,wet
+2017-09-22,Binh Loi,88,wet
+2017-09-22,Phu Cuong,114,wet
+2017-09-22,Phu Cuong,114,wet
+2017-09-22,Ben Suc,156,wet
+2017-09-22,Ben Suc,156,wet
+2017-10-03,Bach Dang,70,wet
+2017-10-03,Phu Cuong,114,wet
+2017-10-05,Nha Be,44,wet
+2017-10-09,Nga Bay,0,wet
+2017-10-09,Nga Bay,0,wet
+2017-10-09,Vam Sat,24,wet
+2017-10-09,Vam Sat,24,wet
+2017-10-09,Bach Dang,70,wet
+2017-10-09,Bach Dang,70,wet
+2017-10-09,Binh Loi,88,wet
+2017-10-09,Binh Loi,88,wet
+2017-10-09,Phu Cuong,114,wet
+2017-10-09,Phu Cuong,114,wet
+2017-10-09,Ben Suc,156,wet
+2017-10-09,Ben Suc,156,wet
+2017-10-18,Nha Be,44,wet
+2017-10-18,Bach Dang,70,wet
+2017-10-19,Phu Cuong,114,wet
+2017-10-23,Vam Sat,24,wet
+2017-10-23,Vam Sat,24,wet
+2017-10-23,Ben Suc,156,wet
+2017-10-23,Ben Suc,156,wet
+2017-11-01,Phu Cuong,114,dry
+2017-11-02,Nha Be,44,dry
+2017-11-02,Bach Dang,70,dry
+2017-11-11,Nga Bay,0,dry
+2017-11-11,Nga Bay,0,dry
+2017-11-11,Vam Sat,24,dry
+2017-11-11,Vam Sat,24,dry
+2017-11-11,Bach Dang,70,dry
+2017-11-11,Bach Dang,70,dry
+2017-11-11,Binh Loi,88,dry
+2017-11-11,Binh Loi,88,dry
+2017-11-11,Phu Cuong,114,dry
+2017-11-11,Phu Cuong,114,dry
+2017-11-11,Ben Suc,156,dry
+2017-11-11,Ben Suc,156,dry
+2017-11-14,Nha Be,44,dry
+2017-11-14,Bach Dang,70,dry
+2017-11-15,Phu Cuong,114,dry
+2017-11-21,Vam Sat,24,dry
+2017-11-21,Vam Sat,24,dry
+2017-11-21,Ben Suc,156,dry
+2017-11-21,Ben Suc,156,dry
+2017-11-29,Phu Cuong,114,dry
+2017-11-30,Nha Be,44,dry
+2017-11-30,Bach Dang,70,dry
+2017-12-06,Nga Bay,0,dry
+2017-12-06,Nga Bay,0,dry
+2017-12-06,Vam Sat,24,dry
+2017-12-06,Vam Sat,24,dry
+2017-12-06,Bach Dang,70,dry
+2017-12-06,Bach Dang,70,dry
+2017-12-06,Binh Loi,88,dry
+2017-12-06,Binh Loi,88,dry
+2017-12-06,Phu Cuong,114,dry
+2017-12-06,Phu Cuong,114,dry
+2017-12-06,Ben Suc,156,dry
+2017-12-06,Ben Suc,156,dry
+2017-12-13,Phu Cuong,114,dry
+2017-12-14,Nha Be,44,dry
+2017-12-14,Bach Dang,70,dry
+2017-12-20,Vam Sat,24,dry
+2017-12-20,Vam Sat,24,dry
+2017-12-20,Ben Suc,156,dry
+2017-12-20,Ben Suc,156,dry
+2018-01-02,Phu Cuong,114,dry
+2018-01-03,Nha Be,44,dry
+2018-01-03,Bach Dang,70,dry
+2018-01-15,Nga Bay,0,dry
+2018-01-15,Nga Bay,0,dry
+2018-01-15,Vam Sat,24,dry
+2018-01-15,Vam Sat,24,dry
+2018-01-15,Nha Be,44,dry
+2018-01-15,Nha Be,44,dry
+2018-01-15,Bach Dang,70,dry
+2018-01-15,Bach Dang,70,dry
+2018-01-15,Binh Loi,88,dry
+2018-01-15,Binh Loi,88,dry
+2018-01-15,Phu Cuong,114,dry
+2018-01-15,Phu Cuong,114,dry
+2018-01-15,Phu Cuong,114,dry
+2018-01-15,Ben Suc,156,dry
+2018-01-15,Ben Suc,156,dry
+2018-01-16,Nha Be,44,dry
+2018-01-16,Bach Dang,70,dry
+2018-01-29,Nha Be,44,dry
+2018-01-29,Bach Dang,70,dry
+2018-01-30,Phu Cuong,114,dry
+2018-02-14,Nga Bay,0,dry
+2018-02-14,Nga Bay,0,dry
+2018-02-14,Vam Sat,24,dry
+2018-02-14,Vam Sat,24,dry
+2018-02-14,Nha Be,44,dry
+2018-02-14,Nha Be,44,dry
+2018-02-14,Bach Dang,70,dry
+2018-02-14,Bach Dang,70,dry
+2018-02-14,Binh Loi,88,dry
+2018-02-14,Binh Loi,88,dry
+2018-02-14,Phu Cuong,114,dry
+2018-02-14,Phu Cuong,114,dry
+2018-02-14,Ben Suc,156,dry
+2018-02-14,Ben Suc,156,dry
+2018-02-27,Phu Cuong,114,dry
+2018-02-28,Nha Be,44,dry
+2018-02-28,Bach Dang,70,dry
+2018-03-12,Phu Cuong,114,dry
+2018-03-13,Nha Be,44,dry
+2018-03-13,Bach Dang,70,dry
+2018-03-16,Nga Bay,0,dry
+2018-03-16,Nga Bay,0,dry
+2018-03-16,Vam Sat,24,dry
+2018-03-16,Vam Sat,24,dry
+2018-03-16,Nha Be,44,dry
+2018-03-16,Nha Be,44,dry
+2018-03-16,Bach Dang,70,dry
+2018-03-16,Bach Dang,70,dry
+2018-03-16,Binh Loi,88,dry
+2018-03-16,Binh Loi,88,dry
+2018-03-16,Phu Cuong,114,dry
+2018-03-16,Phu Cuong,114,dry
+2018-03-16,Ben Suc,156,dry
+2018-03-16,Ben Suc,156,dry
+2018-03-27,Phu Cuong,114,dry
+2018-03-28,Nha Be,44,dry
+2018-03-28,Bach Dang,70,dry
+2018-04-11,Phu Cuong,114,dry
+2018-04-12,Nha Be,44,dry
+2018-04-12,Bach Dang,70,dry
+2018-04-15,Nga Bay,0,dry
+2018-04-15,Nga Bay,0,dry
+2018-04-15,Vam Sat,24,dry
+2018-04-15,Vam Sat,24,dry
+2018-04-15,Nha Be,44,dry
+2018-04-15,Nha Be,44,dry
+2018-04-15,Bach Dang,70,dry
+2018-04-15,Bach Dang,70,dry
+2018-04-15,Binh Loi,88,dry
+2018-04-15,Binh Loi,88,dry
+2018-04-15,Phu Cuong,114,dry
+2018-04-15,Phu Cuong,114,dry
+2018-04-15,Ben Suc,156,dry
+2018-04-15,Ben Suc,156,dry
+2018-04-26,Phu Cuong,114,dry
+2018-04-27,Nha Be,44,dry
+2018-04-27,Bach Dang,70,dry
+2018-05-10,Phu Cuong,114,wet
+2018-05-11,Nha Be,44,wet
+2018-05-11,Bach Dang,70,wet
+2018-05-15,Nga Bay,0,wet
+2018-05-15,Nga Bay,0,wet
+2018-05-15,Vam Sat,24,wet
+2018-05-15,Vam Sat,24,wet
+2018-05-15,Nha Be,44,wet
+2018-05-15,Nha Be,44,wet
+2018-05-15,Bach Dang,70,wet
+2018-05-15,Bach Dang,70,wet
+2018-05-15,Binh Loi,88,wet
+2018-05-15,Binh Loi,88,wet
+2018-05-15,Phu Cuong,114,wet
+2018-05-15,Phu Cuong,114,wet
+2018-05-15,Ben Suc,156,wet
+2018-05-15,Ben Suc,156,wet
+2018-05-24,Phu Cuong,114,wet
+2018-05-25,Nha Be,44,wet
+2018-05-25,Bach Dang,70,wet
+2018-06-11,Phu Cuong,114,wet
+2018-06-12,Nha Be,44,wet
+2018-06-12,Bach Dang,70,wet
+2018-06-25,Phu Cuong,114,wet
+2018-06-26,Nha Be,44,wet
+2018-06-26,Bach Dang,70,wet
+2018-07-10,Phu Cuong,114,wet
+2018-07-11,Nha Be,44,wet
+2018-07-11,Bach Dang,70,wet
+2018-07-24,Phu Cuong,114,wet
+2018-07-25,Nha Be,44,wet
+2018-07-25,Bach Dang,70,wet
+2018-08-08,Phu Cuong,114,wet
+2018-08-09,Nha Be,44,wet
+2018-08-09,Bach Dang,70,wet
+2018-08-21,Phu Cuong,114,wet
+2018-08-22,Nha Be,44,wet
+2018-08-22,Bach Dang,70,wet
+2018-09-06,Phu Cuong,114,wet
+2018-09-07,Nha Be,44,wet
+2018-09-07,Bach Dang,70,wet
+2018-09-12,Nga Bay,0,wet
+2018-09-12,Nga Bay,0,wet
+2018-09-12,Vam Sat,24,wet
+2018-09-12,Vam Sat,24,wet
+2018-09-12,Nha Be,44,wet
+2018-09-12,Nha Be,44,wet
+2018-09-12,Bach Dang,70,wet
+2018-09-12,Bach Dang,70,wet
+2018-09-12,Binh Loi,88,wet
+2018-09-12,Binh Loi,88,wet
+2018-09-12,Phu Cuong,114,wet
+2018-09-12,Phu Cuong,114,wet
+2018-09-12,Ben Suc,156,wet
+2018-09-12,Ben Suc,156,wet
+2018-09-20,Phu Cuong,114,wet
+2018-09-21,Nha Be,44,wet
+2018-09-21,Bach Dang,70,wet
+2018-10-04,Phu Cuong,114,wet
+2018-10-06,Nha Be,44,wet
+2018-10-06,Bach Dang,70,wet
+2018-10-12,Nga Bay,0,wet
+2018-10-12,Nga Bay,0,wet
+2018-10-12,Vam Sat,24,wet
+2018-10-12,Vam Sat,24,wet
+2018-10-12,Nha Be,44,wet
+2018-10-12,Nha Be,44,wet
+2018-10-12,Bach Dang,70,wet
+2018-10-12,Bach Dang,70,wet
+2018-10-12,Binh Loi,88,wet
+2018-10-12,Binh Loi,88,wet
+2018-10-12,Phu Cuong,114,wet
+2018-10-12,Phu Cuong,114,wet
+2018-10-12,Ben Suc,156,wet
+2018-10-12,Ben Suc,156,wet
+2018-10-19,Phu Cuong,114,wet
+2018-10-20,Nha Be,44,wet
+2018-10-20,Bach Dang,70,wet
+2018-11-05,Phu Cuong,114,dry
+2018-11-06,Nha Be,44,dry
+2018-11-06,Bach Dang,70,dry
+2018-11-11,Nga Bay,0,dry
+2018-11-11,Nga Bay,0,dry
+2018-11-11,Vam Sat,24,dry
+2018-11-11,Vam Sat,24,dry
+2018-11-11,Nha Be,44,dry
+2018-11-11,Nha Be,44,dry
+2018-11-11,Bach Dang,70,dry
+2018-11-11,Bach Dang,70,dry
+2018-11-11,Binh Loi,88,dry
+2018-11-11,Binh Loi,88,dry
+2018-11-11,Phu Cuong,114,dry
+2018-11-11,Phu Cuong,114,dry
+2018-11-11,Ben Suc,156,dry
+2018-11-11,Ben Suc,156,dry
+2018-11-19,Phu Cuong,114,dry
+2018-11-20,Nha Be,44,dry
+2018-11-20,Bach Dang,70,dry
+2018-12-03,Phu Cuong,114,dry
+2018-12-04,Nha Be,44,dry
+2018-12-04,Bach Dang,70,dry
+2018-12-11,Nga Bay,0,dry
+2018-12-11,Nga Bay,0,dry
+2018-12-11,Vam Sat,24,dry
+2018-12-11,Vam Sat,24,dry
+2018-12-11,Nha Be,44,dry
+2018-12-11,Nha Be,44,dry
+2018-12-11,Bach Dang,70,dry
+2018-12-11,Bach Dang,70,dry
+2018-12-11,Binh Loi,88,dry
+2018-12-11,Binh Loi,88,dry
+2018-12-11,Phu Cuong,114,dry
+2018-12-11,Phu Cuong,114,dry
+2018-12-11,Ben Suc,156,dry
+2018-12-11,Ben Suc,156,dry
+2018-12-17,Phu Cuong,114,dry
+2018-12-18,Nha Be,44,dry
+2018-12-18,Bach Dang,70,dry
+2019-01-07,Phu Cuong,114,dry
+2019-01-08,Nha Be,44,dry
+2019-01-08,Bach Dang,70,dry
+2019-04-16,SG10,72,dry
+2019-04-16,SG09,74,dry
+2019-04-16,SG08,77,dry
+2019-04-16,SG07,90,dry
+2019-04-16,SG06,93,dry
+2019-04-16,SG05,99,dry
+2019-04-16,SG04,102,dry
+2019-04-16,SG03,108,dry
+2019-04-16,SG02,112,dry
+2019-04-16,SG01,115,dry
+2019-04-16,UP04,119,dry
+2019-04-16,UP03,126,dry
+2019-04-16,UP02,139,dry
+2019-04-16,UP01,147,dry
+2019-04-18,SG23,6,dry
+2019-04-18,SG22,15,dry
+2019-04-18,SG21,24,dry
+2019-04-18,SG20,32,dry
+2019-04-18,SG19,42,dry
+2019-04-18,SG18,51,dry
+2019-04-18,SG17,54,dry
+2019-04-18,SG16,58,dry
+2019-04-18,SG15,60,dry
+2019-04-18,SG14,62,dry
+2019-04-18,SG13,65,dry
+2019-04-18,SG12,69,dry
+2019-04-18,SG11,71,dry
+2019-10-14,SG10,72,wet
+2019-10-14,SG09,74,wet
+2019-10-14,SG08,77,wet
+2019-10-14,SG07,90,wet
+2019-10-14,SG06,93,wet
+2019-10-14,SG05,99,wet
+2019-10-14,SG04,102,wet
+2019-10-14,SG03,108,wet
+2019-10-14,SG02,112,wet
+2019-10-14,SG01,115,wet
+2019-10-14,UP04,119,wet
+2019-10-14,UP03,126,wet
+2019-10-14,UP02,139,wet
+2019-10-14,UP01,147,wet
+2019-10-16,SG22A,11,wet
+2019-10-16,SG22,15,wet
+2019-10-16,SG21,24,wet
+2019-10-16,SG20,32,wet
+2019-10-16,SG19,42,wet
+2019-10-16,SG18,51,wet
+2019-10-16,SG17,54,wet
+2019-10-16,SG16,58,wet
+2019-10-16,SG15,60,wet
+2019-10-16,SG14,62,wet
+2019-10-16,SG13,65,wet
+2019-10-16,SG12,69,wet
+2019-10-16,SG11,71,wet
+2020-03-11,SG10,72,dry
+2020-03-11,SG09,74,dry
+2020-03-11,SG08,77,dry
+2020-03-11,SG07,90,dry
+2020-03-11,SG06,93,dry
+2020-03-11,SG05,99,dry
+2020-03-11,SG04,102,dry
+2020-03-11,SG03,108,dry
+2020-03-11,SG02,112,dry
+2020-03-11,SG01,115,dry
+2020-03-11,UP04,119,dry
+2020-03-11,UP03,126,dry
+2020-03-11,UP02,139,dry
+2020-03-11,UP01,147,dry
+2020-03-12,SG23,11,dry
+2020-03-12,SG22,15,dry
+2020-03-12,SG21,24,dry
+2020-03-12,SG20,32,dry
+2020-03-12,SG19,42,dry
+2020-03-12,SG18,51,dry
+2020-03-12,SG17,54,dry
+2020-03-12,SG16,58,dry
+2020-03-12,SG15,60,dry
+2020-03-12,SG14,62,dry
+2020-03-12,SG13,65,dry
+2020-03-12,SG12,69,dry
+2020-03-12,SG11,71,dry
+2020-10-13,SG10,72,wet
+2020-10-13,SG09,74,wet
+2020-10-13,SG08,77,wet
+2020-10-13,SG07,90,wet
+2020-10-13,SG06,93,wet
+2020-10-13,SG05,99,wet
+2020-10-13,SG04,102,wet
+2020-10-13,SG03,108,wet
+2020-10-13,SG02,112,wet
+2020-10-13,SG01,115,wet
+2020-10-13,UP04,119,wet
+2020-10-13,UP03,126,wet
+2020-10-13,UP02,139,wet
+2020-10-13,UP01,147,wet
+2020-10-15,SG23,6,wet
+2020-10-15,SG22,15,wet
+2020-10-15,SG21,24,wet
+2020-10-15,SG20,32,wet
+2020-10-15,SG19,42,wet
+2020-10-15,SG18,51,wet
+2020-10-15,SG17,54,wet
+2020-10-15,SG16,58,wet
+2020-10-15,SG15,60,wet
+2020-10-15,SG14,62,wet
+2020-10-15,SG13,65,wet
+2020-10-15,SG12,69,wet
+2020-10-15,SG11,71,wet

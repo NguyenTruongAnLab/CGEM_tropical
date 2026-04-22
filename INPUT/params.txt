@@ -1,0 +1,228 @@
+# =====================================================================
+# C-GEM Parameters — Tropical Estuary Example (Calibrated)
+# =====================================================================
+# Model parameters for a tropical estuary demonstration case.
+# Parameters marked "calibrated" were tuned via automated NLopt
+# optimisation. Literature references are provided for each group.
+#
+# To apply to a different estuary, adjust geometry (EL, DELXI, segments),
+# boundary forcing (AMPL, upstream_discharge_scale), and re-calibrate
+# biogeochemical parameters against local observations.
+# =====================================================================
+
+# Calibration Settings
+# =====================
+calibration_mode = 0           # 0=Off, 1=BOBYQA, 2=NELDERMEAD, 3=SBPLX, 4=COBYLA, 5=DIRECT-L, 6=CRS2-LM, 7=ISRES
+calibration_max_iterations = 500
+
+# Calibration staging
+# 1 = Stage 1: Hydrodynamics (Tides) + Transport (Salinity) [BIOGEO_OFF]
+# 2 = Stage 2: Sediment (SPM) + Phosphorus (PO4, PIP) [BIOGEO_P_ADSORPTION_ONLY]
+# 3 = Stage 3: Eutrophication (N, O2, Phytoplankton) [BIOGEO_FULL]
+# 4 = Stage 4: Carbonate (pH, pCO2, DIC, AT) [BIOGEO_FULL]
+calibration_stage = 2
+
+# Calibration parameter registry (bounds/initial values per stage)
+calibration_parameters_file = "INPUT/Calibration/calibration_parameters.csv"
+calibration_wq_seasonal_targets_file = "INPUT/Calibration/targets_seasonal_unified.csv"
+calibration_tidal_targets_file = "INPUT/Calibration/targets_tidal.csv"
+
+debug_level = 1
+output_storage_format = CSV
+
+enable_biogeochemical_reactions = 1   # 0 = transport-only, 1 = full biogeochemistry
+enable_flux_output = 1
+enable_reaction_output = 1
+
+# =====================
+# Carbonate System
+# =====================
+pCO2atmo = 390.0                      # [µatm] Atmospheric pCO2
+piston_velocity_scale = 2.0           # [-] Gas transfer velocity scaling (Raymond & Cole 2001: 1–3)
+carbonate_solver_failure_policy = HOLD_LAST  # HOLD_LAST | SKIP_CO2_EXCHANGE | FATAL
+
+# =====================
+# Phytoplankton Growth (Eppley 1972; Cloern 1996)
+# =====================
+Pb_Phy1 = 3.472e-04           # [s⁻¹] Max photosynthetic rate, diatoms (30 d⁻¹)
+Pb_Phy2 = 2.453567941e-05    # [s⁻¹] Max photosynthetic rate, non-diatoms (calibrated)
+alpha_Phy1 = 4.000e-06        # [s⁻¹/(W/m²)] P-I curve initial slope, diatoms
+alpha_Phy2 = 1.473862449e-06  # [s⁻¹/(W/m²)] P-I curve initial slope, non-diatoms (calibrated)
+
+# =====================
+# Phytoplankton Mortality (Reynolds 2006; Fennel et al. 2006)
+# =====================
+# (1) Linear natural mortality [s⁻¹]
+kmortality_Phy1 = 5.787e-07   # [s⁻¹] 0.05 d⁻¹ (literature: 0.02–0.2 d⁻¹)
+kmortality_Phy2 = 1.0e-07
+
+# (2) Quadratic density-dependent mortality [s⁻¹/(mmolC/m³)]
+kmort2_Phy1 = 2.0e-08
+kmort2_Phy2 = 1.0e-08
+
+# (2b) Benthic grazing — depth-dependent removal: loss = k_benth_graze / H [s⁻¹]
+k_benth_graze = 5.0e-05      # [m/s] (Cloern 1982; literature: 0.5–5 m/d)
+
+# (3) Salinity stress mortality (Garnier RIVE model; Billen et al. 2001)
+kmort_sal = 2.0e-05           # [s⁻¹] Max salinity mortality
+sal_tol_Phy1 = 5.0            # [PSU] Freshwater diatom tolerance
+sal_tol_Phy2 = 15.0           # [PSU] Euryhaline non-diatom tolerance
+
+# =====================
+# Organic Matter Degradation
+# =====================
+kox = 7.478837657e-07         # [mmolC/m³/s] Aerobic TOC degradation (calibrated)
+kdenit = 5.440515167e-05      # [mmolC/m³/s] Denitrification (calibrated)
+knit = 2.15455107e-04         # [mmolN/m³/s] Nitrification (calibrated)
+KO2_nit = 10.0                # [mmol/m³] Half-sat O2 for nitrification
+
+# Fast labile-C pathway (consumes O2 only, no NH4/PO4 release)
+kcbod_fast = 1.224873227e-06  # [s⁻¹] (calibrated)
+KO2_cbod = 15.0               # [mmol/m³]
+KTOC_fast = 40.0              # [mmolC/m³]
+
+# Bulk TOC mineralization stoichiometry
+CN_toc = 20.0                 # [molC/molN] Allochthonous TOC C:N ratio (Hedges 1997)
+
+# =====================
+# Sediment Oxygen Demand (Van Kessel et al. 2011; Chapra 2008)
+# =====================
+SOD_rate = 0.002894           # [mmol O2/m²/s] ~ 8.0 gO2/m²/d
+KO2_SOD = 31.0                # [mmol/m³]
+
+# Biogenic Si dissolution
+ksi_diss = 0.5                # [0–1] (Ragueneau et al. 2000)
+
+# =====================
+# Light Attenuation — KD = kbg + kspm×SPM + kCDOM×DOC + KD_Phy×(Phy1+Phy2)
+# =====================
+KD_Phy = 0.001                # [m⁻¹ per mmolC/m³] Phytoplankton self-shading
+kbg = 0.02263593297           # [m⁻¹] Background attenuation (calibrated)
+kbg_upstream = 2.0            # [m⁻¹] Upstream CDOM/terrigenous DOM
+kbg_transition_km = 80.0      # [km] Turbidity transition from mouth
+kbg_blend_km = 5.0            # [km] Transition half-width
+kbg_fresh = 0.0               # [m⁻¹] Salinity-dependent CDOM (0 = disabled)
+S_cdom_threshold = 2.0        # [PSU]
+S_cdom_width = 3.0            # [PSU]
+# Discharge-driven turbidity
+k_turb_Q = 3.0                # [m⁻¹] Excess-discharge turbidity scaling
+Q_turb_ref = 90.0             # [m³/s] Reference discharge threshold
+alpha_turb = 0.5              # [-] Power-law exponent
+k_resus = 0.0                 # [m⁻¹·m] Resuspension (0 = disabled)
+kCDOM = 0.03390438775         # [m⁻¹/(mgC/L)] CDOM absorption (calibrated)
+kspm = 0.008                  # [m⁻¹ per g/m³] SPM-specific attenuation (Kirk 2010: 0.01–0.06)
+
+# NH4 preference
+K_NH4_switch = 1.0            # [mmol N/m³] (Lomas & Glibert 1999)
+
+# CO2 limitation (disabled; tropical pCO2 >> growth-limiting levels)
+enable_co2_limitation = 0
+K_CO2_Phy = 10.0              # [mmolC/m³] (inactive when disabled)
+
+# =====================
+# Nutrient Half-Saturation Constants
+# =====================
+KN_Phy1 = 20.0                # [mmol N/m³] (Collos et al. 2005: 3–100 µM)
+KN_Phy2 = 20.0
+KPO4_Phy1 = 1.5               # [mmol P/m³]
+KPO4_Phy2 = 1.5
+KSi_Phy1 = 0.033              # [mmol Si/m³]
+
+KTOC = 60.0                   # [mmolC/m³] Organic matter half-saturation
+
+# =====================
+# Phytoplankton Settling (Smayda 1970; Reynolds 2006)
+# =====================
+ws_phy = 2.0e-05              # [m/s] = 1.7 m/d (literature: 0.5–5 m/d)
+
+# =====================
+# Simulation Time & Grid
+# =====================
+SIM_START_DATE = "2017-01-01"  # Post-warmup simulation start
+MAXT = 830                    # Total simulation days (warmup + 730d)
+WARMUP = 100                  # Warmup period [days]
+DELTI = 360                   # Time step [s]
+TS = 10                       # Output interval = DELTI × TS [s]
+DELXI = 2000                  # Spatial step [m]
+EL = 202000                   # Estuarine length [m]
+AMPL = 1.6                    # Tidal amplitude at mouth [m]
+AMPL_CORRECTION = 0.9762859136 # Tidal amplitude correction (calibrated)
+
+# Upstream discharge processing
+enable_upstream_discharge_smoothing = 1
+upstream_discharge_smoothing_timescale_days = 15.0
+upstream_discharge_scale = 1.25
+enable_tributary_subdaily_pulses = 1
+tributary_pulse_shape = 0.45
+urban_tributary_pulse_boost = 1.0
+tributary_mass_injection_mode = RUTHERFORD_SPREAD  # FISCHER_MASS_SOURCE or RUTHERFORD_SPREAD
+
+riverbed_profile_file = "INPUT/Geometry/river_bed_profile.txt"
+
+# =====================
+# Transport Calibration (Savenije 2012; Gisen 2015)
+# =====================
+# C_VDB: scaling factor for the Gisen (2015) predictive K formula
+# Final K = K_predicted × C_VDB, clamped to [0, 1]
+C_VDB = 0.9168561128          # (calibrated)
+
+# D0_CORRECTION: scales Savenije (2012) mouth dispersion
+D0_CORRECTION = 1.05
+
+# Seasonal K variation (K_eff = K_geometric × (N/N_ref)^sensitivity)
+K_DISCHARGE_SENSITIVITY = 1.3
+
+num_segments = 2
+segment_transition_width = 5
+dispersion_abs_min = 1.0              # [m²/s]
+dispersion_abs_max = 5000.0           # [m²/s]
+
+# ----- Segment 1 (Downstream / Mouth) -----
+index_1 = 0
+B1 = 3887.00
+LC1 = 30000
+Chezy1 = 42.40732563          # (calibrated)
+Rs1 = 1                       # Storage width ratio (calibrated)
+
+# ----- Segment 2 (Upstream / Riverine) -----
+index_2 = 20
+B2 = 450.00
+LC2 = 120000
+Chezy2 = 20                   # (calibrated)
+Rs2 = 1.550442461             # (calibrated)
+
+# =====================
+# Sediment Parameters (Winterwerp 2001; Partheniades 1965; Krone 1962)
+# =====================
+
+# ----- Segment 1 (Mouth) -----
+Mero1 = 1.3e-05               # [kg/m²/s] Erosion rate
+tau_ero1 = 0.1292263864       # [Pa] Critical shear for erosion
+tau_dep1 = 1.871093132        # [Pa] Critical shear for deposition
+
+# ----- Segment 2 (Urban zone) -----
+Mero2 = 2.123176002e-07
+tau_ero2 = 1.355102822
+tau_dep2 = 0.1779823157
+
+# ----- Segment 3 (Upper estuary) -----
+index_3 = 55
+Mero3 = 3.819118626e-05
+tau_ero3 = 1.353304059
+tau_dep3 = 0.8151651734
+
+# ----- Segment 4 (Far upstream) -----
+index_4 = 85
+Mero4 = 2.0e-07
+tau_ero4 = 2.0
+tau_dep4 = 0.5
+
+# Phosphorus adsorption
+P_ac = 10.0
+K_ps = 5.0
+k_ads = 1.0e-05
+
+# Sediment settling (Winterwerp 2002; Van Rijn 1984)
+settling_velocity = 3.8e-4    # [m/s] (literature: 0.1–2.0 mm/s)
+KSi_Phy2 = 0
+

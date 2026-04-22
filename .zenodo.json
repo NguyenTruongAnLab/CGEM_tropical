@@ -1,0 +1,26 @@
+{
+  "title": "C-GEM Tropical",
+  "upload_type": "software",
+  "description": "C-GEM Tropical is a one-dimensional reactive-transport model for tropical estuaries, coupling hydrodynamics, transport, sediment dynamics, biogeochemistry, and carbonate diagnostics in a configuration-driven workflow.",
+  "creators": [
+    {
+      "name": "Nguyen, Truong An"
+    }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "estuary",
+    "reactive-transport",
+    "hydrodynamics",
+    "biogeochemistry",
+    "carbonate chemistry"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/NguyenTruongAnLab/CGEM_tropical",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ]
+}

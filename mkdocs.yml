@@ -1,0 +1,122 @@
+site_name: C-GEM Tropical
+site_description: Documentation for C-GEM — 1-D Reactive-Transport Model for Tropical Estuaries
+site_author: Nguyen Truong An
+repo_url: https://github.com/NguyenTruongAnLab/CGEM_tropical
+copyright: <p> Copyright &copy; 2025-<script>document.write(new Date().getFullYear())</script> Nguyen Truong An. All Rights Reserved</p>
+
+theme:
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - search.highlight
+    - content.code.copy
+    - navigation.tracking
+    - toc.follow
+    - navigation.sections
+    - navigation.tabs
+    - navigation.expand
+    - content.tooltips
+    - search.suggest
+    - navigation.footer
+    - navigation.top
+    # - navigation.instant.preview
+  font:
+    text: Google Sans
+    code: Regular
+
+docs_dir: docs
+
+plugins:
+  - search
+  - ezlinks:
+      warn_ambiguities: false
+      wikilinks: true
+      reference_links: true
+extra:
+  vercel_site_path: ""
+  github_pages_site_path: "CGEM_tropical/"
+  
+extra_javascript:
+  - assets/javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+
+extra_css:
+  - assets/css/customization.css
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+markdown_extensions:
+  - pymdownx.tabbed
+  - toc:
+      permalink: true
+  - footnotes
+  - nl2br #New-Line-to-Break Extension, otherwise single break will be in the same line.
+  - attr_list
+  - md_in_html
+  - sane_lists # Markdown List syntax to be less surprising
+  - meta
+  - smarty # converts ASCII dashes, quotes and ellipses to their HTML entity equivalents.
+  - tables
+  - mdx_breakless_lists # Use lists without requiring a line break above them
+  - def_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.magiclink
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  # - material.extensions.preview
+  - pymdownx.highlight:
+      use_pygments: true
+      anchor_linenums: true      
+      pygments_lang_class: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+use_directory_urls: true # (optional) for better links without .html extension
+
+nav:
+  - Home: README.md
+  - Getting Started: Documentation/Getting-Started.md
+  - Theory:
+      - Introduction: Documentation/Chapter-1-Introduction.md
+      - Hydrodynamics: Documentation/Chapter-2-Hydrodynamic.md
+      - Numerical Methods: Documentation/Chapter-3-Numerical.md
+      - Transport: Documentation/Chapter-4-Transports.md
+      - Biogeochemistry: Documentation/Chapter-5-Biogeochemical.md
+  - Implementation:
+      - Code Architecture: Documentation/Chapter-6-Implementation.md
+      - Calibration Guide: Documentation/Calibration_Preparation_Guide.md
+  - Supplements:
+      - S1 — Variables: Documentation/Supplement-1-Variables.md
+      - S2 — Inorganic Carbon: Documentation/Supplement-2-inorganic-module.md
+      - S3 — Flowcharts: Documentation/Supplement-3-Model-Flowcharts.md
+      - S4 — Tributaries & Dispersion: Documentation/Supplement-4-Tributaries-Dispersion-Diagnostics.md
+  - Analysis Tools: Analysis-Tools.md

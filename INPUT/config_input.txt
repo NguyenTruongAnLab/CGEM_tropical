@@ -1,0 +1,153 @@
+# =====================================================================
+# C-GEM Configuration — Saigon River Example
+# =====================================================================
+# This file defines boundary conditions, forcing data, and tributary
+# inputs for the Saigon River tropical estuary demonstration case.
+# Adapt the file paths and tributary count/layout for your own estuary.
+# =====================================================================
+
+# Number of tributaries to read
+numTributaries=4
+
+# Include tributaries? (1 = Yes, 0 = No)
+tributaryEnabled=1
+
+# For boundary conditions, we define:
+# name: a short identifier
+# type: upstream or downstream
+# Phy1, Phy2, TOC, O2, etc. specify the input file paths, same as enum chem {Phy1, Phy2, Si, NO3, NH4, PO4, O2, TOC, Sal, SPM, DIC, AT, pCO2, PH, CO2}
+# but no pCO2, PH, CO2 data requirement since they automatically calculated from other parameters
+
+# Boundary conditions
+name=Upstream
+type=UpperBoundary
+resolution=daily
+Phy1=INPUT/Boundary/UB/Phy1_ub_tuned_low.csv
+Phy2=INPUT/Boundary/UB_stable/Phy2_ub_stable.csv
+Si=INPUT/Boundary/UB/Si_ub_tuned_low.csv
+NO3=INPUT/Boundary/UB/NO3_ub_dautieng2022_scaled.csv
+NH4=INPUT/Boundary/UB_stable/NH4_ub_stable.csv
+PO4=INPUT/Boundary/UB_stable/PO4_ub_stable.csv
+O2=INPUT/Boundary/UB_stable/O2_ub_stable.csv
+TOC=INPUT/Boundary/UB_stable/TOC_ub_stable.csv
+Sal=INPUT/Boundary/UB/S_ub.csv
+SPM=INPUT/Boundary/UB/SPM_ub_seasonal.csv
+DIC=INPUT/Boundary/UB/DIC_ub_tuned_from_pco2_alk.csv
+AT=INPUT/Boundary/UB/TAlk_ub_tuned_low.csv
+
+# Downstream boundary (no discharge required at downstream boundary)
+name=Downstream
+type=LowerBoundary
+resolution=daily
+Phy1=INPUT/Boundary/LB/dia_lb.csv
+Phy2=INPUT/Boundary/LB/ndia_lb.csv
+Si=INPUT/Boundary/LB/si_lb.csv
+NO3=INPUT/Boundary/LB/NO3_lb.csv
+NH4=INPUT/Boundary/LB/NH4_lb.csv
+PO4=INPUT/Boundary/LB/po4_lb.csv
+O2=INPUT/Boundary/LB/O2_lb.csv
+TOC=INPUT/Boundary/LB/TOC_lb.csv
+Sal=INPUT/Boundary/LB/S_lb_seasonal.csv
+SPM=INPUT/Boundary/LB/SPM_lb_seasonal_high.csv
+DIC=INPUT/Boundary/LB/DIC_lb_tuned_lower.csv
+AT=INPUT/Boundary/LB/TAlk_lb_tuned_lower.csv
+
+# DailyForcing: Daily data for discharge, temperature, wind
+name=DailyForcing
+type=Forcing
+resolution=daily 
+DischargeFile=INPUT/Boundary/UB/discharge_ub.csv
+TemperatureFile=INPUT/Boundary/LB/T.csv
+WindFile=INPUT/Boundary/wind.csv
+
+# HourlyForcing: Hourly data for elevation, light
+name=HourlyForcing
+type=Forcing
+resolution=hourly 
+ElevationFile=INPUT/Boundary/LB/elevation.csv
+LightFile=INPUT/Boundary/LB/Light.csv
+
+# ---------TRIBUTARIES----------
+
+# For each tributary, we define:
+# name: a short identifier
+# cellIndex: the river cell index where this flow enters
+# type: Tributary
+# data for similar to this order enum chem {Phy1, Phy2, Si, NO3, NH4, PO4, O2, TOC, Sal, SPM, DIC, AT, pCO2, PH, CO2}
+# plus daily discharge
+# but no salinity pCO2, PH, CO2 data requirement for tributaries
+
+# ----------Tributary 1----------
+name=Dongnai
+type=Tributary
+resolution=daily
+cellIndex=31
+discharge=INPUT/Tributaries/Dongnai/discharge.csv
+Phy1=INPUT/Tributaries/Dongnai/dia_ub.csv
+Phy2=INPUT/Tributaries/Dongnai/ndia_ub.csv
+Si=INPUT/Tributaries/Dongnai/si_ub.csv
+NO3=INPUT/Tributaries/Dongnai/NO3_ub.csv
+NH4=INPUT/Tributaries/Dongnai/NH4_ub.csv
+PO4=INPUT/Tributaries/Dongnai/po4_ub.csv
+O2=INPUT/Tributaries/Dongnai/O2_ub.csv
+TOC=INPUT/Tributaries/Dongnai/TOC_ub.csv
+SPM=INPUT/Tributaries/Dongnai/spm_ub.csv
+DIC=INPUT/Tributaries/Dongnai/DIC_ub_obs_seasonal_2y.csv
+AT=INPUT/Tributaries/Dongnai/TAlk_ub_obs_seasonal_2y.csv
+
+# ----------Tributary 2----------
+name=Canals
+type=Tributary
+is_urban=1
+resolution=daily
+cellIndex=37
+discharge=INPUT/Tributaries/Canals/discharge.csv
+Phy1=INPUT/Tributaries/Canals/dia_ub_obs_seasonal_4y.csv
+Phy2=INPUT/Tributaries/Canals/ndia_ub_obs_seasonal_4y.csv
+Si=INPUT/Tributaries/Canals/si_ub.csv
+NO3=INPUT/Tributaries/Canals/NO3_ub.csv
+PO4=INPUT/Tributaries/Canals/po4_ub.csv
+O2=INPUT/Tributaries/Canals/O2_ub.csv
+TOC=INPUT/Tributaries/Canals/TOC_ub.csv
+NH4=INPUT/Tributaries/Canals/NH4_ub.csv
+SPM=INPUT/Tributaries/Canals/spm_ub.csv
+DIC=INPUT/Tributaries/Canals/DIC_ub_obs_seasonal_2y.csv
+AT=INPUT/Tributaries/Canals/TAlk_ub_obs_seasonal_2y.csv
+
+# ----------Tributary 3----------
+name=VamThuat
+type=Tributary
+is_urban=1
+cellIndex=45
+resolution=daily
+discharge=INPUT/Tributaries/VamThuat/discharge.csv
+TOC=INPUT/Tributaries/VamThuat/TOC_ub.csv
+O2=INPUT/Tributaries/VamThuat/O2_ub.csv
+NH4=INPUT/Tributaries/VamThuat/NH4_ub.csv
+NO3=INPUT/Tributaries/VamThuat/NO3_ub.csv
+Phy1=INPUT/Tributaries/VamThuat/dia_ub_obs_seasonal_4y.csv
+Phy2=INPUT/Tributaries/VamThuat/ndia_ub.csv
+Si=INPUT/Tributaries/VamThuat/si_ub.csv
+PO4=INPUT/Tributaries/VamThuat/po4_ub.csv
+SPM=INPUT/Tributaries/VamThuat/spm_ub.csv
+DIC=INPUT/Tributaries/VamThuat/DIC_ub_obs_seasonal_2y.csv
+AT=INPUT/Tributaries/VamThuat/TAlk_ub_obs_seasonal_2y.csv
+
+# ----------Tributary 4----------
+name=ThiTinh
+type=Tributary
+is_urban=1
+cellIndex=61
+resolution=daily
+discharge=INPUT/Tributaries/ThiTinh/discharge.csv
+TOC=INPUT/Tributaries/ThiTinh/TOC_ub_seasonal.csv
+O2=INPUT/Tributaries/ThiTinh/O2_ub.csv
+NH4=INPUT/Tributaries/ThiTinh/NH4_ub_seasonal.csv
+NO3=INPUT/Tributaries/ThiTinh/NO3_ub_seasonal.csv
+Phy1=INPUT/Tributaries/ThiTinh/dia_ub.csv
+Phy2=INPUT/Tributaries/ThiTinh/ndia_ub.csv
+Si=INPUT/Tributaries/ThiTinh/si_ub.csv
+PO4=INPUT/Tributaries/ThiTinh/po4_ub.csv
+SPM=INPUT/Tributaries/ThiTinh/spm_ub.csv
+DIC=INPUT/carbonate/TRIB_ThiTinh_2017_2018_DIC_derived.csv
+AT=INPUT/carbonate/TRIB_ThiTinh_2017_2018_TAlk_derived.csv
