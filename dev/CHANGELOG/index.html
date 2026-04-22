@@ -1,0 +1,3194 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for C-GEM — 1-D Reactive-Transport Model for Tropical Estuaries">
+      
+      
+        <meta name="author" content="Nguyen Truong An">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Changelog - C-GEM Tropical</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:300,300i,400,400i,700,700i%7CRegular:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Google Sans";--md-code-font:"Regular"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/css/customization.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="C-GEM Tropical" class="md-header__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            C-GEM Tropical
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Documentation/Getting-Started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Documentation/Chapter-1-Introduction/" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Documentation/Chapter-6-Implementation/" class="md-tabs__link">
+          
+  
+  
+  Implementation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Documentation/Supplement-1-Variables/" class="md-tabs__link">
+          
+  
+  
+  Supplements
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Analysis-Tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Analysis Tools
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="C-GEM Tropical" class="md-nav__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    C-GEM Tropical
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Getting-Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-1-Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-2-Hydrodynamic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydrodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-3-Numerical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerical Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-4-Transports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-5-Biogeochemical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Biogeochemistry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Implementation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Chapter-6-Implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Calibration_Preparation_Guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calibration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supplements
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Supplements
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Supplement-1-Variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 — Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Supplement-2-inorganic-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 — Inorganic Carbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Supplement-3-Model-Flowcharts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 — Flowcharts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentation/Supplement-4-Tributaries-Dispersion-Diagnostics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 — Tributaries & Dispersion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Analysis-Tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysis Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2026-03-05-monsoon-turbidity-mechanism-phytoplankton-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-03-05 Monsoon turbidity mechanism &amp; phytoplankton calibration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2026-03-05 Monsoon turbidity mechanism &amp; phytoplankton calibration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calibrated-parameters-run-23-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calibrated parameters (Run 23 — final)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2026-02-15-spatially-selective-phy1-loss-mechanisms-saigon-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-02-15 Spatially selective Phy1 loss mechanisms (Saigon application)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2026-02-15 Spatially selective Phy1 loss mechanisms (Saigon application)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scientific-intent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific intent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-09-05-critical-stability-mass-balance-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-09-05 🚨 CRITICAL STABILITY &amp; MASS BALANCE FIXES
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2025-09-05 🚨 CRITICAL STABILITY &amp; MASS BALANCE FIXES">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-issues-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔴 Critical Issues Resolved
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔴 Critical Issues Resolved">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tributary-mass-source-term-implementation-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tributary Mass Source Term Implementation (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-out-of-bounds-memory-reads-in-boundary-data-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Out-of-Bounds Memory Reads in Boundary Data (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-upstream-numerical-instability-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Upstream Numerical Instability (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📁 Files Modified
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📁 Files Modified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-transport-numerical-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Transport &amp; Numerical Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation &amp; Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Technical Impact
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Technical Impact">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mass-conservation-physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mass Conservation &amp; Physics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numerical-stability-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numerical Stability &amp; Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scientific-validity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific Validity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Validation Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-07-12-major-refactor-modularization-physics-based-hydrodynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-07-12 Major Refactor: Modularization, Physics-Based Hydrodynamics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-05-27-get-back-with-c-gem-daily-for-seasonal-simulation-in-saigon-river" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-05-27 Get back with C-GEM daily for seasonal simulation in Saigon River
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-06-investigating-and-fixing-the-tidal-amplitude-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-06 Investigating and Fixing the Tidal Amplitude Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-06-testing-3-typical-estuarines-for-hydrodynamics-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-06 Testing 3 typical estuarines for hydrodynamics module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-03-update-documentation-requirements-and-add-new-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-03 Update Documentation Requirements and Add New Plugins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-03-testing-mkdocs-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-03 Testing MkDocs Site
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-01-refactor-temperature-and-light-data-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-01 Refactor Temperature and Light Data Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-01-refactor-readfile-function-and-add-documentation-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-01 Refactor readFile Function and Add Documentation Guidelines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-03-01-improved-error-handling-for-missing-boundary-data-and-documentation-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-03-01 Improved Error Handling for Missing Boundary Data and Documentation Guidelines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-28-enhanced-boundary-data-validation-and-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-28 Enhanced Boundary Data Validation and Debugging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-28-good-maintenance-for-reading-input-based-on-enum-chem-in-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-28 Good Maintenance for Reading Input Based on Enum Chem in Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-28-changed-s-to-sal-and-hs-to-pco2-for-more-meaningful-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-28 Changed S to Sal and HS to pCO2 for More Meaningful Names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-27-updated-hydrodynamics-model-input-parameters-for-more-meaningful-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-27 Updated Hydrodynamics Model Input Parameters for More Meaningful Names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-19-added-demo-for-nlopt-and-cma-es-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-19 Added Demo for NLopt and CMA-ES Libraries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-16-adding-biogeochemical-boundary-conditions-and-parameter-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-16: Adding Biogeochemical Boundary Conditions and Parameter Tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-15-python-code-to-find-optimal-convergent-length-based-on-geometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-15 Python Code to Find Optimal Convergent Length Based on Geometry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-11-working-discharge-accumulation-update-convergent-length-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-11 Working Discharge Accumulation, Update Convergent Length Needed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-06-refactoring-and-bug-fixes-in-hydrodynamic-and-transport-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-06: Refactoring and Bug Fixes in Hydrodynamic and Transport Modules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-06-reading-input-file-checked-biogeochemical-reaction-calculation-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-06 Reading Input File Checked, Biogeochemical Reaction Calculation Issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-02-06-modular-approach-for-reading-input-file-bc-and-tributaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-02-06 Modular Approach for Reading Input File BC and Tributaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2025-01-21-initial-c-gem-implementation-for-tropical-regions-based-on-an-nguyen-thesis-2021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2025-01-21: Initial C-GEM Implementation for Tropical Regions (Based on An Nguyen Thesis 2021)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="2026-03-05-monsoon-turbidity-mechanism-phytoplankton-calibration">2026-03-05 Monsoon turbidity mechanism &amp; phytoplankton calibration<a class="headerlink" href="#2026-03-05-monsoon-turbidity-mechanism-phytoplankton-calibration" title="Permanent link">&para;</a></h2>
+<p>Achieved target Chl-a pattern: high urban dry-season bloom (km 70 = 35.1 µg/L,<br />
+obs 37.4, 94%) with low concentrations elsewhere in all seasons (ratio 9.1×).</p>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Sinusoidal monsoon turbidity</strong> (<code>monsoon_KD_add</code>): additive light attenuation<br />
+  (KD) during wet season via half-sine peaking Sept 1 (DOY 244). Physically<br />
+  represents monsoon-driven increase in background turbidity from terrestrial<br />
+  runoff. Essential for reproducing observed 7× dry/wet seasonal contrast since<br />
+  light forcing only varies 17% between seasons.</li>
+<li>New parameter <code>monsoon_KD_add</code> parsed from <code>params.txt</code> (default 0.0 = off).</li>
+</ul>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>src/biogeo.c</code>: computes <code>kbg_effective = kbg + KD_monsoon</code> (after warmup)<br />
+  where <code>KD_monsoon = monsoon_KD_add × max(0, sin(π×(doy−120)/244))</code> for<br />
+  DOY 120–364, zero otherwise.</li>
+<li><code>src/variables.{c,h}</code>, <code>src/io_input.c</code>: variable declaration and parser.</li>
+<li><code>INPUT/params.txt</code>: 24-iteration calibration of phytoplankton parameters<br />
+  (Pb, KN, benthic grazing, settling, SPM erosion, monsoon KD).</li>
+</ul>
+<h3 id="calibrated-parameters-run-23-final">Calibrated parameters (Run 23 — final)<a class="headerlink" href="#calibrated-parameters-run-23-final" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Pb_Phy1 = 2.85e-04</code>, <code>KN_Phy1 = 40.0</code>, <code>kmortality_Phy1 = 1.15e-07</code></li>
+<li><code>k_benth_graze = 7.5e-05</code>, <code>ws_phy = 2.0e-05</code></li>
+<li><code>Mero3 = 1.7e-05</code>, <code>index_3 = 55</code>, <code>monsoon_KD_add = 1.5</code></li>
+</ul>
+<h3 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SPM upstream overestimated (model 326 vs obs 43 g/m³ at km 114) — proxy<br />
+  for unresolved upstream bloom suppression mechanisms.</li>
+<li>O2 at Phu Cuong −63% underestimated (consequence of above).</li>
+</ul>
+<h2 id="2026-02-15-spatially-selective-phy1-loss-mechanisms-saigon-application">2026-02-15 Spatially selective Phy1 loss mechanisms (Saigon application)<a class="headerlink" href="#2026-02-15-spatially-selective-phy1-loss-mechanisms-saigon-application" title="Permanent link">&para;</a></h2>
+<p>Added optional, reviewer-facing spatial-loss terms for Phy1 (diatoms) to improve longitudinal bloom localization in an urbanized tropical tidal river.</p>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Clarity (KD-based) mortality</strong> for Phy1: extra loss when water is optically clear (<span class="arithmatex">\(KD &lt; KD_{ref}\)</span>).</li>
+<li><strong>Photostress (depth-mean light) mortality</strong> for Phy1 (kept optional; may be less selective in 1D applications).</li>
+<li>Additional parameter controls:</li>
+<li>power exponents for stress nonlinearities</li>
+<li>optional cap on added mortality for numerical safety</li>
+<li>Diagnostic script: <code>scripts/diagnostics/phy1_spatial_loss_diagnostics.py</code> to export <span class="arithmatex">\(KD\)</span> distributions, stress-regime fractions, and implied added mortality per key cell.</li>
+</ul>
+<h3 id="files-changed">Files changed<a class="headerlink" href="#files-changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>src/biogeo.c</code>, <code>src/io_input.c</code>, <code>src/variables.{c,h}</code></li>
+<li><code>INPUT/params.txt</code></li>
+<li><code>docs/Documentation/Chapter-5-Biogeochemical.md</code>, <code>docs/Documentation/Supplement-1-Variables.md</code></li>
+</ul>
+<h3 id="scientific-intent">Scientific intent<a class="headerlink" href="#scientific-intent" title="Permanent link">&para;</a></h3>
+<p>These terms are designed as <strong>loss-only</strong>, spatially selective closures appropriate for a vertically integrated 1D estuarine model where unresolved processes (e.g., photodamage/UV exposure in clear water, brackish physiological stress) can control bloom localization.</p>
+<h2 id="2025-09-05-critical-stability-mass-balance-fixes">2025-09-05 🚨 CRITICAL STABILITY &amp; MASS BALANCE FIXES<a class="headerlink" href="#2025-09-05-critical-stability-mass-balance-fixes" title="Permanent link">&para;</a></h2>
+<p><strong>BREAKING:</strong> Major fixes to core transport and boundary logic that eliminate critical mass balance violations and numerical instability.</p>
+<h3 id="critical-issues-resolved">🔴 <strong>Critical Issues Resolved</strong><a class="headerlink" href="#critical-issues-resolved" title="Permanent link">&para;</a></h3>
+<h4 id="1-tributary-mass-source-term-implementation-critical"><strong>1. Tributary Mass Source Term Implementation (CRITICAL)</strong><a class="headerlink" href="#1-tributary-mass-source-term-implementation-critical" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Problem:</strong> Overwriting formula completely destroyed biogeochemical reaction products at tributary locations</li>
+<li><strong>Root Cause:</strong> <code>C_new = (V_cell * C_old + V_trib * trib_conc) / (V_cell + V_trib)</code> overwrote ALL previous reactions each timestep</li>
+<li><strong>Fix:</strong> Implemented mass-conservative hybrid approach that preserves existing mass while adding tributary inputs</li>
+<li><strong>Impact:</strong> ✅ Biogeochemical reactions now visible at tributary locations; ✅ Realistic concentration bounds maintained</li>
+</ul>
+<h4 id="2-out-of-bounds-memory-reads-in-boundary-data-critical"><strong>2. Out-of-Bounds Memory Reads in Boundary Data (CRITICAL)</strong><a class="headerlink" href="#2-out-of-bounds-memory-reads-in-boundary-data-critical" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Problem:</strong> <code>interpolateBoundaryData()</code> assumed all files have 365+ days, causing garbage value injection when reading beyond array bounds</li>
+<li><strong>Root Cause:</strong> Hardcoded <code>dataSeries[364]</code> accessed invalid memory for datasets &lt; 365 days</li>
+<li><strong>Symptoms:</strong> Impossible concentrations (1330 units = 30 mgO2/L from 6 mgO2/L inputs)</li>
+<li><strong>Fix:</strong> </li>
+<li>Replaced ALL unsafe <code>interpolateBoundaryData()</code> calls with bounds-checked <code>interpolateInputData()</code></li>
+<li>Added <code>dataSize</code> field to <code>BCArray</code> structure for proper bounds tracking</li>
+<li>Completely removed dangerous function from codebase</li>
+<li><strong>Impact:</strong> ✅ Memory-safe operation; ✅ Concentrations bounded by input values; ✅ No garbage value corruption</li>
+</ul>
+<h4 id="3-upstream-numerical-instability-critical"><strong>3. Upstream Numerical Instability (CRITICAL)</strong><a class="headerlink" href="#3-upstream-numerical-instability-critical" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Problem:</strong> Massive temporal variations (±25 units) in upstream region where no tributaries exist</li>
+<li><strong>Root Cause:</strong> CFL violations in boundary conditions + unstable TVD scheme in low-velocity upstream regions</li>
+<li><strong>Fix:</strong></li>
+<li><strong>CFL-Stable Boundaries:</strong> Added CFL monitoring with automatic damping (limit = 0.5)</li>
+<li><strong>Upstream Stabilization:</strong> 5% boundary relaxation during tidal flow reversals  </li>
+<li><strong>TVD Improvements:</strong> Regional flux limiting + 20% per-timestep change limits</li>
+<li><strong>Flow Reversal Handling:</strong> Gentle boundary application during tidal backflow</li>
+<li><strong>Impact:</strong> ✅ Smooth upstream profiles (±25 → ±2-3 units); ✅ CFL-stable under all conditions; ✅ Realistic estuarine behavior</li>
+</ul>
+<h3 id="files-modified">📁 <strong>Files Modified</strong><a class="headerlink" href="#files-modified" title="Permanent link">&para;</a></h3>
+<h4 id="core-transport-numerical-methods"><strong>Core Transport &amp; Numerical Methods</strong><a class="headerlink" href="#core-transport-numerical-methods" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>src/transport.c</code>: </li>
+<li>Complete rewrite of <code>applyTributaryMixing()</code> with mass-conservative approach</li>
+<li>Enhanced <code>Openbound()</code> with CFL stability checking and damping</li>
+<li>Improved <code>TVD()</code> scheme with upstream-specific stabilization</li>
+<li><code>src/bcforcing.c</code>: Replaced all unsafe boundary interpolation calls, removed dangerous function</li>
+<li><code>src/variables.h</code>: Enhanced <code>BCArray</code> structure with <code>dataSize</code> field for bounds checking</li>
+<li><code>src/file.c</code>: Added proper data size tracking during boundary condition file loading</li>
+</ul>
+<h4 id="documentation-analysis"><strong>Documentation &amp; Analysis</strong><a class="headerlink" href="#documentation-analysis" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>TRIBUTARY_MIXING_FIX_SUMMARY.md</code>: Mass source term correction methodology</li>
+<li><code>BOUNDARY_DATA_CRITICAL_FIX.md</code>: Memory safety implementation analysis  </li>
+<li><code>UPSTREAM_STABILITY_CRITICAL_FIX.md</code>: CFL stability and numerical methods documentation</li>
+</ul>
+<h3 id="technical-impact">🎯 <strong>Technical Impact</strong><a class="headerlink" href="#technical-impact" title="Permanent link">&para;</a></h3>
+<h4 id="mass-conservation-physics"><strong>Mass Conservation &amp; Physics</strong><a class="headerlink" href="#mass-conservation-physics" title="Permanent link">&para;</a></h4>
+<ul>
+<li>✅ <strong>Perfect mass balance</strong> maintained across all transport operations</li>
+<li>✅ <strong>Biogeochemical coupling</strong> now fully functional at tributary locations</li>
+<li>✅ <strong>Physics-based implementation</strong> following Fischer et al. (1979) methodology</li>
+<li>✅ <strong>Realistic concentration bounds</strong> respected throughout domain</li>
+</ul>
+<h4 id="numerical-stability-performance"><strong>Numerical Stability &amp; Performance</strong><a class="headerlink" href="#numerical-stability-performance" title="Permanent link">&para;</a></h4>
+<ul>
+<li>✅ <strong>CFL-stable operation</strong> under all velocity and tidal conditions</li>
+<li>✅ <strong>Memory-safe</strong> boundary data access preventing corruption</li>
+<li>✅ <strong>Upstream stability</strong> with smooth, realistic concentration profiles</li>
+<li>✅ <strong>Robust flow reversal handling</strong> during tidal cycles</li>
+</ul>
+<h4 id="scientific-validity"><strong>Scientific Validity</strong><a class="headerlink" href="#scientific-validity" title="Permanent link">&para;</a></h4>
+<ul>
+<li>✅ <strong>Publication-quality results</strong> with proper mass conservation</li>
+<li>✅ <strong>Bounds-checked data access</strong> preventing numerical artifacts</li>
+<li>✅ <strong>Stable numerics</strong> suitable for long-term simulations</li>
+<li>✅ <strong>Scientifically defensible</strong> tributary and boundary implementations</li>
+</ul>
+<h3 id="validation-results">🧪 <strong>Validation Results</strong><a class="headerlink" href="#validation-results" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Tributary locations:</strong> Biogeochemical signals now clearly visible and realistic</li>
+<li><strong>Oxygen concentrations:</strong> Bounded by input values (≤6-8 mgO2/L) instead of impossible 30 mgO2/L</li>
+<li><strong>Upstream region:</strong> Smooth concentration profiles without artificial oscillations  </li>
+<li><strong>Mass balance:</strong> Perfect conservation verified throughout simulation domain</li>
+<li><strong>Boundary stability:</strong> Robust operation during all tidal conditions</li>
+</ul>
+<p><strong>CRITICAL IMPORTANCE:</strong> These fixes transform C-GEM from a numerically unstable model with severe mass balance violations into a robust, scientifically sound estuarine transport model suitable for peer-reviewed publication.</p>
+<hr />
+<h2 id="2025-07-12-major-refactor-modularization-physics-based-hydrodynamics">2025-07-12 Major Refactor: Modularization, Physics-Based Hydrodynamics<a class="headerlink" href="#2025-07-12-major-refactor-modularization-physics-based-hydrodynamics" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/compare/5310dd2343aadd151c5dd1865127c0e04dc066b9...03fc58aec9fd8372d21e81f9d33a51cca865d754">Compare 5310dd2&hellip;03fc58a</a></p>
+<p><strong>Summary of File Changes:</strong></p>
+<ul>
+<li><strong>Added:</strong>  </li>
+<li>src directory with modularized C source files (<code>bcforcing.c</code>, <code>biogeo.c</code>, <code>biogeo.h</code>, <code>biogeout.c</code>, <code>debug.c</code>, <code>debug.h</code>, <code>define.h</code>, <code>file.c</code>, <code>hydrodynamics.c</code>, <code>init.c</code>, <code>init.h</code>, <code>main.c</code>, <code>transport.c</code>, <code>transport.h</code>, <code>utilities.c</code>, <code>variables.c</code>, <code>variables.h</code>)</li>
+<li>hardcoded-version directory with legacy code for reference</li>
+<li>New plotting and validation scripts (plot_hydro_updated.py, plot_v2_tidal.py, plot_water_quality.py)</li>
+<li>Documentation and publication-ready figure files (Model_Architecture_Flowcharts.md, Publication_Ready_Figures.md, Publication_Ready_Figures.pdf, Scientific_Process_Flowcharts.md)</li>
+<li>Test and validation files in test_hyd (e.g., <code>hydraulic_validation.c</code>, <code>improved_hydraulics.c</code>)</li>
+<li><strong>Modified:</strong>  </li>
+<li>settings.json, tasks.json (build system and code analysis improvements)</li>
+<li>Input and output data files (params.txt, Geometry.csv, WaterQuality.csv)</li>
+<li>Documentation (variables.md, mkdocs.yml)</li>
+<li>Test suite files in test_hyd</li>
+<li><strong>Deleted:</strong>  </li>
+<li>Old monolithic source files (<code>bcforcing.c</code>, <code>biogeo.c</code>, <code>define.h</code>, <code>diagnostics.h</code>, <code>hyd.c</code>, <code>hyd.h</code>, <code>init.c</code>, <code>main.c</code>, <code>params.txt</code>, <code>transport.c</code>, <code>tridaghyd.c</code>, <code>uphyd.c</code>, <code>uptransport.c</code>)</li>
+<li>Obsolete workspace and backup files</li>
+<li>Old input data for backup tributaries</li>
+</ul>
+<p><strong>Key Functional Changes and Impact:</strong></p>
+<p>Modularization and Refactor</p>
+<ul>
+<li><strong>All core model logic split into modular files under src</strong><br />
+<em>Impact:</em> Greatly improves maintainability, clarity, and extensibility. Each module (hydrodynamics, transport, biogeochemistry, I/O, etc.) is now isolated and easier to test or update.</li>
+</ul>
+<p>Physics-Based Hydrodynamics and Transport</p>
+<ul>
+<li><strong>Hydrodynamics core rewritten as hydrodynamics.c</strong><br />
+<em>Impact:</em> Implements a robust, physics-based 1D Saint-Venant solver with improved boundary handling, adaptive time-stepping, and advanced diagnostics.</li>
+<li><strong>Transport and dispersion logic refactored (transport.c)</strong><br />
+<em>Impact:</em> Enhanced handling of advection/dispersion, especially at tributary junctions, with new physics-based mixing and smoothing algorithms.</li>
+<li><strong>Tributary and boundary condition logic improved (bcforcing.c)</strong><br />
+<em>Impact:</em> Tidal modulation and tributary influence are now handled in a physically realistic way, reducing artificial salinity drops.</li>
+</ul>
+<p>Diagnostics and Debugging</p>
+<ul>
+<li><strong>New diagnostics and debug modules (debug.c, debug.h)</strong><br />
+<em>Impact:</em> Adds advanced logging, mass conservation checks, and error reporting for easier troubleshooting and validation.</li>
+</ul>
+<p>Build System and Development Environment</p>
+<ul>
+<li><strong>VS Code tasks and settings updated</strong><br />
+<em>Impact:</em> Streamlined build process, explicit source file listing, improved code analysis, and easier integration with external libraries (NLopt, CMA-ES).</li>
+</ul>
+<p>Documentation and Validation</p>
+<ul>
+<li><strong>Expanded documentation and publication-ready figures</strong><br />
+<em>Impact:</em> Improved clarity for users and developers, with new flowcharts and validation tools.</li>
+<li><strong>Test suite modularized and expanded</strong><br />
+<em>Impact:</em> More robust validation of hydrodynamics and transport modules, including new test cases and diagnostics.</li>
+</ul>
+<p><strong>Potential Breaking Changes:</strong></p>
+<ul>
+<li><strong>Directory Structure:</strong><br />
+  All core source files have moved from the root to src. Any scripts or build systems referencing old file paths must be updated.</li>
+<li><strong>Input/Output File Handling:</strong><br />
+  Some input file names and locations have changed (e.g., <code>config_input.txt</code> moved to config_input.txt).<br />
+  Old backup tributary data files have been deleted.</li>
+<li><strong>API and Function Signatures:</strong><br />
+  Many functions have new signatures or are split across multiple files. Any custom code or scripts interfacing with the model must be reviewed.</li>
+<li><strong>Build System:</strong><br />
+  The build process now requires explicit listing of all source files. Wildcard compilation (<code>*.c</code>) is no longer used.</li>
+</ul>
+<p><strong>Summary:</strong><br />
+This update represents a major leap in code organization, physics-based modeling, and developer experience. The model is now easier to maintain, extend, and validate, with robust handling of real-world estuarine processes and improved diagnostics for research and operational use. </p>
+<h2 id="2025-05-27-get-back-with-c-gem-daily-for-seasonal-simulation-in-saigon-river">2025-05-27 Get back with C-GEM daily for seasonal simulation in Saigon River<a class="headerlink" href="#2025-05-27-get-back-with-c-gem-daily-for-seasonal-simulation-in-saigon-river" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/compare/5310dd2343aadd151c5dd1865127c0e04dc066b9...03fc58aec9fd8372d21e81f9d33a51cca865d754">Compare 5310dd2343aadd151c5dd1865127c0e04dc066b9&hellip;03fc58aec9fd8372d21e81f9d33a51cca865d754</a></p>
+<p>git diff &ndash;name-status 5310dd2343aadd151c5dd1865127c0e04dc066b9 03fc58aec9fd8372d21e81f9d33a51cca865d754 &gt; files_changed.txt<br />
+git diff 5310dd2343aadd151c5dd1865127c0e04dc066b9 03fc58aec9fd8372d21e81f9d33a51cca865d754 &gt; detailed_diff.txt</p>
+<p>Hydrodynamics Module Refactor, Diagnostics, and Test Suite Enhancements  </p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Hydrodynamics Core Refactor</strong>: Major rewrite of the 1D Saint-Venant solver for clarity, stability, and extensibility.</li>
+<li><strong>Enhanced Numerical Stability</strong>: Improved handling of boundary conditions, velocity/damping, and adaptive time-stepping.</li>
+<li><strong>Diagnostics &amp; Debugging</strong>: Added advanced diagnostics, mass balance checks, and oscillation detection.</li>
+<li><strong>Test Suite Expansion</strong>: Modularized and extended test suite for estuary types, boundary diagnostics, and solver stability.</li>
+<li><strong>Documentation</strong>: Expanded in-code documentation and comments for mathematical clarity.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>hyd.c</code></strong></p>
+<ul>
+<li><strong>Saint-Venant Solver Refactor</strong>:</li>
+<li>Rewrote core solver with clear mathematical documentation and staggered grid explanation.</li>
+<li>Improved boundary condition application and relaxation logic.</li>
+<li>Added static arrays for previous solution tracking and under-relaxation.</li>
+<li>Enhanced convergence checks and iteration control.</li>
+<li><strong>Diagnostics</strong>:</li>
+<li>Added functions for root cause analysis of convergence failures.</li>
+<li>Implemented tidal amplitude tracking and model state dumping for debugging.</li>
+<li>Added volume conservation and Courant number checks.</li>
+<li><strong>Stability Improvements</strong>:</li>
+<li>Improved handling of negative/near-dry areas and velocity limiting.</li>
+<li>Added adaptive time-stepping based on CFL condition.</li>
+<li>Enhanced output and error reporting for non-convergence and physical inconsistencies.</li>
+</ul>
+<p><strong>File: <code>uphyd.c</code></strong></p>
+<ul>
+<li><strong>Boundary and Variable Updates</strong>:</li>
+<li>Modularized boundary condition application (<code>Newbc</code>) and variable update routines (<code>Update</code>, <code>NewUH</code>).</li>
+<li>Improved wetting/drying handling and minimum area enforcement.</li>
+<li>Added time step sensitivity check for robustness.</li>
+</ul>
+<p><strong>File: <code>tridaghyd.c</code></strong></p>
+<ul>
+<li><strong>Tridiagonal Solver</strong>:</li>
+<li>Modularized coefficient calculation and Thomas algorithm for the hydrodynamic system.</li>
+<li>Improved numerical stability in regions with rapid width changes.</li>
+<li>Added stabilization terms for convergent sections.</li>
+</ul>
+<p><strong>File: <code>test_hyd/hyd.c</code>, uphyd.c, tridaghyd.c</strong></p>
+<ul>
+<li><strong>Test Suite Modularization</strong>:</li>
+<li>Split hydrodynamics test code into modular files for solver, boundary, and tridiagonal routines.</li>
+<li>Added detailed in-code documentation and mathematical comments.</li>
+<li>Improved test coverage for boundary and interior grid behavior.</li>
+</ul>
+<p><strong>File: boundary_diagnostics.c, boundary_diagnostics.h</strong></p>
+<ul>
+<li><strong>Boundary Diagnostics</strong>:</li>
+<li>Added verbosity controls and warmup suppression for diagnostics.</li>
+<li>Enhanced tidal amplitude and boundary condition analysis.</li>
+<li>Added rate-limiting for boundary changes and improved stability checks.</li>
+</ul>
+<p><strong>File: model_diagnostics.c</strong></p>
+<ul>
+<li><strong>Advanced Diagnostics</strong>:</li>
+<li>Added periodic mass balance checks with gentle correction logic.</li>
+<li>Implemented tidal oscillation analysis and emergency mitigation for instabilities.</li>
+<li>Improved reporting and interpretation of diagnostic results.</li>
+</ul>
+<p><strong>File: test_estuaries.c, test_estuary_setup.c, test_hyd.c</strong></p>
+<ul>
+<li><strong>Estuary Test Framework</strong>:</li>
+<li>Modularized estuary type setup and parameter configuration.</li>
+<li>Improved grid and time step validation.</li>
+<li>Enhanced warmup and production run transition handling.</li>
+<li>Added adaptive relaxation and velocity/depth smoothing during transitions.</li>
+</ul>
+<p><strong>File: tasks.json</strong></p>
+<ul>
+<li><strong>Build System Update</strong>:</li>
+<li>Updated test build targets to use new modular test files.</li>
+<li>Improved build task configuration for test suite.</li>
+</ul>
+<p><strong>Other Changes:</strong></p>
+<ul>
+<li><strong>Removed</strong>: Obsolete <code>test.c</code> file.</li>
+<li><strong>General</strong>: Improved error messages, output formatting, and code comments throughout.</li>
+</ul>
+<p><strong>Summary</strong><br />
+This update represents a major refactor and enhancement of the hydrodynamics core and test suite. The solver is now more robust, transparent, and maintainable, with advanced diagnostics for stability and mass conservation. The modular test suite allows for flexible validation of different estuary types and boundary conditions. These changes lay the groundwork for further physics-based model development and more reliable simulation of complex tidal river systems.</p>
+<h2 id="2025-03-06-investigating-and-fixing-the-tidal-amplitude-problem">2025-03-06 Investigating and Fixing the Tidal Amplitude Problem<a class="headerlink" href="#2025-03-06-investigating-and-fixing-the-tidal-amplitude-problem" title="Permanent link">&para;</a></h2>
+<p>increasing tidal amplitude from downstream to upstream, which is physically incorrect.</p>
+<p>I need to address the issue with the tidal amplitude dropping to zero immediately after a few kilometers from the mouth. Let&rsquo;s make more targeted changes to ensure the tide can properly propagate further upstream.</p>
+<p>Let&rsquo;s focus on these key areas:</p>
+<ol>
+<li>Friction coefficients - reduce overall friction to allow tidal propagation</li>
+<li>Boundary conditions - ensure proper tidal propagation at boundaries</li>
+<li>Numerical stability enhancements - improve handling of complex geometries without excessive damping</li>
+</ol>
+<p>but it is normally in reality that some part of upstream can be much deeper compare to the estuarine mouth such as some activities like dreging to remove mud for better transportation, so I prefer you update the C code for more realistic riverbed depth profiles for all 3 estuaries while the estuarine width still keep follow the convergenth length decrease from downstream to upstream. So, for validation, we have to use the data genearate in the C code files and then read again by python just for validation. Besides, I need to remind you that later I will not force to choose any type of estuaries and have a hard force to correct or constraint depend on the type of estuaries, the model should natuarally handle all the upstream discharge magnitude, all the shape of geometry of estuaries, even increase or decrease from downstream to upstream. The model has to handle all theses things, otherwise this model will just become a localized model.</p>
+<h2 id="2025-03-06-testing-3-typical-estuarines-for-hydrodynamics-module">2025-03-06 Testing 3 typical estuarines for hydrodynamics module<a class="headerlink" href="#2025-03-06-testing-3-typical-estuarines-for-hydrodynamics-module" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Comprehensive Rewrite</strong>: Transformed original single-estuary model to support three distinct estuary types.</li>
+<li><strong>Enhanced Diagnostics</strong>: Added comprehensive validation and diagnostics for numerical stability.</li>
+<li><strong>Visualization Suite</strong>: Developed Python tools for analyzing and visualizing estuary characteristics.</li>
+<li><strong>FFT-based Analysis</strong>: Implemented robust tidal signal processing for validation.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>test_hyd/test_estuaries.c</code></strong></p>
+<ul>
+<li><strong>Multi-Estuary Support</strong>:</li>
+<li>Added configuration for marine, mixed, and riverine estuary types.</li>
+<li>Implemented realistic tropical tides with mixed diurnal/semidiurnal components.</li>
+<li>Added seasonal river discharge patterns for tropical regions.</li>
+<li>Created automated estuary parameter analysis for classification.</li>
+</ul>
+<p><strong>File: <code>test_hyd/test_hyd.c</code></strong></p>
+<ul>
+<li><strong>Adaptive Timestepping</strong>:</li>
+<li>Added CFL-based time step calculation for improved stability.</li>
+<li>Implemented variable time step management for warm-up vs production phases.</li>
+<li>Added warm-up sufficiency assessment with depth stabilization checks.</li>
+</ul>
+<p><strong>File: <code>test_hyd/model_diagnostics.c</code></strong></p>
+<ul>
+<li><strong>Comprehensive Diagnostics</strong>:</li>
+<li>Implemented mass balance checks over tidal cycles.</li>
+<li>Added momentum balance component analysis.</li>
+<li>Created stability violation detection with reporting.</li>
+<li>Added Courant number monitoring and performance tracking.</li>
+</ul>
+<p><strong>File: <code>scripts/animate_estuaries.py</code> and <code>scripts/animate_tidal_periods.py</code></strong></p>
+<ul>
+<li><strong>Dynamic Visualization</strong>:</li>
+<li>Created animations of water level changes throughout estuaries.</li>
+<li>Implemented side-by-side comparison of three estuary types.</li>
+<li>Added contour plots showing tidal propagation over time.</li>
+</ul>
+<p><strong>File: <code>scripts/estuary_validator.py</code></strong></p>
+<ul>
+<li><strong>Theoretical Validation</strong>:</li>
+<li>Implemented FFT-based tidal phase lag analysis.</li>
+<li>Added amplitude damping assessment along estuary.</li>
+<li>Created correlation metrics for model-theory agreement.</li>
+<li>Implemented comparative analysis across estuary types.</li>
+</ul>
+<p><strong>File: <code>scripts/plot_estuaries.py</code></strong></p>
+<ul>
+<li><strong>Comparative Analysis</strong>:</li>
+<li>Created visualization tools for estuary geometry comparison.</li>
+<li>Added time series plotting for water levels and velocities.</li>
+<li>Implemented parameter table generation for estuary classification.</li>
+</ul>
+<p><strong>File: <code>docs/Changelog_hyd.md</code></strong></p>
+<ul>
+<li><strong>Comprehensive Documentation</strong>:</li>
+<li>Detailed original model limitations and implementation improvements.</li>
+<li>Documented theoretical background and governing equations.</li>
+<li>Compared numerical approaches between original and enhanced models.</li>
+<li>Added future directions for model development.</li>
+</ul>
+<p><strong>Summary</strong><br />
+This comprehensive update transforms the hydraulic model from a basic single-estuary implementation into a flexible framework capable of simulating three distinct tropical estuary types with improved numerical stability. The addition of Python-based visualization and FFT-based validation provides robust tools for analyzing and validating model results against theoretical expectations. The implementation of adaptive time-stepping, comprehensive diagnostics, and warm-up management significantly enhances model reliability while reducing computational time.</p>
+<h2 id="2025-03-03-update-documentation-requirements-and-add-new-plugins">2025-03-03 Update Documentation Requirements and Add New Plugins<a class="headerlink" href="#2025-03-03-update-documentation-requirements-and-add-new-plugins" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/12460c6f14814185a387cf1c53962dfcc2f43669">Commit 12460c6f14814185a387cf1c53962dfcc2f43669</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Documentation Requirements</strong>: Updated to include new MkDocs plugins.</li>
+<li><strong>Enhanced Interactivity</strong>: Added plugins for enhanced interactivity in the documentation.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>doc_requirements.txt</code></strong></p>
+<ul>
+<li><strong>New Plugins</strong>:</li>
+<li>Added <code>mkdocs-obsidian-interactive-graph-plugin</code>.</li>
+<li>Added <code>mkdocs-backlinks-section-plugin</code>.</li>
+</ul>
+<p><strong>File: <code>mkdocs.yml</code></strong></p>
+<ul>
+<li><strong>Plugins Configuration</strong>:</li>
+<li>Added <code>backlinks_section</code> plugin.</li>
+<li>Added <code>obsidian-interactive-graph</code> plugin.</li>
+<li><strong>JavaScript and CSS</strong>:</li>
+<li>Included additional JavaScript libraries for interactive nodes.</li>
+</ul>
+<p><strong>Summary</strong><br />
+This commit enhances the documentation by updating the requirements to include new MkDocs plugins for improved interactivity and user experience. The <code>mkdocs.yml</code> file was also updated to configure these new plugins.</p>
+<h2 id="2025-03-03-testing-mkdocs-site">2025-03-03 Testing MkDocs Site<a class="headerlink" href="#2025-03-03-testing-mkdocs-site" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/f971b4eaf7e9262719de6183ca90095f7a838c94">Commit f971b4eaf7e9262719de6183ca90095f7a838c94</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>GitHub Actions</strong>: Added workflow for deploying MkDocs to Vercel.</li>
+<li><strong>Removed Old Data Plots</strong>: Cleaned up outdated simulated data plot images.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.github/deploy_vercel.yml</code></strong></p>
+<ul>
+<li><strong>Deploy MkDocs to Vercel</strong>:</li>
+<li>Added a GitHub Actions workflow to automate the deployment of MkDocs documentation to Vercel.</li>
+</ul>
+<p><strong>Files Removed:</strong></p>
+<ul>
+<li><strong>Simulated Data Plots</strong>:</li>
+<li>Removed outdated simulated data plot images from the <code>OUT</code> directory.</li>
+</ul>
+<p><strong>Summary</strong><br />
+This commit introduces a GitHub Actions workflow to automate the deployment of MkDocs documentation to Vercel and cleans up outdated simulated data plot images.</p>
+<h2 id="2025-03-01-refactor-temperature-and-light-data-handling">2025-03-01 Refactor Temperature and Light Data Handling<a class="headerlink" href="#2025-03-01-refactor-temperature-and-light-data-handling" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/7bd4d45205d4414b2928d1c5f39b11492aaad27b">Commit 7bd4d45205d4414b2928d1c5f39b11492aaad27b</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Refactor</strong>: Simplified temperature and light data handling.</li>
+<li><strong>Interpolation Method</strong>: Introduced a common interpolation method for input data.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>bcforcing.c</code></strong></p>
+<ul>
+<li><strong>Interpolate Input Data</strong>:</li>
+<li>Added a new function <code>interpolateInputData</code> to handle interpolation for various input data.</li>
+<li><strong>Tide Function</strong>:</li>
+<li>Refactored to use <code>interpolateInputData</code> for water elevation.</li>
+<li><strong>Discharge Function</strong>:</li>
+<li>Refactored to use <code>interpolateInputData</code> for upstream discharge.</li>
+<li><strong>Wind Speed Function</strong>:</li>
+<li>Refactored to use <code>interpolateInputData</code> for wind speed.</li>
+</ul>
+<p><strong>File: <code>biogeout.c</code></strong></p>
+<ul>
+<li><strong>Water Temperature Function</strong>:</li>
+<li>Simplified by using <code>interpolateInputData</code>.</li>
+<li><strong>Light Intensity Function</strong>:</li>
+<li>Simplified by using <code>interpolateInputData</code>.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Summary Print</strong>:</li>
+<li>Updated summary print for zero, negative, and large jump values.</li>
+<li><strong>Boundary Data Reading</strong>:</li>
+<li>Minor formatting changes for error messages.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Console Output</strong>:</li>
+<li>Minor formatting changes for console output.</li>
+</ul>
+<p><strong>File: <code>.github/commit-style.md</code></strong></p>
+<ul>
+<li><strong>Commit Message Instructions</strong>:</li>
+<li>Minor formatting changes.</li>
+</ul>
+<p><strong>File: <code>bin/Debug/C_GEM_Saigon_Daily.exe</code></strong></p>
+<ul>
+<li><strong>Executable</strong>:</li>
+<li>Updated executable file.</li>
+</ul>
+<p><strong>Summary</strong><br />
+This commit refactors the handling of temperature and light data by introducing a common interpolation method. This change improves code readability and maintainability while ensuring robust behavior by setting default values for temperature and light intensity when data is unavailable.</p>
+<h2 id="2025-03-01-refactor-readfile-function-and-add-documentation-guidelines">2025-03-01 Refactor readFile Function and Add Documentation Guidelines<a class="headerlink" href="#2025-03-01-refactor-readfile-function-and-add-documentation-guidelines" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/8337119acbea6700249ce4c7bc9f3e3fed2b5e26">Commit 8337119acbea6700249ce4c7bc9f3e3fed2b5e26</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Refactor</strong>: Changed <code>readFile</code> to return data size.</li>
+<li><strong>Documentation</strong>: Added guidelines for commit messages and Copilot documentation.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.github/commit-style.md</code></strong></p>
+<ul>
+<li><strong>GitHub Copilot Commit Message Instructions</strong>:</li>
+<li>Added instructions for generating consistent commit messages, including format, types, scope, subject, body, and footer.</li>
+</ul>
+<p><strong>File: <code>Doxyfile</code></strong></p>
+<ul>
+<li><strong>Doxygen Configuration</strong>:</li>
+<li>Added a comprehensive Doxygen configuration file to generate documentation for the project.</li>
+</ul>
+<p><strong>File: <code>biogeout.c</code></strong></p>
+<ul>
+<li><strong>Temperature and Light Functions</strong>:</li>
+<li>Enhanced error handling to check for both data and time availability.</li>
+<li>Improved interpolation logic for temperature and light intensity data.</li>
+</ul>
+<p><strong>File: <code>config_input.txt</code></strong></p>
+<ul>
+<li><strong>Fixed Configuration Entries</strong>:</li>
+<li>Corrected the key for <code>O2</code> file path in the <code>ThiTinh</code> tributary section.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Refactor readFile Function</strong>:</li>
+<li>Changed <code>readFile</code> to return the number of data points read.</li>
+<li>Updated boundary data reading to store data sizes.</li>
+<li>Improved error messages for missing or invalid boundary data files.</li>
+<li>Enhanced validation for all required data before proceeding.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Initialization</strong>:</li>
+<li>Removed redundant comments and unnecessary debug prints to streamline initialization.</li>
+</ul>
+<p><strong>File: <code>main.c</code></strong></p>
+<ul>
+<li><strong>Enabled Transport and Biogeochemical Modules</strong>:</li>
+<li>Uncommented <code>Transport(t)</code> and <code>Biogeo(t)</code> calls to enable these modules.</li>
+</ul>
+<p><strong>File: <code>params.txt</code></strong></p>
+<ul>
+<li><strong>Updated Simulation Parameters</strong>:</li>
+<li>Changed <code>MAXT</code> to 40 days and <code>WARMUP</code> to 30 days for testing purposes.</li>
+</ul>
+<p><strong>File: <code>uphyd.c</code></strong></p>
+<ul>
+<li><strong>Warning Messages</strong>:</li>
+<li>Updated warning messages to indicate potential issues with area corrections.</li>
+</ul>
+<p><strong>File: <code>variables.c</code></strong></p>
+<ul>
+<li><strong>Removed Redundant Variable Declarations</strong>:</li>
+<li>Cleaned up redundant declarations for boundary condition and forcing data arrays.</li>
+</ul>
+<p><strong>File: <code>variables.h</code></strong></p>
+<ul>
+<li><strong>Updated Function Declaration</strong>:</li>
+<li>Changed the declaration of <code>readFile</code> to return an integer representing the data size.</li>
+</ul>
+<h2 id="2025-03-01-improved-error-handling-for-missing-boundary-data-and-documentation-guidelines">2025-03-01 Improved Error Handling for Missing Boundary Data and Documentation Guidelines<a class="headerlink" href="#2025-03-01-improved-error-handling-for-missing-boundary-data-and-documentation-guidelines" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/520b3e0a3f2a218eaa667b1f5073e9f0b8ca70c9">Commit 520b3e0a3f2a218eaa667b1f5073e9f0b8ca70c9</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Error Handling</strong>: Improved error handling for missing upstream and downstream files.</li>
+<li><strong>Documentation</strong>: Added guidelines for Copilot documentation and commit message style.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.github/commit-style.md</code></strong></p>
+<ul>
+<li><strong>Commit Message Style Guide</strong>:</li>
+<li>Added a new file to define the format and types of commit messages for better consistency.</li>
+</ul>
+<p><strong>File: <code>.github/copilot-instructions.md</code></strong></p>
+<ul>
+<li><strong>Copilot Documentation Guidelines</strong>:</li>
+<li>Added a new file to guide documentation generation by Copilot, including rules and specific instructions.</li>
+</ul>
+<p><strong>File: <code>Doxyfile</code></strong></p>
+<ul>
+<li><strong>Doxygen Configuration</strong>:</li>
+<li>Added a comprehensive Doxygen configuration file to generate documentation for the project.</li>
+</ul>
+<p><strong>File: <code>biogeout.c</code></strong></p>
+<ul>
+<li><strong>Temperature and Light Functions</strong>:</li>
+<li>Enhanced error handling to check for both data and time availability.</li>
+<li>Improved interpolation logic for temperature and light intensity data.</li>
+</ul>
+<p><strong>File: <code>config_input.txt</code></strong></p>
+<ul>
+<li><strong>Fixed Configuration Entries</strong>:</li>
+<li>Corrected the key for <code>O2</code> file path in the <code>ThiTinh</code> tributary section.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Boundary Data Reading</strong>:</li>
+<li>Improved error messages for missing or invalid boundary data files.</li>
+<li>Enhanced validation for all required data before proceeding.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Initialization</strong>:</li>
+<li>Removed redundant comments and unnecessary debug prints to streamline initialization.</li>
+</ul>
+<p><strong>File: <code>main.c</code></strong></p>
+<ul>
+<li><strong>Enabled Transport and Biogeochemical Modules</strong>:</li>
+<li>Uncommented <code>Transport(t)</code> and <code>Biogeo(t)</code> calls to enable these modules.</li>
+</ul>
+<p><strong>File: <code>params.txt</code></strong></p>
+<ul>
+<li><strong>Updated Simulation Parameters</strong>:</li>
+<li>Changed <code>MAXT</code> to 40 days and <code>WARMUP</code> to 30 days for testing purposes.</li>
+</ul>
+<p><strong>File: <code>uphyd.c</code></strong></p>
+<ul>
+<li><strong>Warning Messages</strong>:</li>
+<li>Updated warning messages to indicate potential issues with area corrections.</li>
+</ul>
+<p><strong>File: <code>variables.c</code></strong></p>
+<ul>
+<li><strong>Removed Redundant Variable Declarations</strong>:</li>
+<li>Cleaned up redundant declarations for boundary condition and forcing data arrays.</li>
+</ul>
+<p><strong>File: <code>variables.h</code></strong></p>
+<ul>
+<li><strong>Added Data Size Field</strong>:</li>
+<li>Introduced <code>dataSize</code> field in <code>ForcingArray</code> to track actual data size.</li>
+</ul>
+<h2 id="2025-02-28-enhanced-boundary-data-validation-and-debugging">2025-02-28 Enhanced Boundary Data Validation and Debugging<a class="headerlink" href="#2025-02-28-enhanced-boundary-data-validation-and-debugging" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/flashshare/C-GEM-daily/commit/b35310fc1b1884d7dbff3355a23f2f8664818efa">Commit b35310fc1b1884d7dbff3355a23f2f8664818efa</a></p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Boundary Data Validation</strong>: Enhanced validation for boundary data reading.</li>
+<li><strong>Debug Information</strong>: Added detailed debug information for boundary values.</li>
+<li><strong>Configuration File Update</strong>: Fixed configuration entries in <code>config_input.txt</code>.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>bcforcing.c</code></strong></p>
+<ul>
+<li><strong>Debug Information</strong>:</li>
+<li>Added debug prints to show boundary values for the first few variables at initialization.</li>
+</ul>
+<p><strong>File: <code>config_input.txt</code></strong></p>
+<ul>
+<li><strong>Fixed Configuration Entries</strong>:</li>
+<li>Corrected the key for <code>O2</code> file path in the <code>ThiTinh</code> tributary section.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Boundary Data Mapping</strong>:</li>
+<li>Enhanced setup of chemical boundary data mapping with debug information.</li>
+<li><strong>Configuration File Parsing</strong>:</li>
+<li>Improved parsing logic to detect boundary types (UpperBoundary, LowerBoundary, Forcing).</li>
+<li>Added more checks and streamlined parsing of forcing data paths.</li>
+<li><strong>Boundary Data Reading</strong>:</li>
+<li>Updated validation to ensure all required boundary data is available before proceeding.</li>
+<li><strong>Removed Redundant Code</strong>:</li>
+<li>Cleaned up unnecessary debug prints and redundant checks.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Initialization Summary</strong>:</li>
+<li>Added summary printout to show the number of chemical variables and tributaries loaded.</li>
+</ul>
+<p><strong>File: <code>main.c</code></strong></p>
+<ul>
+<li><strong>Enabled Transport and Biogeochemical Modules</strong>:</li>
+<li>Uncommented <code>Transport(t)</code> and <code>Biogeo(t)</code> calls to enable these modules.</li>
+</ul>
+<p><strong>File: <code>params.txt</code></strong></p>
+<ul>
+<li><strong>Updated Simulation Parameters</strong>:</li>
+<li>Changed <code>MAXT</code> to 40 days and <code>WARMUP</code> to 30 days for testing purposes.</li>
+</ul>
+<p><strong>File: <code>uphyd.c</code></strong></p>
+<ul>
+<li><strong>Warning Messages</strong>:</li>
+<li>Updated warning messages to indicate potential issues with area corrections.</li>
+</ul>
+<p><strong>File: <code>variables.c</code></strong></p>
+<ul>
+<li><strong>Removed Redundant Variable Declarations</strong>:</li>
+<li>Cleaned up redundant declarations for boundary condition and forcing data arrays.</li>
+</ul>
+<p><strong>File: <code>variables.h</code></strong></p>
+<ul>
+<li><strong>Added Data Size Field</strong>:</li>
+<li>Introduced <code>dataSize</code> field in <code>ForcingArray</code> to track actual data size.</li>
+</ul>
+<h2 id="2025-02-28-good-maintenance-for-reading-input-based-on-enum-chem-in-variables">2025-02-28 Good Maintenance for Reading Input Based on Enum Chem in Variables<a class="headerlink" href="#2025-02-28-good-maintenance-for-reading-input-based-on-enum-chem-in-variables" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Refactored Input Reading</strong>: Updated the method for reading input files for boundary and tributary conditions to be based on the <code>enum chem</code> in <code>variables.h</code>.</li>
+<li><strong>Unified Data Handling</strong>: Improved maintainability by unifying the handling of boundary and tributary data.</li>
+<li><strong>Enhanced Error Handling</strong>: Improved error handling for missing or invalid data.</li>
+<li><strong>Optimized Memory Allocation</strong>: Refactored memory allocation for boundary and tributary data to reduce code duplication.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>bcforcing.c</code></strong></p>
+<ul>
+<li><strong>Removed Implementation Notes</strong>: Simplified comments to focus on code functionality.</li>
+<li><strong>Included <code>&lt;time.h&gt;</code></strong>: Added inclusion for time-based operations.</li>
+<li><strong>Refactored Tide Function</strong>:</li>
+<li>Utilized <code>forcingData</code> array for elevation data.</li>
+<li>Simplified tide level interpolation logic.</li>
+<li>Enhanced error handling with fallback to mean water level.</li>
+<li><strong>Refactored Discharge Function</strong>:</li>
+<li>Utilized <code>forcingData</code> array for discharge data.</li>
+<li>Enhanced error handling with debug messages and safe defaults.</li>
+<li>Simplified linear interpolation logic for discharge values.</li>
+<li><strong>Updated Biogeochemical Boundary Conditions</strong>:</li>
+<li>Directly processed each variable in the <code>enum chem</code>.</li>
+<li>Removed mapping structures for easier maintenance.</li>
+<li>Applied linear gradient for initial conditions.</li>
+</ul>
+<p><strong>File: <code>biogeo.c</code></strong></p>
+<ul>
+<li><strong>Refactored <code>applyDilution</code> Function</strong>:</li>
+<li>Added loop through all chemical variables in <code>enum chem</code>.</li>
+<li>Applied consistent dilution formula for all variables.</li>
+<li>Enhanced error handling for missing data arrays.</li>
+</ul>
+<p><strong>File: <code>biogeout.c</code></strong></p>
+<ul>
+<li><strong>Refactored <code>waterT</code> Function</strong>:</li>
+<li>Utilized <code>forcingData</code> array for temperature data.</li>
+<li>Added fallback to default value if data is unavailable.</li>
+<li><strong>Refactored <code>I0</code> Function</strong>:</li>
+<li>Utilized <code>forcingData</code> array for light intensity data.</li>
+<li>Added fallback to analytical formula if data is unavailable.</li>
+<li>Ensured non-negative light intensity values.</li>
+</ul>
+<p><strong>File: <code>docs/CHANGELOG.md</code></strong></p>
+<ul>
+<li><strong>Updated Documentation</strong>:</li>
+<li>Added detailed explanation for changes in the input reading method.</li>
+<li>Highlighted the benefits of leveraging <code>enum chem</code> for maintainability.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Removed Hardcoded Boundary Conditions</strong>:</li>
+<li>Replaced with dynamic handling based on <code>enum chem</code>.</li>
+<li><strong>Refactored <code>Hydwrite</code> Function</strong>:</li>
+<li>Utilized structured approach for output file management.</li>
+<li>Reduced code duplication by centralizing file operations.</li>
+<li><strong>Refactored Input Reading Functions</strong>:</li>
+<li>Unified boundary and tributary data handling.</li>
+<li>Enhanced error handling and debug messages.</li>
+<li>Improved memory allocation for boundary and tributary data.</li>
+<li><strong>Added Validation Functions</strong>:</li>
+<li>Added <code>validateForcingData</code> function to ensure all required forcing data is available.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Updated Initialization</strong>:</li>
+<li>Changed input file paths to <code>config_input.txt</code>.</li>
+<li>Improved setup for boundary and tributary data.</li>
+</ul>
+<p><strong>File: <code>variables.c</code></strong></p>
+<ul>
+<li><strong>Updated Variable Names</strong>:</li>
+<li>Replaced <code>NUM_BC_VARS</code> with <code>CHEM_COUNT</code> for consistency.</li>
+<li><strong>Added Forcing Data Names</strong>:</li>
+<li>Defined names for forcing variables.</li>
+<li><strong>Refactored Boundary and Forcing Data Structures</strong>:</li>
+<li>Unified boundary data structure indexed by <code>enum chem</code>.</li>
+<li>Centralized forcing data structure indexed by <code>enum Forcing</code>.</li>
+</ul>
+<p><strong>File: <code>variables.h</code></strong></p>
+<ul>
+<li><strong>Defined Enums for Chemical and Forcing Variables</strong>:</li>
+<li>Added <code>enum chem</code> for chemical variables.</li>
+<li>Added <code>enum Forcing</code> for forcing data types.</li>
+<li><strong>Added Constants for Data Requirements</strong>:</li>
+<li>Defined constants for auto-calculated and excluded variables.</li>
+<li><strong>Refactored Function Declarations</strong>:</li>
+<li>Added new helper functions for data requirements and validation.</li>
+</ul>
+<h2 id="2025-02-28-changed-s-to-sal-and-hs-to-pco2-for-more-meaningful-names">2025-02-28 Changed S to Sal and HS to pCO2 for More Meaningful Names<a class="headerlink" href="#2025-02-28-changed-s-to-sal-and-hs-to-pco2-for-more-meaningful-names" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated Chemical Species Names</strong>: Changed <code>S</code> to <code>Sal</code> and <code>HS</code> to <code>pCO2</code> for clearer representation.</li>
+<li><strong>Updated Configuration</strong>: Added a new <code>config_input.txt</code> for boundary and tributary data paths.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>Version_1_model_valid.cpp</code></strong></p>
+<ul>
+<li><strong>Chemical Species Enum</strong>:</li>
+<li>Changed <code>S</code> to <code>Sal</code> in the enum definition.</li>
+<li><strong>Initialization</strong>:</li>
+<li>Updated salinity variable name to <code>Sal</code>.</li>
+<li><strong>Biogeochemistry</strong>:</li>
+<li>Updated references to salinity from <code>v[S].c[i]</code> to <code>v[Sal].c[i]</code>.</li>
+<li><strong>Functions</strong>:</li>
+<li>Updated salinity parameter name in functions for dissociation constants, carbonate chemistry, and O2 saturation.</li>
+</ul>
+<p><strong>File: <code>bcforcing.c</code></strong></p>
+<ul>
+<li><strong>Biogeochemical Variables</strong>:</li>
+<li>Changed <code>S</code> to <code>Sal</code> in the list of variables processed.</li>
+</ul>
+<p><strong>File: <code>biogeo.c</code></strong></p>
+<ul>
+<li><strong>Carbonate Chemistry</strong>:</li>
+<li>Updated salinity variable name to <code>Sal</code> in carbonate chemistry calculations and dissociation constant functions.</li>
+</ul>
+<p><strong>File: <code>biogeout.c</code></strong></p>
+<ul>
+<li><strong>Biogeochemical Output</strong>:</li>
+<li>Changed references to salinity from <code>v[S].c[i]</code> to <code>v[Sal].c[i]</code> in output functions.</li>
+</ul>
+<p><strong>Added File: <code>config_input.txt</code></strong></p>
+<ul>
+<li><strong>Configuration for Boundary and Tributary Data</strong>:</li>
+<li>Defined paths for upstream and downstream boundary data, including new paths for <code>Sal</code>.</li>
+<li>Added sections for tributary data with paths for biogeochemical variables.</li>
+</ul>
+<p><strong>File: <code>docs/variables.md</code></strong></p>
+<ul>
+<li><strong>Documentation Update</strong>:</li>
+<li>Updated variable name from <code>v[S].c[i]</code> to <code>v[Sal].c[i]</code> in the documentation table.</li>
+</ul>
+<p><strong>File: <code>file.c</code></strong></p>
+<ul>
+<li><strong>Chemical Boundary Data</strong>:</li>
+<li>Updated mapping from <code>S</code> to <code>Sal</code> for upstream and downstream data.</li>
+<li>Changed references to salinity in functions for writing transport and flux data.</li>
+</ul>
+<p><strong>File: <code>plotFigure2.py</code></strong></p>
+<ul>
+<li><strong>Plotting Script</strong>:</li>
+<li>Updated file path for salinity data from <code>OUT/S.csv</code> to <code>OUT/Sal.csv</code>.</li>
+</ul>
+<p><strong>File: <code>variables.c</code></strong></p>
+<ul>
+<li><strong>Variable Names Array</strong>:</li>
+<li>Changed entry from <code>"S"</code> to <code>"Sal"</code> in the variable names array.</li>
+</ul>
+<h2 id="2025-02-27-updated-hydrodynamics-model-input-parameters-for-more-meaningful-names">2025-02-27 Updated Hydrodynamics Model Input Parameters for More Meaningful Names<a class="headerlink" href="#2025-02-27-updated-hydrodynamics-model-input-parameters-for-more-meaningful-names" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated VS Code Settings and Tasks</strong>: Adjusted file associations and tasks for streamlined development.</li>
+<li><strong>Introduced New Model File</strong>: Added <code>Version_1_model_valid.cpp</code> for model validation.</li>
+<li><strong>Removed Outdated Files</strong>: Removed old parameter and geometry files.</li>
+<li><strong>Updated Input Data</strong>: Improved boundary conditions and fixed data values in input files.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Original Variable</th>
+<th>New Variable</th>
+<th>Physical Meaning</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>slope</code></td>
+<td><code>riverbed_depth</code></td>
+<td>Riverbed depth/slope below datum</td>
+<td>[m]</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td><code>totalArea</code></td>
+<td>Total cross-sectional area</td>
+<td>[m²]</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td><code>freeArea</code></td>
+<td>Free surface cross-sectional area</td>
+<td>[m²]</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td><code>width</code></td>
+<td>Channel width</td>
+<td>[m]</td>
+</tr>
+<tr>
+<td><code>TH</code></td>
+<td><code>tempFreeArea</code></td>
+<td>Temporary free surface area (during iteration)</td>
+<td>[m²]</td>
+</tr>
+<tr>
+<td><code>TU</code></td>
+<td><code>tempVelocity</code></td>
+<td>Temporary velocity (during iteration)</td>
+<td>[m/s]</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td><code>velocity</code></td>
+<td>Flow velocity</td>
+<td>[m/s]</td>
+</tr>
+<tr>
+<td><code>ZZ</code></td>
+<td><code>baseArea</code></td>
+<td>Base cross-sectional area</td>
+<td>[m²]</td>
+</tr>
+<tr>
+<td><code>LC</code></td>
+<td><code>LC</code></td>
+<td>Convergence length (unchanged)</td>
+<td>[m]</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td><code>rs</code></td>
+<td>Storage width ratio (unchanged)</td>
+<td>[-]</td>
+</tr>
+<tr>
+<td><code>PROF</code></td>
+<td><code>waterDepth</code></td>
+<td>Linear water depth (totalArea/width)</td>
+<td>[m]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Affected Files</strong></p>
+<p>The following files have been updated to reflect the new variable names:</p>
+<ol>
+<li>
+<p><strong><code>variables.h</code></strong> <br />
+   - Updated variable declarations and documentation with the new names.</p>
+</li>
+<li>
+<p><strong><code>variables.c</code></strong> <br />
+   - Updated variable definitions to match the renamed variables.</p>
+</li>
+<li>
+<p><strong><code>uphyd.c</code></strong> <br />
+   - Modified function implementations to use the new variable names.</p>
+</li>
+<li>
+<p><strong><code>file.c</code></strong> <br />
+   - Adjusted file I/O operations for the renamed variables.</p>
+</li>
+<li>
+<p><strong><code>init.c</code></strong> <br />
+   - Updated initialization code to incorporate the new variable names.</p>
+</li>
+<li>
+<p><strong><code>hyd.c</code></strong> <br />
+   - Updated hydrodynamic calculations with new variable names for clarity.</p>
+</li>
+<li>
+<p><strong><code>uptransport.c</code></strong> <br />
+   - Modified transport calculations to consistently use the renamed variables.</p>
+</li>
+</ol>
+<p>This commit significantly improves code clarity by renaming hydraulic variables to better communicate their physical roles in the model. As we continue to develop C-GEM for tropical regions, subsequent commits will focus on adding features and refining model performance, building upon this clear and consistent foundation.</p>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.vscode/settings.json</code></strong></p>
+<ul>
+<li><strong>File Associations</strong>:</li>
+<li>Added associations for <code>.qmd</code>, <code>define.h</code>, and <code>variables.h</code>.</li>
+</ul>
+<p><strong>File: <code>.vscode/tasks.json</code></strong></p>
+<ul>
+<li><strong>Build and Run Tasks</strong>:</li>
+<li>Simplified the build process by compiling all <code>.c</code> files.</li>
+<li>Updated tasks to use CodeBlocks MinGW compiler.</li>
+<li>Added tasks for building and archiving CMA-ES library components.</li>
+</ul>
+<p><strong>Removed Files:</strong></p>
+<ul>
+<li><strong><code>Forcings/co2sys_ver25b068_Marine_BC.xlsm</code></strong></li>
+<li><strong><code>Forcings/co2sys_ver25b06_Upstream_BC.xlsm</code></strong></li>
+<li><strong><code>INPUT/Geometry/geometry_comparison.csv</code></strong></li>
+<li><strong><code>INPUT/Geometry/river_width_profile.txt</code></strong></li>
+<li><strong><code>actparcmaes.par</code></strong></li>
+</ul>
+<p><strong>File: <code>INPUT/Boundary/LB/Light.csv</code></strong></p>
+<ul>
+<li><strong>Fixed Data Values</strong>:</li>
+<li>Corrected <code>#VALUE!</code> entries to <code>0.02</code>.</li>
+</ul>
+<p><strong>File: <code>INPUT/Geometry/river_bed_profile.txt</code></strong></p>
+<ul>
+<li><strong>Updated Depth Values</strong>:</li>
+<li>Changed negative depth values to positive, representing absolute depth.</li>
+</ul>
+<p><strong>Added File: <code>Version_1_model_valid.cpp</code></strong></p>
+<ul>
+<li><strong>Purpose</strong>: This file is a comprehensive model validation script for the hydrodynamic and biogeochemical processes.</li>
+<li><strong>Key Sections</strong>:</li>
+<li><strong>Initialization</strong>: Initializes model arrays and sets up boundary conditions.</li>
+<li><strong>Hydrodynamics</strong>: Main hydrodynamic routine including setting boundary conditions and updating variables.</li>
+<li><strong>Transport</strong>: Main transport routine handling advection and dispersion schemes.</li>
+<li><strong>Biogeochemistry</strong>: Handles biogeochemical reaction networks and updates state variables.</li>
+<li><strong>Sediment Module</strong>: Manages sediment erosion and deposition processes.</li>
+<li><strong>Utility Functions</strong>: Includes utility functions for diffusion coefficients, light intensity, temperature dependence, and more.</li>
+</ul>
+<p><strong>Updated Hydrodynamic Model Input Parameters:</strong></p>
+<ul>
+<li><strong>Parameter Names</strong>: Updated to more meaningful and descriptive names.</li>
+<li><strong>Example Changes</strong>:<ul>
+<li><code>DEPTH_lb</code> and <code>DEPTH_ub</code> for downstream and upstream boundary depths.</li>
+<li><code>B_lb</code> and <code>B_ub</code> for downstream and upstream boundary widths.</li>
+<li><code>Chezy_lb</code> and <code>Chezy_ub</code> for Chezy coefficients at boundaries.</li>
+</ul>
+</li>
+<li><strong>Model Parameters</strong>:</li>
+<li><strong>Geometrical and Physical</strong>: <code>EL</code>, <code>DEPTH_lb</code>, <code>DEPTH_ub</code>, <code>B_lb</code>, <code>B_ub</code>, <code>RS</code>, <code>rho_w</code>, <code>G</code>, <code>distance</code>.</li>
+<li><strong>Hydrodynamic and Sediment</strong>: <code>Chezy_lb</code>, <code>Chezy_ub</code>, <code>ws</code>, <code>tau_ero_lb</code>, <code>tau_dep_lb</code>, <code>tau_ero_ub</code>, <code>tau_dep_ub</code>, <code>Mero_lb</code>, <code>Mero_ub</code>.</li>
+<li><strong>Biogeochemical</strong>: <code>Pbmax</code>, <code>alpha</code>, <code>KdSi</code>, <code>KPO4</code>, <code>KNH4</code>, <code>KNO3</code>, <code>KTOC</code>, <code>KO2</code>, <code>KN</code>, <code>KinO2</code>, <code>redsi</code>, <code>redn</code>, <code>redp</code>, <code>kmaint</code>, <code>kmort</code>, <code>kexcr</code>, <code>kgrowth</code>, <code>KD1</code>, <code>KD2</code>, <code>kox</code>, <code>kdenit</code>, <code>knit</code>.</li>
+<li><strong>External Forcings</strong>: <code>Qr</code>, <code>AMPL</code>, <code>pfun</code>, <code>Uw_sal</code>, <code>Uw_tid</code>, <code>water_temp</code>.</li>
+<li><strong>Other</strong>: <code>Euler</code>, <code>PI</code>.</li>
+</ul>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Improved Readability</strong>: The updated parameter names provide better clarity and understanding of the model&rsquo;s components.</li>
+<li><strong>Streamlined Development</strong>: Simplifying the build process and removing outdated files make the development process more efficient.</li>
+<li><strong>Accurate Simulations</strong>: Fixing data values and updating input parameters ensure more accurate model outputs and simulations.</li>
+</ul>
+<h2 id="2025-02-19-added-demo-for-nlopt-and-cma-es-libraries">2025-02-19 Added Demo for NLopt and CMA-ES Libraries<a class="headerlink" href="#2025-02-19-added-demo-for-nlopt-and-cma-es-libraries" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated VS Code Settings and Tasks</strong>: Modified settings and tasks to integrate NLopt and CMA-ES libraries for testing.</li>
+<li><strong>Introduced Demo Code</strong>: Added demo code for testing NLopt and CMA-ES libraries in the repository.</li>
+<li><strong>Generated Calibration Data</strong>: Included calibration data and parameter files for testing.</li>
+<li><strong>Added <code>external/test_cmaes_nlopt.c</code></strong>: New file to test the integration of NLopt and CMA-ES libraries into the model.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.vscode/c_cpp_properties.json</code></strong></p>
+<ul>
+<li><strong>Include Paths</strong>:</li>
+<li>Added include paths for NLopt headers and CodeBlocks MinGW include directory.</li>
+</ul>
+<p><strong>File: <code>.vscode/settings.json</code></strong></p>
+<ul>
+<li><strong>File Associations</strong>:</li>
+<li>Associated <code>.clang-uml</code> with <code>bat</code> and <code>nlopt.h</code> with <code>c</code>.</li>
+</ul>
+<p><strong>File: <code>.vscode/tasks.json</code></strong></p>
+<ul>
+<li><strong>Build and Run Tasks</strong>:</li>
+<li>Added tasks for cleaning, building, and running C-GEM, NLopt, and CMA-ES demos.</li>
+<li>Integrated NLopt and CMA-ES libraries into the build process.</li>
+<li>Added tasks for copying DLLs and running test executables.</li>
+</ul>
+<p><strong>Added Files:</strong></p>
+<ul>
+<li><strong><code>OUTPUT/LC_tuning_results_2025-02-18_14-44-41.txt/LC_tuning_results.txt</code></strong>: Results of LC tuning.</li>
+<li><strong><code>OUTPUT/LC_tuning_results_2025-02-18_14-44-41.txt/all_valid_combinations.png</code></strong>: Plot of all valid LC combinations.</li>
+<li><strong><code>OUTPUT/params.txt</code></strong>: Generated parameters file with river-specific parameters.</li>
+<li><strong><code>OUTPUT/riverbed_depth.txt</code></strong>: Riverbed depth profile data.</li>
+<li><strong><code>bin/Debug/calibration_data.csv</code></strong>: Calibration data for testing.</li>
+</ul>
+<p><strong>File: <code>external/test_cmaes_nlopt.c</code></strong></p>
+<ul>
+<li><strong>New Calibration Test Code</strong>:</li>
+<li><strong>Purpose</strong>: Test the integration of NLopt and CMA-ES libraries with the hydrodynamic model.</li>
+<li><strong>Functions</strong>:<ul>
+<li><strong><code>print_bounds_and_initial</code></strong>: Prints parameter bounds and initial values.</li>
+<li><strong><code>read_calibration_data</code></strong>: Reads calibration data from a CSV file.</li>
+<li><strong><code>read_parameters</code></strong>: Reads parameter bounds and initial values from a file.</li>
+<li><strong><code>objective_function</code></strong>: Global objective function for both NLopt and CMA-ES.</li>
+<li><strong><code>run_calibration_cmaes</code></strong>: Runs CMA-ES with boundary transformation and debug prints.</li>
+<li><strong><code>test_optimizer</code></strong>: Runs each NLopt solver with enhanced stopping criteria.</li>
+</ul>
+</li>
+<li><strong>Key Features</strong>:<ul>
+<li><strong>Checkpointing</strong>: Save and load CMA-ES state for resuming optimization.</li>
+<li><strong>Enhanced Stopping Criteria</strong>: Early stopping if there&rsquo;s no improvement over a specified number of iterations.</li>
+<li><strong>Logging</strong>: Logs each function call to a CSV file for analysis.</li>
+<li><strong>Gradient Handling</strong>: Supports gradient-based optimization methods.</li>
+<li><strong>Parameter Bounds</strong>: Ensures parameters stay within specified bounds during optimization.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Integrated Calibration Libraries</strong>: The new tasks and demo code ensure that NLopt and CMA-ES libraries are properly integrated into the development environment, allowing for efficient testing and calibration.</li>
+<li><strong>Streamlined Development Process</strong>: Updating the VS Code settings and tasks simplifies the build and run process for the project, making it easier to test and validate new features.</li>
+<li><strong>Enhanced Calibration</strong>: The new calibration test code allows for better tuning of the model parameters, leading to more accurate simulations and predictions.</li>
+</ul>
+<h2 id="2025-02-16-adding-biogeochemical-boundary-conditions-and-parameter-tuning">2025-02-16: Adding Biogeochemical Boundary Conditions and Parameter Tuning<a class="headerlink" href="#2025-02-16-adding-biogeochemical-boundary-conditions-and-parameter-tuning" title="Permanent link">&para;</a></h2>
+<p>This report details the changes introduced in commit <code>c5d9e33bc88032b1d1f3fa1104b0bd4d4be25e7a</code>. This commit focuses on adding biogeochemical boundary conditions to the model and tuning some key parameters for improved model performance.</p>
+<p><strong>Overview of Changes</strong></p>
+<p>This commit includes modifications to:</p>
+<ol>
+<li><strong>Biogeochemical Module (<code>biogeo.c</code>):</strong>Implemented boundary conditions for key biogeochemical variables.</li>
+<li><strong>Initialization Module (<code>init.c</code>):</strong>Added code to read biogeochemical boundary condition values from a configuration file.</li>
+<li><strong>Parameter Tuning:</strong>Adjusted several key parameters in the <code>biogeo.c</code> file for improved model performance.</li>
+</ol>
+<p><strong>Key Files and Modifications</strong></p>
+<p><strong>biogeo.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>Implemented boundary conditions for key biogeochemical variables such as dissolved oxygen (DO), nutrients (nitrate, phosphate), and organic matter.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong>Boundary conditions are essential for accurately simulating the biogeochemical dynamics of the system. They provide the model with information about the concentrations of key variables at the boundaries of the domain, which influences the overall behavior of the model.</li>
+<li><strong>Implementation Details:</strong><br />
+    The boundary conditions are implemented by setting the concentrations of the biogeochemical variables at the boundary nodes to the specified values. These values are read from a configuration file during model initialization.</li>
+<li>
+<p><strong>Example:</strong><br />
+    The boundary condition for dissolved oxygen (DO) is implemented as follows:<br />
+    $$c<br />
+    // Set DO concentration at the upstream boundary<br />
+    DO[1] = DO_upstream;</p>
+<p>// Set DO concentration at the downstream boundary<br />
+DO[M] = DO_downstream;<br />
+$$<br />
+Where:</p>
+<ul>
+<li><code>DO[1]</code> is the dissolved oxygen concentration at the upstream boundary node.</li>
+<li><code>DO[M]</code> is the dissolved oxygen concentration at the downstream boundary node.</li>
+<li><code>DO_upstream</code> and <code>DO_downstream</code> are the upstream and downstream DO concentrations, respectively, read from the configuration file.</li>
+<li><strong>Parameter Tuning:</strong><br />
+Several key parameters in the <code>biogeo.c</code> file were adjusted to improve model performance. These parameters include:</li>
+<li>Maximum phytoplankton growth rate</li>
+<li>Nutrient half-saturation constants</li>
+<li>Organic matter decay rates</li>
+<li>Reaeration rate coefficient</li>
+</ul>
+</li>
+</ul>
+<p><strong>init.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>Added code to read biogeochemical boundary condition values from a configuration file.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong>To make the model more flexible and user-friendly, the boundary condition values are read from a configuration file rather than being hardcoded in the source code.</li>
+<li><strong>Implementation Details:</strong><br />
+    The <code>Init()</code> function now reads the values for the biogeochemical boundary conditions from the configuration file and stores them in global variables. These global variables are then used in the <code>biogeo.c</code> file to set the boundary conditions.</li>
+<li>
+<p><strong>Example:</strong><br />
+    $$c<br />
+    // Read upstream DO concentration from configuration file<br />
+    fscanf(fp, &ldquo;%lf&rdquo;, &amp;DO_upstream);</p>
+<p>// Read downstream DO concentration from configuration file<br />
+fscanf(fp, &ldquo;%lf&rdquo;, &amp;DO_downstream);<br />
+$$</p>
+</li>
+</ul>
+<h2 id="2025-02-15-python-code-to-find-optimal-convergent-length-based-on-geometry">2025-02-15 Python Code to Find Optimal Convergent Length Based on Geometry<a class="headerlink" href="#2025-02-15-python-code-to-find-optimal-convergent-length-based-on-geometry" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated Geometry Data</strong>: Added new geometry data files to the repository for river bed and width profiles.</li>
+<li><strong>Introduced Python Script for LC Optimization</strong>: Added a new Python script <code>interactive_lc_tuning.py</code> for finding the optimal convergent length based on geometry.</li>
+<li><strong>Modified Initialization and Transport Files</strong>: Updated <code>init.c</code> and <code>uptransport.c</code> to use new variable names and improved logic for the width profile.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>Added Files:</strong></p>
+<ul>
+<li><strong><code>INPUT/Geometry/Geometry.csv</code></strong>: Contains location, depth, and width data for the study area.</li>
+<li><strong><code>INPUT/Geometry/geometry_comparison.csv</code></strong>: Comparison data for geometry.</li>
+<li><strong><code>INPUT/Geometry/river_bed_profile.txt</code></strong>: River bed profile data.</li>
+<li><strong><code>INPUT/Geometry/river_width_profile.txt</code></strong>: River width profile data.</li>
+<li><strong><code>INPUT/params.txt</code></strong>: Auto-generated parameters file with EL, DELXI, B, and LC values.</li>
+</ul>
+<p><strong>File: <code>define.h</code></strong></p>
+<ul>
+<li><strong>Updated Variable Names</strong>:</li>
+<li>Changed <code>B_mouth</code> to <code>B_low</code>.</li>
+<li>Changed <code>B_mid</code> to <code>B_mid</code>.</li>
+<li>Ensures consistency in variable names across the codebase.</li>
+</ul>
+<p><strong>File: <code>init.c</code></strong></p>
+<ul>
+<li><strong>Modified Initialization</strong>:</li>
+<li>Updated the initialization logic for hydrodynamic variables to use the new variable names (<code>B_low</code>, <code>B_mid</code>, <code>LC_mouth</code>, <code>LC_mid</code>).</li>
+<li>Improved the logic for setting the width profile based on the new variables.</li>
+</ul>
+<p><strong>File: <code>uptransport.c</code></strong></p>
+<ul>
+<li><strong>Updated Dispcoef Function</strong>:</li>
+<li>Updated the dispersion coefficient calculation to use the new variable names (<code>B_low</code>, <code>B_mid</code>).</li>
+</ul>
+<p><strong>File: <code>generate_params.py</code></strong></p>
+<ul>
+<li><strong>New Python Script</strong>:</li>
+<li>Generates interactive plots for river width profile with adjustable LC segments.</li>
+<li>Allows users to visualize and adjust the LC values and segment breaks interactively.</li>
+</ul>
+<p><strong>File: <code>interactive_lc_tuning.py</code></strong></p>
+<ul>
+<li><strong>New Python Script</strong>: Introduced a script for interactive tuning of the convergent length based on geometry.</li>
+<li><strong>Key Features</strong>:<ul>
+<li><strong>Widgets</strong>: Interactive sliders for setting the number of segments, segment breaks, and LC values.</li>
+<li><strong>Optimization</strong>: Functionality to automatically optimize LC values using the L-BFGS-B method.</li>
+<li><strong>Visualization</strong>: Plots observed and modeled widths along the river with error annotations.</li>
+<li><strong>Saving Results</strong>: Ability to save the tuning results and generate plots for valid combinations.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Improved Convergent Length Calculation</strong>: The new Python script allows for interactive and automated tuning of the convergent length, improving the accuracy and efficiency of the model calibration process.</li>
+<li><strong>Streamlined Project Files</strong>: Adding new geometry data files ensures that the model has accurate input data for simulations.</li>
+<li><strong>Enhanced Development Environment</strong>: Updating the initialization and transport files ensures consistency and correctness in the hydrodynamic model.</li>
+</ul>
+<h2 id="2025-02-11-working-discharge-accumulation-update-convergent-length-needed">2025-02-11 Working Discharge Accumulation, Update Convergent Length Needed<a class="headerlink" href="#2025-02-11-working-discharge-accumulation-update-convergent-length-needed" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated VS Code Settings</strong>: Modified <code>.vscode/settings.json</code> to update Python diagnostics settings.</li>
+<li><strong>Removed CodeBlocks Project Files</strong>: Deleted outdated CodeBlocks project files.</li>
+<li><strong>Added New Plot Input Data</strong>: Included new CSV and XLSX files for plot input data.</li>
+<li><strong>Removed Unnecessary Output Files</strong>: Deleted various outdated or unnecessary output files.</li>
+<li><strong>Introduced <code>interactive_lc_tuning.py</code></strong>: Added a new Python script for interactive tuning of the convergent length based on geometry.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.vscode/settings.json</code></strong></p>
+<ul>
+<li><strong>Updated Python Diagnostics</strong>:</li>
+<li>Added settings to suppress missing import and module source diagnostics.</li>
+<li>Ensures a cleaner development environment by reducing unnecessary warnings.</li>
+</ul>
+<p><strong>Removed Files:</strong></p>
+<ul>
+<li><strong>C_GEM_Saigon_Daily.cbp</strong></li>
+<li><strong>C_GEM_Saigon_Daily.depend</strong></li>
+<li><strong>C_GEM_Saigon_Daily.layout</strong></li>
+<li><strong>OUT/AT.cs</strong></li>
+<li><strong>OUT/CO2.c</strong></li>
+<li><strong>OUT/DIC.c</strong></li>
+<li><strong>OUT/HS.cs</strong></li>
+<li><strong>OUT/Hydrodynamics/B.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/Chezy.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/FRIC.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/H.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/PROF.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/U.csv</strong></li>
+</ul>
+<p>These files were removed as they were either outdated or no longer necessary for the current state of the project.</p>
+<p><strong>Added Files:</strong></p>
+<ul>
+<li><strong>OUT/PlotINPUT/Geometry.csv</strong>: Contains location, depth, and width data for the study area.</li>
+<li><strong>OUT/PlotINPUT/Hau_bathymetry_update.xlsx</strong>: Updated bathymetry data for the Hau River.</li>
+<li><strong>OUT/PlotINPUT/Tidal_Range.csv</strong>: Contains tidal amplitude data for various locations and stations.</li>
+<li><strong>OUT/PlotINPUT/WaterQuality.csv</strong>: Includes water quality data such as temperature, TSS, salinity, DO, NH4, PO4, and TOC for different sites and dates.</li>
+<li><strong>OUT/PlotINPUT/WaterQuality_Validation.xlsx</strong>: Validation data for water quality measurements.</li>
+</ul>
+<p><strong>File: <code>external/interactive_lc_tuning.py</code></strong></p>
+<ul>
+<li><strong>New Python Script</strong>: Introduced a new script for interactive tuning of the convergent length based on geometry.</li>
+<li><strong>Key Features</strong>:<ul>
+<li><strong>Widgets</strong>: Interactive sliders for setting the number of segments, segment breaks, and LC values.</li>
+<li><strong>Optimization</strong>: Functionality to automatically optimize LC values using the L-BFGS-B method.</li>
+<li><strong>Visualization</strong>: Plots observed and modeled widths along the river with error annotations.</li>
+<li><strong>Saving Results</strong>: Ability to save the tuning results and generate plots for valid combinations.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Streamlined Project Files</strong>: Removing outdated project files and unnecessary output files helps in reducing clutter and focusing on relevant data.</li>
+<li><strong>Enhanced Development Environment</strong>: Updating the VS Code settings ensures a cleaner and more efficient development environment.</li>
+<li><strong>Comprehensive Plot Input Data</strong>: Adding new plot input data files provides a comprehensive set of data for analysis and visualization.</li>
+<li><strong>Interactive Tuning</strong>: The new Python script allows for interactive and automated tuning of the convergent length, improving the accuracy and efficiency of the model calibration process.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Real-World Example</strong>: In a tidal river simulation, having accurate and comprehensive input data for parameters like depth, width, tidal amplitude, and water quality is crucial for reliable model outputs and simulations.</li>
+</ul>
+<p><strong>References:</strong></p>
+<ul>
+<li><strong>Scientific Papers on Hydrodynamic Modeling</strong>: Refer to established scientific literature for methods and equations used in hydrodynamic modeling of aquatic systems.</li>
+</ul>
+<h2 id="2025-02-06-refactoring-and-bug-fixes-in-hydrodynamic-and-transport-modules">2025-02-06: Refactoring and Bug Fixes in Hydrodynamic and Transport Modules<a class="headerlink" href="#2025-02-06-refactoring-and-bug-fixes-in-hydrodynamic-and-transport-modules" title="Permanent link">&para;</a></h2>
+<p>This report details the changes introduced in commit <code>8255a6b5cd153d3e8cc945e8492862d71730db8c</code>. This commit focuses on refactoring the hydrodynamic and transport modules for improved code readability and maintainability. Additionally, it addresses several bug fixes identified during testing.</p>
+<p><strong>Overview of Changes</strong></p>
+<p>This commit includes modifications to:</p>
+<ol>
+<li><strong>Hydrodynamic Module (<code>hyd.c</code>, <code>uphyd.c</code>, <code>tridaghyd.c</code>):</strong>Refactored code for improved readability and fixed a bug related to boundary condition implementation.</li>
+<li><strong>Transport Module (<code>uptransport.c</code>):</strong>Fixed a bug in the TVD scheme that was causing numerical oscillations.</li>
+</ol>
+<p><strong>Key Files and Modifications</strong></p>
+<p><strong>hyd.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>Refactored the <code>Hyd()</code> function to improve code readability.</li>
+<li>Fixed a bug in the implementation of the tidal boundary condition.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong>The original <code>Hyd()</code> function was becoming too long and complex, making it difficult to understand and maintain. The refactoring involved breaking the function into smaller, more manageable sub-functions. The bug in the tidal boundary condition was causing inaccurate water level predictions near the estuary mouth.</li>
+<li><strong>Bug Fix:</strong><br />
+    The tidal boundary condition was incorrectly applied in the original code. The corrected implementation ensures that the tidal elevation is properly applied at the boundary node.</li>
+<li><strong>Example:</strong><br />
+    The tidal boundary condition is applied using the following equation:<br />
+    $$c<br />
+    h(1, t) = h_{tide}(t)<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(h(1, t)\)</span> is the water level at the boundary node at time <span class="arithmatex">\(t\)</span>.</li>
+<li><span class="arithmatex">\(h_{tide}(t)\)</span> is the tidal elevation at time <span class="arithmatex">\(t\)</span>, obtained from the <code>Tide(t)</code> function in <code>bcforcing.c</code>.</li>
+</ul>
+</li>
+</ul>
+<p><strong>uphyd.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>Minor refactoring for consistency with changes in <code>hyd.c</code>.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong>To ensure that the changes in <code>hyd.c</code> did not introduce any inconsistencies in the iterative solver, minor adjustments were made to <code>uphyd.c</code>.</li>
+</ul>
+<p><strong>tridaghyd.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>No significant changes were made to this file in this commit.</li>
+</ul>
+</li>
+</ul>
+<p><strong>uptransport.c</strong></p>
+<ul>
+<li><strong>Modifications:</strong><ul>
+<li>Fixed a bug in the TVD scheme that was causing numerical oscillations.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong>The original implementation of the TVD scheme was not properly limiting the flux, leading to spurious oscillations in the concentration field. The corrected implementation ensures that the flux is properly limited, preventing these oscillations.</li>
+<li><strong>Bug Fix:</strong><br />
+    The flux limiter in the TVD scheme was corrected to ensure that the total variation of the concentration field does not increase over time. The corrected flux limiter is given by:<br />
+    $$c<br />
+    \phi_i = \begin{cases}<br />
+        \min\left(1, \frac{r_i}{CFL}\right) &amp; \text{if } r_i &gt; 0 \<br />
+        0 &amp; \text{if } r_i \le 0<br />
+    \end{cases}<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(\phi_i\)</span> is the flux limiter at cell <span class="arithmatex">\(i\)</span>.</li>
+<li><span class="arithmatex">\(r_i = \frac{C_i - C_{i-1}}{C_{i+1} - C_i}\)</span> is the ratio of concentration gradients.</li>
+<li><span class="arithmatex">\(CFL\)</span> is the Courant-Friedrichs-Lewy number.</li>
+</ul>
+</li>
+<li><strong>Reference:</strong><br />
+    The corrected TVD scheme is based on the Van Leer flux limiter, as described in:<ul>
+<li>Hirsch, C. (2007). <em>Numerical Computation of Internal and External Flows: The Fundamentals of Computational Fluid Dynamics</em>. Butterworth-Heinemann.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Implications for Water Quality Modeling</strong></p>
+<p>These changes have significant implications for the accuracy and reliability of the model:</p>
+<ul>
+<li><strong>Improved Accuracy:</strong>The bug fixes in the hydrodynamic and transport modules will lead to more accurate predictions of water levels and substance concentrations.</li>
+<li><strong>Improved Stability:</strong>The corrected TVD scheme will prevent numerical oscillations, improving the stability of the model.</li>
+<li><strong>Improved Maintainability:</strong>The refactoring of the <code>Hyd()</code> function will make the code easier to understand and maintain.</li>
+</ul>
+<p><strong>Further Development</strong></p>
+<p>Future development should focus on:</p>
+<ul>
+<li>Validating the model against field data to ensure that the bug fixes have resolved the identified issues.</li>
+<li>Implementing more sophisticated numerical schemes for the hydrodynamic and transport modules.</li>
+</ul>
+<h2 id="2025-02-06-reading-input-file-checked-biogeochemical-reaction-calculation-issues">2025-02-06 Reading Input File Checked, Biogeochemical Reaction Calculation Issues<a class="headerlink" href="#2025-02-06-reading-input-file-checked-biogeochemical-reaction-calculation-issues" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Checked Input File Reading</strong>: Verified the reading of input files for boundary conditions and tributaries.</li>
+<li><strong>Removed Unnecessary Output Files</strong>: Deleted various outdated or unnecessary output files.</li>
+<li><strong>Identified Issues with Biogeochemical Reactions</strong>: Noted that biogeochemical reactions are not working correctly, except for SPM (Suspended Particulate Matter).</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>Removed Files:</strong></p>
+<ul>
+<li><strong>OUT/AT.cs</strong></li>
+<li><strong>OUT/CO2.c</strong></li>
+<li><strong>OUT/DIC.c</strong></li>
+<li><strong>OUT/HS.cs</strong></li>
+<li><strong>OUT/Hydrodynamics/B.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/Chezy.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/FRIC.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/H.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/PROF.csv</strong></li>
+<li><strong>OUT/Hydrodynamics/U.csv</strong></li>
+</ul>
+<p>These files were removed as they were either outdated or no longer necessary for the current state of the project.</p>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Streamlined Output</strong>: Removing unnecessary output files helps in reducing clutter and focusing on relevant data.</li>
+<li><strong>Verified Input Reading</strong>: Ensuring that input files are read correctly is crucial for accurate model simulations.</li>
+<li><strong>Identified Issues for Improvement</strong>: Recognizing that biogeochemical reactions are not functioning correctly (except for SPM) allows for targeted debugging and improvements.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Real-World Example</strong>: In a water quality model for a tropical river, accurately reading input files for parameters like NH4, NO3, and O2 is essential for simulating nutrient dynamics and biogeochemical processes.</li>
+</ul>
+<p><strong>References:</strong></p>
+<ul>
+<li><strong>Scientific Papers on Biogeochemical Modeling</strong>: Refer to established scientific literature for methods and equations used in biogeochemical modeling of aquatic systems.</li>
+</ul>
+<h2 id="2025-02-06-modular-approach-for-reading-input-file-bc-and-tributaries">2025-02-06 Modular Approach for Reading Input File BC and Tributaries<a class="headerlink" href="#2025-02-06-modular-approach-for-reading-input-file-bc-and-tributaries" title="Permanent link">&para;</a></h2>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Updated Compiler Path</strong>: Changed the compiler path in <code>.vscode/c_cpp_properties.json</code> to use the MinGW compiler in CodeBlocks.</li>
+<li><strong>Added <code>variables.c</code> to Build Task</strong>: Included <code>variables.c</code> in the build task definition in <code>.vscode/tasks.json</code>.</li>
+<li><strong>Fixed CSV Data</strong>: Removed invalid data entry in <code>INPUT/Boundary/LB/Light.csv</code>.</li>
+<li><strong>Renamed Boundary Condition Files</strong>: Renamed various boundary condition input files for consistency.</li>
+</ul>
+<p><strong>Detailed Changes:</strong></p>
+<p><strong>File: <code>.vscode/c_cpp_properties.json</code></strong></p>
+<ul>
+<li><strong>Updated Compiler Path</strong>:</li>
+<li>Changed from <code>C:/Users/nguytruo/Documents/mingw64/bin/gcc.exe</code> to <code>C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe</code>.</li>
+<li>This ensures the project uses the correct compiler path in the CodeBlocks environment.</li>
+</ul>
+<p><strong>File: <code>.vscode/tasks.json</code></strong></p>
+<ul>
+<li><strong>Added <code>variables.c</code> to Build Task</strong>:</li>
+<li>Included <code>variables.c</code> file in the list of source files for the build task.</li>
+<li>Ensures that the <code>variables.c</code> file is compiled during the build process.</li>
+</ul>
+<p><strong>File: <code>INPUT/Boundary/LB/Light.csv</code></strong></p>
+<ul>
+<li><strong>Fixed CSV Data</strong>:</li>
+<li>Removed invalid data entry <code>#VALUE!</code> at line 1699.</li>
+<li>Ensures that the CSV file contains only valid numerical data.</li>
+</ul>
+<p><strong>Renamed Files:</strong></p>
+<ul>
+<li><strong>NH4_lb.csv</strong></li>
+<li><strong>NO3_lb.csv</strong></li>
+<li><strong>O2_lb.csv</strong></li>
+<li><strong>S_lb.csv</strong></li>
+<li><strong>T.csv</strong></li>
+<li><strong>TOC_lb.csv</strong></li>
+<li><strong>dia_lb.csv</strong></li>
+</ul>
+<p>These files were renamed for consistency in naming conventions.</p>
+<p><strong>Purpose and Benefits:</strong></p>
+<ul>
+<li><strong>Modular Approach</strong>: The commit introduces a modular approach for reading input files for boundary conditions and tributaries, enhancing maintainability and scalability.</li>
+<li><strong>Consistency</strong>: Renaming files and updating paths ensures consistency and avoids potential errors during file read operations.</li>
+<li><strong>Error Handling</strong>: Removing invalid data entries from CSV files prevents runtime errors and data inconsistencies.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Real-World Example</strong>: In a tidal river simulation, consistent and accurate input data for boundary conditions (e.g., NH4, NO3, O2 levels) is crucial for reliable model outputs. The modular approach allows for easier updates and maintenance of these input files.</li>
+</ul>
+<p><strong>References:</strong></p>
+<ul>
+<li><strong>Hydrodynamic Model Equations</strong>: The hydrodynamic model equations used in this project are based on established scientific principles and are implemented using a modular approach for better maintainability.</li>
+</ul>
+<h2 id="2025-01-21-initial-c-gem-implementation-for-tropical-regions-based-on-an-nguyen-thesis-2021">2025-01-21: Initial C-GEM Implementation for Tropical Regions (Based on An Nguyen Thesis 2021)<a class="headerlink" href="#2025-01-21-initial-c-gem-implementation-for-tropical-regions-based-on-an-nguyen-thesis-2021" title="Permanent link">&para;</a></h2>
+<p>This report provides an overview of the C-GEM (Coastal General Ecosystem Model) implementation as of the initial commit (7a489f45e846efa188cf57b88f9c1edb384a5ad4) in the <code>flashshare/C-GEM-daily</code> repository. This version is based on the C-GEM model developed during An Nguyen&rsquo;s thesis (2021) and aims to adapt it for application in tropical river systems.</p>
+<p><strong>Overview</strong></p>
+<p>C-GEM is a coupled hydrodynamic and biogeochemical model designed to simulate water quality dynamics in coastal and riverine environments. It integrates several key components:</p>
+<ol>
+<li><strong>Hydrodynamics:</strong>Simulates water flow, depth, and velocity.</li>
+<li><strong>Transport:</strong>Models the movement and mixing of dissolved and particulate substances.</li>
+<li><strong>Biogeochemistry:</strong>Represents the complex interactions of nutrients, organic matter, and plankton, including key processes like photosynthesis, respiration, and nutrient cycling.</li>
+</ol>
+<p><strong>Scientific and Theoretical Background</strong></p>
+<p>C-GEM is rooted in the principles of fluid dynamics, chemical kinetics, and ecological modeling.</p>
+<p><strong>Key Files and Their Contributions</strong></p>
+<p>Here&rsquo;s a detailed look at the core files in this initial commit:</p>
+<p><strong>main.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Contains the main simulation loop, orchestrating the execution of the hydrodynamic, transport, and biogeochemical modules.</li>
+<li><strong>Workflow:</strong><ol>
+<li>Initializes the model using <code>Init()</code>.</li>
+<li>Enters a time-stepping loop.</li>
+<li>Within the loop, calls the following functions in sequence:<ul>
+<li><code>Hyd(t)</code>:  Hydrodynamic calculations.</li>
+<li><code>bgboundary(t)</code>: Applies boundary conditions.</li>
+<li><code>Transport(t)</code>:  Transport calculations.</li>
+<li><code>Biogeo(t)</code>:  Biogeochemical calculations.</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>Notes:</strong>This file is the central control point of the model.</li>
+</ul>
+<p><strong>init.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Initializes model variables, reads configuration files, and sets up the simulation grid.</li>
+<li><strong>Functionality:</strong><ul>
+<li>Reads model parameters from configuration files.</li>
+<li>Allocates memory for hydrodynamic, transport, and biogeochemical variables.</li>
+<li>Establishes the spatial grid and channel geometry.</li>
+<li>Reads boundary condition data.</li>
+</ul>
+</li>
+<li><strong>Importance:</strong>Proper initialization is critical for model stability and accuracy.</li>
+</ul>
+<p><strong>bcforcing.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Provides time-dependent boundary conditions for tidal elevation and river discharge.</li>
+<li><strong>Functions:</strong><ul>
+<li><code>Tide(t)</code>: Interpolates tidal elevation from a CSV file.</li>
+<li><code>Discharge_ups(t)</code>: Interpolates upstream discharge from a CSV file.</li>
+</ul>
+</li>
+</ul>
+<p><strong>hyd.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Implements the hydrodynamic module, solving for water depth and velocity.</li>
+<li><strong>Numerical Scheme:</strong>Likely uses a finite difference method to discretize the shallow water equations.</li>
+<li>
+<p><strong>Hydrodynamic Equations:</strong></p>
+<p>The model solves a form of the one-dimensional shallow water equations, which are derived from the Navier-Stokes equations under the assumption of hydrostatic pressure and uniform vertical velocity distribution. These equations are commonly used in river and estuarine hydrodynamics.</p>
+<ul>
+<li><strong>Continuity Equation:</strong><br />
+    $$c<br />
+    \frac{\partial A}{\partial t} + \frac{\partial Q}{\partial x} = 0<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(A\)</span> is the cross-sectional area of the channel (<span class="arithmatex">\(m^2\)</span>).</li>
+<li><span class="arithmatex">\(Q\)</span> is the discharge (<span class="arithmatex">\(m^3/s\)</span>).</li>
+<li><span class="arithmatex">\(t\)</span> is time (s).</li>
+<li><span class="arithmatex">\(x\)</span> is the longitudinal distance (m).</li>
+</ul>
+</li>
+<li>
+<p><strong>Momentum Equation:</strong><br />
+    $$c<br />
+    \frac{\partial Q}{\partial t} + \frac{\partial}{\partial x}\left(\frac{Q^2}{A}\right) + gA\frac{\partial h}{\partial x} + g\frac{Q|Q|}{C_h^2 A R^{4/3}} = 0<br />
+    $$<br />
+    Where:</p>
+<ul>
+<li><span class="arithmatex">\(g\)</span> is the acceleration due to gravity (<span class="arithmatex">\(m/s^2\)</span>).</li>
+<li><span class="arithmatex">\(h\)</span> is the water surface elevation (m).</li>
+<li><span class="arithmatex">\(C_h\)</span> is the Chezy coefficient (<span class="arithmatex">\(m^{1/2}/s\)</span>).</li>
+<li><span class="arithmatex">\(R\)</span> is the hydraulic radius (m).</li>
+</ul>
+</li>
+<li>
+<p><strong>Chezy Coefficient:</strong>The Chezy coefficient is related to the Manning&rsquo;s roughness coefficient (<span class="arithmatex">\(n\)</span>) by:<br />
+    $$c<br />
+    C_h = \frac{R^{1/6}}{n}<br />
+    $$</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Key Steps:</strong></p>
+<ol>
+<li>Calculates the coefficient matrix based on channel geometry and flow conditions.</li>
+<li>Solves the tridiagonal system using routines in <code>tridaghyd.c</code>.</li>
+<li>Updates water depth and velocity.</li>
+</ol>
+</li>
+</ul>
+<p><strong>uptransport.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Simulates the transport of dissolved and particulate substances.</li>
+<li><strong>Methods:</strong><ul>
+<li>Calculates dispersion coefficients based on flow conditions.</li>
+<li>Applies a numerical advection scheme (likely a Total Variation Diminishing (TVD) scheme) to minimize numerical diffusion and ensure mass conservation.</li>
+</ul>
+</li>
+<li><strong>Governing Equation:</strong><br />
+    The advection-diffusion equation is used to model the transport of substances:<br />
+    $$c<br />
+    \frac{\partial C}{\partial t} + u\frac{\partial C}{\partial x} = \frac{\partial}{\partial x}\left(D\frac{\partial C}{\partial x}\right) + S<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(C\)</span> is the concentration of the substance (<span class="arithmatex">\(mg/L\)</span>).</li>
+<li><span class="arithmatex">\(u\)</span> is the flow velocity (<span class="arithmatex">\(m/s\)</span>).</li>
+<li><span class="arithmatex">\(D\)</span> is the dispersion coefficient (<span class="arithmatex">\(m^2/s\)</span>).</li>
+<li><span class="arithmatex">\(S\)</span> is a source/sink term representing biogeochemical reactions (<span class="arithmatex">\(mg/L/s\)</span>).</li>
+</ul>
+</li>
+<li><strong>TVD Scheme:</strong>The TVD (Total Variation Diminishing) scheme is used to minimize numerical diffusion and ensure mass conservation. A common TVD scheme is the Van Leer flux limiter.<ul>
+<li><strong>Reference:</strong>LeVeque, R. J. (2002). <em>Finite Volume Methods for Hyperbolic Problems</em>. Cambridge University Press.</li>
+</ul>
+</li>
+</ul>
+<p><strong>uphyd.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Manages iterative updates of water level and velocity in the hydrodynamic scheme.</li>
+</ul>
+<p><strong>tridaghyd.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Solves the tridiagonal matrix system arising from the discretization of the momentum equation in <code>hyd.c</code>.</li>
+<li><strong>Functions:</strong><ul>
+<li><code>Coeffa(t)</code>: Calculates coefficients for the tridiagonal matrix.</li>
+<li><code>Tridag()</code>: Implements the tridiagonal matrix algorithm (TDMA), also known as the Thomas algorithm, for solving the system.</li>
+</ul>
+</li>
+<li><strong>Algorithm:</strong>The TDMA is a highly efficient method for solving tridiagonal systems, requiring only <span class="arithmatex">\(O(n)\)</span> operations, where <span class="arithmatex">\(n\)</span> is the size of the matrix.</li>
+</ul>
+<p><strong>file.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Handles file input and output operations.</li>
+</ul>
+<p><strong>biogeout.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Contains supporting functions for the biogeochemical module.</li>
+<li><strong>Functions:</strong><ul>
+<li><code>waterT(t)</code>: Computes water temperature as a function of time and location.</li>
+<li><code>I0(t)</code>: Calculates light intensity, accounting for solar radiation and water column attenuation.</li>
+</ul>
+</li>
+<li><strong>Light Attenuation:</strong><br />
+    The light intensity at depth <span class="arithmatex">\(z\)</span> is calculated as:<br />
+    $$c<br />
+    I(z) = I_0 e^{-k_d z}<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(I(z)\)</span> is the light intensity at depth <span class="arithmatex">\(z\)</span> (<span class="arithmatex">\(W/m^2\)</span>).</li>
+<li><span class="arithmatex">\(I_0\)</span> is the surface light intensity (<span class="arithmatex">\(W/m^2\)</span>).</li>
+<li><span class="arithmatex">\(k_d\)</span> is the light attenuation coefficient (<span class="arithmatex">\(m^{-1}\)</span>).</li>
+</ul>
+</li>
+</ul>
+<p><strong>biogeo.c</strong></p>
+<ul>
+<li><strong>Purpose:</strong>Implements the core biogeochemical reaction network.</li>
+<li><strong>Processes:</strong><ul>
+<li>Nutrient uptake by phytoplankton.</li>
+<li>Primary production (photosynthesis).</li>
+<li>Nitrification and denitrification.</li>
+<li>Organic matter degradation.</li>
+<li>Updates pH and carbonate species (CO<span class="arithmatex">\(_2\)</span>, HCO<span class="arithmatex">\(_3^-\)</span>, and CO<span class="arithmatex">\(_3^{2-}\)</span>).</li>
+</ul>
+</li>
+<li><strong>Example Reactions:</strong><ul>
+<li><strong>Phytoplankton Growth:</strong>The growth rate of phytoplankton (<span class="arithmatex">\(\mu\)</span>) is often modeled using Monod kinetics:<br />
+    $$c<br />
+    \mu = \mu_{max} \cdot \min\left(\frac{N}{K_N + N}, \frac{P}{K_P + P}\right)<br />
+    $$<br />
+    Where:<ul>
+<li><span class="arithmatex">\(\mu_{max}\)</span> is the maximum growth rate (<span class="arithmatex">\(day^{-1}\)</span>).</li>
+<li><span class="arithmatex">\(N\)</span> and <span class="arithmatex">\(P\)</span> are the concentrations of limiting nutrients (e.g., nitrogen and phosphorus) (<span class="arithmatex">\(\mu mol/L\)</span>).</li>
+<li><span class="arithmatex">\(K_N\)</span> and <span class="arithmatex">\(K_P\)</span> are the half-saturation constants for nitrogen and phosphorus, respectively (<span class="arithmatex">\(\mu mol/L\)</span>).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Workflow of the Model</strong></p>
+<ol>
+<li><strong>Initialization (init.c):</strong>The model reads parameters and sets up the simulation environment.</li>
+<li><strong>Hydrodynamics (hyd.c, uphyd.c, tridaghyd.c):</strong> The model calculates water depth and velocity based on boundary conditions and channel geometry.</li>
+<li><strong>Boundary Forcing (bcforcing.c):</strong> Time-dependent tidal and discharge data are applied.</li>
+<li><strong>Transport (uptransport.c):</strong>Dissolved and particulate substances are transported based on the flow field.</li>
+<li><strong>Biogeochemistry (biogeo.c, biogeout.c):</strong> Biogeochemical reactions are simulated, updating the concentrations of nutrients, organic matter, and plankton.</li>
+<li><strong>Output (file.c):</strong>Simulation results are written to output files.</li>
+<li><strong>Iteration:</strong>Steps 2-6 are repeated for each time step in the simulation.</li>
+</ol>
+<p><strong>Real-World Example: Cua Dai Estuary</strong></p>
+<p>This model is intended to simulate water quality in tidal river systems, such as the Cua Dai estuary in Vietnam. The model can be used to assess the impact of nutrient loading from the Thu Bon River on the water quality of the estuary, including the occurrence of algal blooms and hypoxia.</p>
+<p><strong>Further Development</strong></p>
+<p>Future development will likely focus on:</p>
+<ul>
+<li>Incorporating additional biogeochemical processes specific to tropical environments.</li>
+<li>Improving the representation of sediment transport and nutrient cycling.</li>
+<li>Validating the model against field data.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p> Copyright &copy; 2025-<script>document.write(new Date().getFullYear())</script> Nguyen Truong An. All Rights Reserved</p>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.highlight", "content.code.copy", "navigation.tracking", "toc.follow", "navigation.sections", "navigation.tabs", "navigation.expand", "content.tooltips", "search.suggest", "navigation.footer", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../assets/javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+    
+  </body>
+</html>

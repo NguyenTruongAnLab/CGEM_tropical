@@ -1,0 +1,109 @@
+<!-- methods.qmd — Study Area + Materials & Methods (revised) -->
+
+# Materials and methods
+
+## Study area and monitoring network
+
+The Saigon River Estuary (10.4°--11.1°N, 106.5°--106.8°E) forms part of the Saigon--Dong Nai River Basin in southern Vietnam (@fig-study-area). The river drains ~4,500 km$^2$ and extends ~200 km from the Dau Tieng Reservoir to the estuarine mouth, progressively widening from ~50 m upstream to ~3,900 m at the marine boundary. This funnel-shaped morphology is typical of tide-dominated estuaries and exerts first-order control on hydrodynamics and longitudinal biogeochemical gradients [@VoltaC.2014].
+
+Average discharge at the Dau Tieng outlet varies from ~30 m$^3$ s$^{-1}$ (dry season, December--May) to ~100 m$^3$ s$^{-1}$ (rainy season, June--November). The Thi Tinh tributary enters at km 122 (10--30 m$^3$ s$^{-1}$), and the Dong Nai confluence at km 60 introduces 200--1,600 m$^3$ s$^{-1}$ (study-period range; dry-season median ~290 m$^3$ s$^{-1}$, wet-season median ~1,200 m$^3$ s$^{-1}$). The estuary is influenced by a semi-diurnal tidal regime (M$_2$-dominant, meaning the principal lunar semi-diurnal tidal constituent dominates the tidal signal; mean range ~3 m), with saline intrusion extending farthest upstream during the dry season and contracting markedly during the rainy season.
+
+:::{#fig-study-area}
+![](../figures/fig01_study_area_update.png)
+
+Schematic of the Saigon River Estuary showing the idealised funnel geometry, validation stations, and major tributaries. The urban corridor (km 70--100, shaded) receives >80% untreated wastewater from Ho Chi Minh City (HCMC). Monitoring stations: Nha Be (NB, km 44), Bach Dang (BD, km 70), and Phu Cuong (PC, km 114). Major tributaries: Dong Nai River (km 60), Thi Tinh (km 122), and urban canals (Vam Thuat and three canals, km 78--90). Insets show monthly discharge for the Saigon and Dong Nai rivers.
+:::
+
+Ho Chi Minh City (HCMC), a major megacity, lines the urban reach. More than 80% of domestic wastewater is discharged without treatment into the canal network [@NguyenTruongAn2021], making the Saigon comparable to other wastewater-dominated tropical urban systems. Major wastewater pathways include the Vam Thuat tributary (~4 m$^3$ s$^{-1}$) and three urban canals (~5 m$^3$ s$^{-1}$ collectively), creating a pronounced biogeochemical hotspot in the urban corridor (km 78--90) [@NguyenTruongAn2021]. Nitrogen speciation analysis attributes 77% of nitrate and 58% of ammonium loads to untreated domestic sewage delivered via these canal pathways [@NguyenNgocTuyet2020].
+
+## Field data and boundary conditions
+
+Biogeochemical observations were drawn from two concurrent programmes. The Vietnamese Centre for Environmental Monitoring (CEM) conducted monthly longitudinal surveys, while the Centre for Asian Research on Water (CARE) carried out fortnightly monitoring at three key stations (Nha Be km 44, Bach Dang km 70, Phu Cuong km 114). Together, these programmes covered dissolved oxygen (DO), five-day biochemical oxygen demand (BOD$_5$), NH$_4^+$, PO$_4^{3-}$, total suspended solids (TSS), chlorophyll-a (Chl-a), total organic carbon (TOC), dissolved silica (DSi), and NO$_3^-$ during 2017--2018. Hydrological forcing combined monthly upstream and tributary discharge, hourly tidal elevation at the estuarine mouth, station solar radiation, monthly wind-speed climatology, and fortnightly water temperature. Full data provenance, analytical methods, and boundary-condition specifications are in Text S1.4; abbreviations are defined in Table S12.
+
+## Transient C-GEM framework
+
+### General model description {#sec-cgem-general}
+
+The Carbon-Generic Estuarine Model (C-GEM) is a one-dimensional, depth-integrated, process-based reactive-transport model for simulating biogeochemical dynamics of carbon and associated bio-elements (N, P, Si, O) in estuarine systems [@VoltaC.2014]. C-GEM was designed for narrow, well-mixed estuaries where along-channel gradients dominate over cross-sectional or vertical variability [@VoltaC.2014]. The Saigon's funnel-shaped morphology, macrotidal regime, and longitudinally dominant biogeochemical gradients place it within these conditions.
+
+Core transport, primary production, nutrient cycling, and gas-exchange formulations follow previous C-GEM implementations [@VoltaC.2014; @VoltaC.2016; @WeiXi2022]. The description below therefore focuses on the elements that differed in the present transient tropical application and on why those changes were required.
+
+The model solves the one-dimensional advection-diffusion-reaction equation for each biogeochemical state variable $C_i$:
+
+$$
+\frac{\partial C_i}{\partial t} = -u \frac{\partial C_i}{\partial x} + \frac{\partial}{\partial x}\left(K_x \frac{\partial C_i}{\partial x}\right) + \sum_j R_{ij} + S_i
+$$ {#eq-governing}
+
+where $u$ is tidally-averaged residual velocity, $K_x$ is longitudinal dispersion, $R_{ij}$ are reaction source/sink terms, and $S_i$ represents lateral inputs. The 202 km domain is discretised at $\Delta x$ = 2 km and $\Delta t$ = 360 s, with channel width following piecewise exponential convergence. Full solver and dispersion details are provided in Text S1.
+
+The model carries 13 chemical state variables: two phytoplankton functional groups (diatoms and non-diatom algae), nutrients (DSi, NO$_3^-$, NH$_4^+$, PO$_4^{3-}$, and particulate inorganic phosphorus, PIP), DO, TOC, suspended particulate matter (SPM), salinity, and prognostic dissolved inorganic carbon (DIC) and total alkalinity (TA). Diagnostic carbonate-system outputs (pH, CO$_2$(aq), $pCO_2$) are computed from DIC and TA at each time step. This explicit carbonate treatment is essential in the Saigon because urban $pCO_2$ routinely exceeds 10,000 $\mu$atm. The DIC/TA carbonate solver therefore uses a bisection algorithm in pH-space, replacing the original iterative fixed-point scheme that becomes unstable at high supersaturation [@VoltaC.2014; @LaruelleGoulvenG.2019]. The TA definition includes nutrient contributions ($+NH_4^+ - NO_3^-$) following @WolfGladrowDieterA.2007; further details and the air--water CO$_2$ flux formulation are provided in Text S1.
+
+### Prior Saigon application and transient extension {#sec-cgem-prior}
+
+The first C-GEM application to the Saigon River Estuary was developed by @NguyenTruongAn2021 under steady-state, tidally averaged conditions. That initial implementation demonstrated C-GEM's applicability to a tropical system but could not capture the pronounced seasonal transitions that characterise monsoon-driven estuaries. We extend the framework here to time-variable forcing with hourly tidal elevation, daily-to-monthly discharge time series, seasonally varying water temperature (26--32$^\circ$C), solar radiation, wind speed, and observation-based seasonal boundary conditions for all water quality variables. This transient extension is essential because it resolves the monsoon-driven transitions in residence time, salinity intrusion, light climate, and bloom expression that define the Saigon system.
+
+### New tropical adaptations {#sec-cgem-new}
+
+Adapting C-GEM to the Saigon required structural extensions beyond previous temperate implementations [@VoltaC.2016; @WeiXi2022]. These extensions were introduced only where needed to represent the seasonal shift in retention, light climate, and bloom expression under tropical urban forcing. They fall into three groups: (i) organic matter, nutrient, and benthic exchange processes needed to represent intense wastewater loading and sediment--water coupling; (ii) tropical optical and salinity effects, including chromophoric dissolved organic matter (CDOM) attenuation, discharge-driven turbidity, and salinity stress on freshwater phytoplankton; and (iii) depth-averaged closures for effective production [@DijkstraYoeriM.2019], alongside density-dependent closures for phytoplankton loss adapted from established pelagic frameworks [@FennelK.2011]. In total, they add eleven biogeochemical process equations relative to the earlier Saigon and European implementations. The full process inventory, equations, and ablation-based verification are provided in Table S9, Text S2, and Text S4.
+
+The full biogeochemical reaction network, including mass fluxes and kinetic controls among all state variables and processes, is shown in @fig-biogeo-framework. New developments are distinguished from existing C-GEM processes.
+
+![Biogeochemical reaction network of the C-GEM model adapted for the Saigon River Estuary. Circles denote the 13 transported state variables; italic labels indicate diagnostic carbonate-system outputs (pH, pCO$_2$, CO$_2$(aq)); rounded rectangles represent biogeochemical processes. Solid arrows indicate stoichiometric mass fluxes; dashed arrows indicate kinetic controls (rate modulation without direct mass transfer). Three spatial compartments are depicted: atmosphere, water column, and benthic sediment. Orange-outlined processes marked with asterisks indicate new developments for this study; black-outlined processes are from the existing C-GEM framework. Abbreviations: DIA, diatoms; NDA, non-diatom algae; NPP, net primary production; SOD, sediment oxygen demand; DSi, dissolved silica; TOC, total organic carbon; DIC, dissolved inorganic carbon; TA, total alkalinity; PIP, particulate inorganic phosphorus; SPM, suspended particulate matter.](../figures/draw_io/biogeochemical_diagram_difference){#fig-biogeo-framework}
+
+### Key biogeochemical processes {#sec-cgem-biogeo}
+
+Primary production follows multiplicative nutrient and light limitation, while standard phytoplankton losses include linear mortality, density-dependent closure, and settling [@VoltaC.2014; @FennelK.2011]. To capture specific tropical and estuarine constraints, we further incorporated terms for salinity stress on freshwater phytoplankton and benthic grazing. Processes inherited from earlier C-GEM implementations, including transport, Monod-type primary production, nitrification--denitrification, and air--water exchange, are not rederived here; they follow the published framework and are summarised in Text S2.
+
+Benthic processes were represented as parameterised fluxes, allowing the model to capture sediment oxygen demand and phosphorus buffering without resolving an explicit sediment state. This choice was necessary in the urban corridor, where wastewater-derived organic matter and shallow marginal sediments sustain large oxygen demand but are not sufficiently constrained for a full diagenetic module. Organic-matter oxidation was represented by dual pathways, separating a slower background degradation route from a faster labile wastewater-related demand, which improved the simulation of the urban oxygen sag.
+
+Light attenuation combines background extinction, suspended particles, phytoplankton self-shading, CDOM absorption, and an additional discharge-dependent turbidity term to represent monsoon amplification of optical stress [@BurfordM.A.2012; @BharathiM.D.2019]. The resulting wet-season $K_D$ remains conservative relative to field-derived estimates, indicating that the model resolves the optical suppression of blooms without requiring unrealistically strong attenuation. Full process equations and parameter values are provided in Text S1 and Tables S2--S3.
+
+Parameters that depart from typical temperate C-GEM ranges are justified and evaluated in the Supplement, together with sensitivity analyses and the full calibrated parameter set (Text S3.5; Tables S2--S3, S11). Three parameters deserve particular note: $P^B_{max}$ compensates geometric dilution of near-surface irradiance in the depth-averaged framework, $K_N$ reflects chronically elevated nutrient concentrations, and the discharge-driven turbidity term captures excess monsoon attenuation. Because $P^B_{max}$ acts as an effective depth-averaged compensation, it should not be transferred directly to vertically resolved or 3D models without reparameterisation.
+
+## Calibration and validation strategy
+
+Transient simulations were driven by 2017--2018 forcing data. A 100-day spin-up period was applied to minimise the influence of initial conditions, after which 730 post-warmup days were retained for analysis; salinity and phytoplankton concentrations approached <1% change from asymptotic values by approximately day 80. Model outputs were evaluated against (i) 2017--2018 monitoring time series at three CARE stations and (ii) longitudinal wet/dry season carbonate snapshots from 2019--2020.
+
+Calibration followed a hierarchical approach: hydrodynamic parameters first (tidal range, salinity intrusion), then sediment (SPM), then biogeochemical rates using literature-informed priors, which is the standard sequence for ensuring interpretable biogeochemical results in data-limited estuarine settings [@VoltaC.2014] (Text S3.1). This ordering prevents biogeochemical rate constants from compensating for unresolved transport or mixing errors. Model--data agreement was quantified using Pearson correlation ($r$), Spearman rank correlation ($\rho$), Kling--Gupta Efficiency (KGE), and percent bias (PBIAS; definitions in Text S3.2).
+
+Given the temporal aliasing inherent in fortnightly sampling, spatial skill was prioritised as the primary validation target, with temporal validation used as a secondary check on seasonal phase and magnitude. This prioritisation is appropriate for a tidally dynamic estuary where observations are sparse relative to sub-monthly variability and where correct reproduction of longitudinal gradients is more diagnostic than point-to-point matching of individual sampling dates. Additional performance diagnostics are provided in Text S3.
+
+## Residence-time and growth--flushing diagnostics {#sec-rt-diagnostics}
+
+The following diagnostics are used to quantify the respective controls of hydrodynamics and phytoplankton physiology on bloom expression, extending the concept of Damköhler numbers from reactor theory to a spatially resolved estuarine domain.
+
+Residence time was computed daily as:
+
+$$
+RT = \frac{V}{|Q|}
+$$ {#eq-rt}
+
+where $V$ (m$^3$) is the total volume of all computational cells within the section (each cell volume = water depth $\times$ cell width $\times$ $\Delta x$) and $Q$ (m$^3$ s$^{-1}$) is the section-mean absolute discharge derived from the tidally averaged residual transport rather than the instantaneous oscillatory tidal flux. Residence time is computed at daily resolution from gridded model outputs. For visualisation in @fig-rt-control a, a 25-day rolling mean is applied; it is used for display only and does not affect any diagnostic calculation.
+
+The net specific growth rate at each cell and time step was defined as:
+
+$$
+\mu_{net} = \mu_{gross}\,(f_N,\, f_I) - \bigl(m_{lin} + m_{quad}\cdot B + m_{sal} + k_{benth}/H + w_s/H\bigr)
+$$ {#eq-munet}
+
+where $\mu_{gross}$ is the nutrient- and light-limited gross growth rate, and the loss terms are linear mortality $m_{lin}$, quadratic density-dependent closure $m_{quad}\cdot B$, salinity-dependent mortality $m_{sal}$, depth-normalised benthic grazing $k_{benth}/H$, and gravitational settling $w_s/H$. Section-mean $\mu_{net}$ is the spatial average across all section cells.
+
+In chemical reactor theory, the Damköhler number compares reaction and transport timescales. Here, this concept was applied to a section of the estuarine domain, focusing on phytoplankton as the reactive variable:
+
+$$
+Da = \mu_{net} \cdot RT
+$$ {#eq-da}
+
+When $Da > 1$, net phytoplankton production exceeds the physical flushing (dilution) rate and biomass can accumulate; when $Da < 1$, flushing dominates and bloom expression is suppressed. An equivalent formulation compares the net growth rate $\mu_{net}$ directly against the dilution rate $1/RT$: blooms develop when $\mu_{net} > 1/RT$. Daily $Da_i = \mu_{net,i} \cdot RT_i$ are computed for each section and then averaged by season; because $\mu_{net}$ and $RT$ co-vary positively, mean($Da$) $\neq$ mean($\mu_{net}$) $\times$ mean($RT$) in general.
+
+To translate the more abstract Damköhler balance into a single ecological and operational benchmark, a four-parameter logistic function was fitted to the scatter of daily ($RT$, Chl-$a$) pairs from all urban-section cells over the 2017--2018 simulation:
+
+$$
+\text{Chl-}a = b + \frac{L}{1 + e^{-k\,(RT - x_0)}}
+$$ {#eq-logistic}
+
+where $L$ is the plateau biomass, $k$ the steepness of the sigmoid transition, $x_0$ the inflection point, and $b$ the background biomass. The inflection $x_0$ is identified as $RT_{crit}$: the residence time at which the Chl-$a$ response rises most steeply and, by the derivative of the logistic, at which $Da \approx 1$ for the prevailing net growth rate (@fig-rt-control b). Below $RT_{crit}$, flushing suppresses biomass accumulation; above it, conditions become increasingly favourable for bloom development. The logistic form was retained because it represents a gradual growth--flushing transition rather than an abrupt step change; fitting details and comparisons with alternative forms are provided in Text S3. Block-bootstrap 95% confidence intervals on $RT_{crit}$ (14-day blocks to account for temporal autocorrelation) are derived from 2,000 resamples of the daily cell-level data.
+
+## SHAP feature attribution analysis {#sec-shap-methodology}
+
+To support interpretation of the simulated bloom regime, SHAP analysis was applied to gradient-boosted tree surrogates trained on daily C-GEM outputs at the three monitoring stations ($n = 709$ per station). This second diagnostic is useful because multiple exogenous forcings co-vary strongly across the monsoon cycle and cannot be ranked transparently from pairwise plots alone. Eighteen exogenous predictors spanning discharge, meteorology, and nutrient/particulate loads were screened by iterative VIF analysis, retaining 13 predictors that were then grouped into hydrodynamics, nutrient loads, and climate/other drivers. Model evaluation used blocked temporal cross-validation to limit leakage from autocorrelation, so the resulting SHAP rankings describe seasonal-scale forcing structure rather than day-to-day forecast skill. The analysis is used here as within-model attribution rather than as independent observational proof; full settings and diagnostics are provided in Text S3.4.

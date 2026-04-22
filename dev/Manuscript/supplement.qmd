@@ -1,0 +1,748 @@
+<!-- supplement.qmd — Combined Appendix + Ablation Study Supplement (all unnumbered) -->
+
+# Supporting information {.unnumbered}
+
+## Table S12. List of abbreviations {.unnumbered}
+
+| Abbreviation | Definition |
+|---|---|
+| BDOC | Biodegradable dissolved organic carbon |
+| BOD$_5$ | Five-day biochemical oxygen demand |
+| CARE | Centre Asiatique de Recherche sur l'Eau |
+| CDOM | Chromophoric dissolved organic matter |
+| CEM | Vietnamese Centre for Environmental Monitoring |
+| C-GEM | Carbon-Generic Estuarine Model |
+| Chl-a | Chlorophyll-a |
+| $Da$ | Damköhler number |
+| DIC | Dissolved inorganic carbon |
+| DIN | Dissolved inorganic nitrogen (NH$_4^+$ + NO$_3^-$) |
+| DO | Dissolved oxygen |
+| DSi | Dissolved silica |
+| GPP | Gross primary production |
+| HCMC | Ho Chi Minh City |
+| KGE | Kling--Gupta Efficiency |
+| NEM | Net ecosystem metabolism |
+| PAR | Photosynthetically active radiation |
+| PBIAS | Percent bias |
+| PIP | Particulate inorganic phosphorus |
+| $RT$ | Residence time |
+| $RT_{crit}$ | Critical residence time (logistic inflection threshold) |
+| SHAP | SHapley Additive exPlanations |
+| SOD | Sediment oxygen demand |
+| SPM | Suspended particulate matter |
+| TA | Total alkalinity |
+| TOC | Total organic carbon |
+| TSS | Total suspended solids |
+| UHSLC | University of Hawaii Sea Level Center |
+| VIF | Variance inflation factor |
+
+: List of abbreviations used in the main text and supporting information. {.unnumbered}
+
+This Supporting Information is organised to let readers locate the model structure quickly. The abbreviation list (Table S12) and structural overview (Table S9) are placed first for navigation, while the main manuscript retains the headline findings and this supplement provides the full equations, extended validation, sensitivity tests, and secondary diagnostics that support them. Text S1 summarises the governing equations, carbonate solver, and forcing data; Text S2 distinguishes inherited C-GEM formulations from the new Saigon adaptations; Text S3 provides calibration, validation, and SHAP settings; and Text S4 documents the structural ablation analysis.
+
+## Table S9. Structural adaptations summary {.unnumbered}
+
+| Process category | Original C-GEM (Volta et al. 2014/2016; Wei et al. 2022) | Saigon adaptation (this study) | Rationale | Generalisability |
+|---|---|---|---|---|
+| Phytoplankton mortality | Linear first-order: $k_{mort} \cdot Phy$ | Three-term: linear + quadratic density-dependent + salinity stress | Bloom cap without explicit zooplankton; freshwater diatom die-off | Universal (quadratic closure: Fennel et al. 2011); tropical (salinity stress: any estuary with freshwater blooms) |
+| Benthic grazing | Not represented | Depth-dependent: $k_{benth}/H \cdot Phy$ | Spatial bloom confinement to deep urban channel | Universal (Cloern 1982; shallow estuarine models) |
+| Light attenuation | Three-component ($k_{bg} + k_{SPM} \cdot SPM + k_{Phy} \cdot Phy$) | Four-component: adds CDOM absorption ($k_{CDOM} \cdot DOC$) + spatially varying $k_{bg}(x)$ via tanh distance blend + discharge-driven turbidity $K_{D,flow}$ | Urban DOC attenuates PAR; terrigenous DOM gradient; high-flow resuspension | Universal (CDOM: Kirk 2010); tropical (discharge-KD: any monsoon estuary) |
+| Sediment oxygen demand | Implicit (no explicit SOD term) | Explicit: $(r_{SOD}/H) \cdot f(O_2) \cdot f(TOC)$ | 14--50% of total ecosystem respiration | Universal (Chapra 1997; QUAL2E) |
+| Fast labile BDOC pathway | Single aerobic degradation rate ($k_{ox}$) for all organic matter | Dual-rate: standard $R_{adegrad}$ + fast labile $R_{cbod} = k_{cbod} \cdot f(TOC) \cdot f(O_2)$ | Urban wastewater bimodal organic carbon reactivity | Universal (any wastewater-impacted system; QUAL2E) |
+| Phosphorus cycling | Simple Redfield uptake/release | Langmuir isotherm adsorption--desorption onto SPM + burial | Iron-rich tropical sediments exhibit strong P-binding | Universal (RIVE; Garnier et al. 2005) |
+| Phytoplankton settling | Not represented | Differential sinking $w_s/H$ per phytoplankton group | Depth-dependent removal preferentially clears shallow reaches | Universal (standard NPZD term) |
+| Silica cycling | No biogenic Si dissolution | Fractional BSi dissolution from diatom mortality: $Si_{regen} = red_{Si} \cdot L_{mort,1} \cdot k_{si,diss}$ | Recycles diatom-bound Si to support continued DSi uptake | Universal (RIVE; diatom models) |
+
+: Eleven new biogeochemical process equations added to the original C-GEM framework (Volta et al. 2014/2016; Wei et al. 2022) for the Saigon River tropical application. The Generalisability column indicates whether each process is universal (applicable to any estuary), applicable to any tropical/monsoon estuary, or applicable to any wastewater-impacted system. Compound rows (phytoplankton mortality: quadratic + salinity; light attenuation: CDOM + spatially varying $k_{bg}$ + discharge-driven $K_{D,flow}$) contain multiple individual modifications. No process is specific to the Saigon estuary. Excluded: transient hydrodynamic forcing (already supported by Wei et al. 2022), recalibrated rate constants (standard for regional applications), and numerical solver changes. {.unnumbered}
+
+## Text S1. Model formulation and process equations {.unnumbered}
+
+### S1.1 Domain discretisation and temporal configuration {.unnumbered}
+
+The ~202 km estuary was discretised at $\Delta x$ = 2 km (102 grid cells; Table S1), with canal inputs applied as localised mass sources concentrated in the urban bloom hotspot (km 78--90). Simulations were run with $\Delta t$ = 360 s (6 minutes). Model outputs were written at daily intervals (86,400 s), consistent with the seasonal validation focus and sampling frequency.
+
+State variables and diagnostics are written after all processes for the current time step have been applied (hydrodynamics, transport, biogeochemical reactions, and suspended-sediment update). Output timestamps are mapped to calendar dates as:
+
+$$
+\mathrm{Date}(t) = \mathrm{SIM\_START\_DATE} + \max\left(0,\ \frac{t}{86400} - \mathrm{WARMUP}\right)
+$$
+
+where $t$ is model time in seconds. The default transient setup corresponds to 100 warmup days plus 730 post-warmup simulation days, covering 2017--2018. Warmup duration was selected by inspection of salinity and phytoplankton time series reaching <1% change from asymptotic values by day ~80.
+
+### S1.2 Biogeochemical process equations {.unnumbered}
+
+**Primary production.** Phytoplankton growth uses multiplicative Monod nutrient limitation and depth-integrated Jassby--Platt light response:
+
+$$
+\mu = P^B_{max} \cdot f(T) \cdot f(N) \cdot f(P) \cdot [f(Si)] \cdot f(I)
+$$ {#eq-growth .unnumbered}
+
+Salinity effects on freshwater phytoplankton are represented exclusively through the loss-side salinity mortality term (Eq. @eq-mortality), which increases biomass loss in saline waters. This approach follows the convention that osmotic stress primarily drives cell lysis rather than growth inhibition [@VanderborghtJean-Pierre2007].
+
+Nutrient limitation follows:
+
+$$
+f(N) = \frac{DIN}{DIN + K_N}, \quad f(P) = \frac{PO_4}{PO_4 + K_P}, \quad f(Si) = \frac{DSi}{DSi + K_{Si}}
+$$ {#eq-nutrient-lim .unnumbered}
+
+and the depth-integrated light function uses:
+
+$$
+f(I) = \frac{1}{K_D \cdot H} \int_0^{K_D \cdot H} \tanh\left(\frac{I_0 \cdot e^{-\xi}}{I_{opt}}\right) d\xi
+$$ {#eq-light-integration .unnumbered}
+
+**Four-component light attenuation with spatial and seasonal modulation:**
+
+$$
+K_D = k_{bg}(x) + k_{TSS} \cdot SPM + k_{Phy} \cdot (Phy_1 + Phy_2) + k_{CDOM} \cdot DOC + K_{D,flow}
+$$ {#eq-kd .unnumbered}
+
+where the background light extinction varies spatially to reflect the longitudinal gradient in dissolved organic matter and humic substances typical of tropical rivers [@Kirk2010]:
+
+$$
+k_{bg}(x) = k_{bg,0} + k_{bg,up} \cdot \tfrac{1}{2}\left[1 + \tanh\!\left(\frac{x - x_{trans}}{L_b}\right)\right]
+$$ {#eq-kbg-spatial .unnumbered}
+
+with $k_{bg,0}$ = 0.023 m$^{-1}$ (downstream baseline), $k_{bg,up}$ = 2.0 m$^{-1}$ (upstream excess attenuation), $x_{trans}$ = 80 km (transition midpoint), and $L_b$ = 5 km (transition half-width). The tanh blend produces a smooth, physically motivated transition that uses distance from the estuary mouth (km) rather than grid-cell indices, ensuring transferability. The elevated upstream value ($k_{bg,up}$) reflects the high concentrations of terrigenous dissolved organic matter and humic/fulvic acids characteristic of tropical lowland rivers draining peatland and agricultural catchments. We emphasise that $k_{bg,up}$ functions as an empirical effective $K_d$ increment: it is additive to the SPM-dependent component ($k_{SPM} \cdot SPM$) and the CDOM term ($k_{CDOM} \cdot DOC$), so the total modelled $K_d(PAR)$ at upstream stations (km 114--156) is 2.7--2.8 m$^{-1}$, corresponding to a euphotic depth of 1.7 m. This is within the reported $K_d(PAR)$ range of 2--10 m$^{-1}$ for turbid tropical rivers draining laterite and agricultural catchments [@Kirk2010]. The upstream $K_d$ is primarily a structural hypothesis that captures the combined effect of dissolved humic substances, fine mineral particles not fully resolved by the modelled SPM, and chromophoric DOM; *in situ* $K_d$ profile measurements or satellite-derived diffuse attenuation data in the upstream Saigon reach would allow direct validation and potential refinement of this parameter.
+
+A discharge-driven turbidity term captures the excess light attenuation during high-flow events:
+
+$$
+K_{D,flow} = k_{turb,Q} \cdot \max\!\left(0,\;\frac{Q}{Q_{ref}} - 1\right)^{\alpha_{turb}}
+$$ {#eq-kd-flow .unnumbered}
+
+with $k_{turb,Q}$ = 3.0 m$^{-1}$ (excess-discharge turbidity coefficient), $Q_{ref}$ = 90.0 m$^3$ s$^{-1}$ (set above May discharge to protect the dry-to-wet transition month), and $\alpha_{turb}$ = 0.5 (square-root scaling). This formulation applies uniformly along the estuary and activates only when upstream discharge exceeds the reference threshold, representing the well-documented increase in fine sediment load during monsoon freshets that is not fully captured by the SPM state variable alone.
+
+**Three-term phytoplankton loss formulation:**
+
+$$
+L_{total} = \underbrace{m_0 \cdot 1.067^{(T-20)} \cdot f_{trop}(T) \cdot Phy}_{\text{linear mortality}} + \underbrace{k_{mort2} \cdot Phy^2}_{\text{quadratic closure}} + \underbrace{k_{sal} \cdot \frac{S^2}{S^2 + S_{tol}^2} \cdot Phy}_{\text{salinity stress}}
+$$ {#eq-mortality .unnumbered}
+
+The linear mortality rate ($m_0$ = 0.05 d$^{-1}$ at 20$^\circ$C) replaces the original Fortran temperature function ($\exp(0.07 \cdot (T-20))$) with $1.067^{(T-20)}$ to align its temperature sensitivity with photosynthesis and prevent metabolic runaway at tropical temperatures. The base rate falls within the 0.02--0.2 d$^{-1}$ range documented for phytoplankton [@Reynolds2006] and represents only one of five concurrent loss pathways. At Bach Dang during dry-season bloom conditions ($Phy$ $=$ 50 mmol C m$^{-3}$, $H$ = 18.5 m, $S$ $=$ 5), the total specific loss rate is 0.46 d$^{-1}$ excluding salinity mortality (benthic grazing 0.23, settling 0.09, quadratic closure 0.09, linear mortality 0.05 d$^{-1}$), rising to 1.3 d$^{-1}$ with the salinity term. This composite loss rate (0.4--0.7 d$^{-1}$ in freshwater reaches) is within the total mortality range for diatom-dominated estuarine assemblages (0.2--0.6 d$^{-1}$; @Reynolds2006).
+
+**Depth-dependent benthic grazing and settling:**
+
+$$
+L_{benth} = \frac{k_{benth}}{H} \cdot Phy, \quad L_{sink} = \frac{w_s}{H} \cdot Phy
+$$ {#eq-benthic .unnumbered}
+
+**Aerobic degradation (dual pathway):**
+$$
+R_{ox} = k_{ox} \cdot 2.5^{\frac{T-20}{10}} \cdot f_{trop}(T) \cdot \frac{O_2}{O_2 + K_{O_2}} \cdot TOC
+$$ {#eq-aerobic .unnumbered}
+
+$$
+R_{cbod} = k_{cbod} \cdot \frac{TOC}{TOC + K_{TOC_{fast}}} \cdot \frac{O_2}{O_2 + K_{O_2,cbod}} \cdot TOC
+$$ {#eq-cbod .unnumbered}
+
+**Nitrification and denitrification:**
+$$
+R_{nit} = k_{nit} \cdot 1.08^{(T-20)} \cdot f_{trop}(T) \cdot \frac{O_2}{O_2 + K_{O_2,nit}} \cdot NH_4^+
+$$ {#eq-nitrification .unnumbered}
+
+$$
+R_{den} = k_{den} \cdot 1.07^{(T-20)} \cdot f_{trop}(T) \cdot \frac{K_{inO_2}}{O_2 + K_{inO_2}} \cdot \frac{TOC}{TOC + K_{TOC}} \cdot \frac{NO_3^-}{NO_3^- + K_{NO_3}}
+$$ {#eq-denitrification .unnumbered}
+
+**Sediment oxygen demand:**
+
+$$
+SOD = \frac{r_{SOD}}{H} \cdot \frac{O_2}{O_2 + K_{O_2,SOD}} \cdot f(TOC)
+$$ {#eq-sod .unnumbered}
+
+where $r_{SOD}$ = 8.0 g O$_2$ m$^{-2}$ d$^{-1}$ is the base areal flux. The Monod modulation by dissolved oxygen ($K_{O_2,SOD}$ = 31 mmol m$^{-3}$) and total organic carbon ($K_{TOC}$ = 60 mmol C m$^{-3}$) reduces the effective SOD flux to 3--6 g O$_2$ m$^{-2}$ d$^{-1}$ in the urban corridor ($f_{O_2}$ $=$ 0.5--0.8, $f_{TOC}$ $=$ 0.7--0.9), consistent with benthic chamber measurements in eutrophic tropical rivers and near-outfall zones (2--10 g O$_2$ m$^{-2}$ d$^{-1}$).
+
+**Phosphate adsorption--desorption (Langmuir):**
+
+$$
+PIP_{eq} = P_{ac} \cdot SPM \cdot \frac{PO_4}{PO_4 + K_{ps}}
+$$ {#eq-p-adsorption .unnumbered}
+
+$$
+R_{PIP\_burial} = \frac{w_{sed}}{H} \cdot PIP
+$$ {#eq-p-burial .unnumbered}
+
+**NH$_4^+$ preference for uptake:**
+
+$$
+p_{NH_4} = \frac{NH_4^+}{NH_4^+ + K_{sw}}
+$$ {#eq-nh4-pref .unnumbered}
+
+### S1.3 Carbonate system solver {.unnumbered}
+
+As described in the main text, DIC and total alkalinity (TA) are prognostic state variables and the carbonate solver uses a bisection algorithm in pH-space. The full alkalinity definition is:
+
+$$
+TA = [HCO_3^-] + 2[CO_3^{2-}] + [B(OH)_4^-] + [OH^-] - [H^+] + [NH_4^+] - [NO_3^-]
+$$ {#eq-ta .unnumbered}
+
+Diagnostic outputs (CO$_2$(aq), pH, $pCO_2$) are computed from DIC/TA each time step, ensuring thermodynamic consistency.
+
+The model does not explicitly resolve sulfate reduction; however, the alkalinity bookkeeping implicitly captures the net effect of anaerobic carbon oxidation pathways on acid--base balance through the denitrification term [@DaFei2024], consistent with the approach used in the Scheldt and Chesapeake estuarine models where alkalinity generation from anaerobic processes counterbalances nitrification-driven consumption [@HuXinping2011; @HofmannAndreasF.2008].
+
+## Text S1.4 Boundary conditions and data provenance {.unnumbered}
+
+### S1.4.1 Air--water CO$_2$ flux formulation {.unnumbered}
+
+Air--water CO$_2$ flux ($F_{CO2}$, mmol C m$^{-2}$ d$^{-1}$) is calculated at each time step according to:
+
+$$
+F_{CO2} = k_{CO2} \cdot K_0 \cdot (pCO_{2,water} - pCO_{2,air})
+$$ {#eq-co2-flux .unnumbered}
+
+where $K_0$ is the temperature- and salinity-dependent Henry's law solubility constant and $pCO_{2,air}$ is set to an atmospheric background of 410 $\mu$atm (constant; temperature-independent). The transfer velocity $k_{CO2}$ is scaled from the oxygen piston velocity ($k_{O2}$) using a constant Schmidt number ratio factor of 0.913. In turn, $k_{O2}$ parameterises both flow-induced turbulence and wind-driven exchange as:
+
+$$
+k_{O2} = \sqrt{\frac{u \cdot D_{O2}}{H}} + 0.31 \cdot u_{10}^2 \cdot \left(\frac{Sc}{660}\right)^{-0.5}
+$$ {#eq-ko2 .unnumbered}
+
+where $D_{O2}$ is the temperature-dependent molecular diffusion coefficient, $u$ is water velocity, $H$ is depth, $u_{10}$ is wind speed at 10 m height, and $Sc$ is the Schmidt number for CO$_2$. The wind-driven coefficient of 0.31 follows a standard quadratic wind-speed gas-transfer parameterisation for moderate-to-high wind speeds; users with instantaneous wind-speed data should verify that this coefficient is appropriate for their temporal resolution. Total estuarine CO$_2$ evasion (Gg C yr$^{-1}$) is derived by area-weighting the simulated daily mean areal fluxes across all wet cells in the 200 km domain, integrated over the 2017--2018 annual cycle. The manuscript reports this value as the central estimate from the reference gas-transfer parameterisation; formal propagation of uncertainty in gas-transfer velocity and interannual forcing mismatch is beyond the scope of the present study.
+
+### S1.4.2 Hydrological and boundary condition data {.unnumbered}
+
+**Hydrological forcing.** Monthly discharge at the upstream boundary (Dau Tieng Reservoir outlet) and major tributaries (Thi Tinh River, urban canals) was obtained from the Vietnamese Centre for Environmental Monitoring (CEM) for 2017--2018 as monthly averages derived from daily gauging records. While higher temporal resolution data (10-minute intervals) exist for limited periods [@CamenenB.2021], the consistent monthly series was selected to ensure uniform coverage across the full simulation period. Hourly tidal elevation at the estuarine mouth was extracted from the University of Hawaii Sea Level Center (UHSLC) global tide gauge database (https://uhslc.soest.hawaii.edu/, accessed 10 February 2021), providing the temporal resolution required for semi-diurnal tidal variability (M$_2$ period = 12.42 h) and spring--neap modulation (~14-day cycle). Observed tidal range at interior stations (BP: km 94, PC: km 114, BS: km 156) was provided by the Vietnamese Centre for Water Management and Climate Change (WACC).
+
+**Climatic forcing.** Solar radiation was obtained from the meteorological station operated by the Centre Asiatique de Recherche sur l'Eau (CARE) in HCMC, ~10 km from the Saigon River, and applied uniformly along the 200-km domain as a first-order approximation. Monthly wind speed climatology was compiled from HCMC Statistical Office archives. Water temperature was measured during fortnightly CARE surveys at multiple stations.
+
+**Water quality monitoring.** Two separate programmes provide the observational basis. The CEM monthly programme conducted longitudinal surveys at 6--7 stations, measuring DO, BOD$_5$, NH$_4^+$, PO$_4^{3-}$, and TSS during 2017--2018. The CARE fortnightly programme monitored three key stations (Bach Dang km 70, Phu Cuong km 114, Nha Be km 44), measuring Chl-a, TOC, DSi, and NO$_3^-$ in addition to CEM parameters. Analytical methods: NH$_4^+$ and PO$_4^{3-}$ by colorimetry (detection limits: 0.01 mg N L$^{-1}$ and 0.005 mg P L$^{-1}$); NO$_3^-$ by ion chromatography; DSi by molybdenum blue method; TOC by high-temperature catalytic oxidation (Shimadzu TOC analyser); Chl-a by fluorometric analysis following acetone extraction; DO by Winkler titration or optical probe; TSS by gravimetric analysis (Whatman GF/F, 0.7 $\mu$m).
+
+**Biogeochemical boundary conditions.** Upstream and marine boundary conditions for state variables were specified using seasonally varying endmembers. Supplementary longitudinal profile surveys during 2019--2020 dry and rainy seasons constrained boundary concentrations. Upstream boundary concentrations at the Dau Tieng Reservoir outlet were specified using dry-season measurements at the km 76 monitoring station; survey comparisons confirmed minimal transformation in the intervening reach. Marine-endmember concentrations were approximated using seasonal averages from downstream survey campaigns.
+
+Urban canal tributary water quality was prescribed using observation-based seasonal cycles: nutrient concentrations (NH$_4^+$, PO$_4^{3-}$) exhibit monsoon dilution (30--50% reduction in May--August) as rainfall flushes urban canals and dilutes dry-season wastewater baseflow [@NguyenNgocTuyet2019]. Canal phytoplankton boundary conditions follow a seasonal pattern consistent with field observations: moderate dry-season concentrations (~30--50 mmol C m$^{-3}$, ~25--40 $\mu$g Chl-a L$^{-1}$) decline to ~10 mmol C m$^{-3}$ (~8 $\mu$g Chl-a L$^{-1}$) in the wet season due to monsoon flushing and elevated turbidity (SPM > 150 mg L$^{-1}$), yielding a dry/wet ratio of ~5:1 that is consistent with measured canal Chl-a (dry ~50 $\mu$g L$^{-1}$, wet ~8 $\mu$g L$^{-1}$; @NguyenNgocTuyet2019). The Thi Tinh tributary (km 122) was prescribed with seasonal nutrient boundary conditions reflecting its mixed urban--agricultural character: NH$_4^+$ (dry $=$ 40, wet $=$ 10 mmol N m$^{-3}$) and NO$_3^-$ (dry $=$ 20, wet $=$ 8 mmol N m$^{-3}$).
+
+
+## Text S2. Structural adaptations from the original C-GEM framework {.unnumbered}
+
+The Saigon River application required substantial structural modifications to the original C-GEM framework developed for temperate European estuaries [@VoltaC.2014; @VoltaC.2016]. Although the transient version [@WeiXi2022] already supports time-variable forcing, applying it to a hyper-eutrophic tropical megacity estuary with year-round high temperatures (26--32$^\circ$C), intense wastewater loading ($pCO_2$ > 10,000 $\mu$atm), monsoon-driven >7-fold discharge variability, and complex urban canal networks required eleven new biogeochemical process equations beyond standard parameter recalibration. This section distinguishes inherited C-GEM formulations from changes introduced specifically for the Saigon application; Table S9 summarises those changes.
+
+**Transient forcing deployment.** The transient C-GEM framework [@VoltaC.2016; @WeiXi2022] already supports time-variable discharge and tidal boundary conditions. The Saigon deployment uses that capability with hourly tidal elevation, daily-to-monthly discharge time series, seasonally varying meteorology, and observation-based seasonal boundary conditions for phytoplankton, nutrients, and organic carbon. The transient framework itself is therefore inherited; the new elements are the process equations described below.
+
+**Phytoplankton loss formulation.** The original C-GEM employed a single linear mortality term ($k_{mort} \cdot Phy$). This formulation is insufficient for the Saigon system for three reasons: (i) without density-dependent feedback, the linear closure permits unrealistic biomass accumulation during extended dry-season residence times; (ii) freshwater diatoms transported into the mixing zone experience osmotic stress mortality not represented in the original code; and (iii) depth-dependent benthic grazing ($k_{bg}/H$) addresses the observed spatial confinement of blooms to the deep urban channel.
+
+**Light attenuation and optical properties.** The original three-component light attenuation model was extended to four components by adding chromophoric dissolved organic matter (CDOM) absorption. Urban wastewater discharge introduces substantial dissolved organic carbon (DOC > 5 mg C L$^{-1}$) that absorbs strongly in the PAR waveband. In the Saigon River, the model estimates that CDOM contributes 15--25% of total light attenuation in the urban corridor, consistent with published ranges for DOC-rich estuaries [@Kirk2010].
+
+**Carbonate system solver.** The original iterative scheme can fail to converge at the high supersaturation ($pCO_2$ > 10,000 $\mu$atm) and low pH (< 6.5) encountered in the Saigon urban corridor. The bisection solver in pH-space converges unconditionally for any physically realisable DIC/TA combination.
+
+**Sediment oxygen demand and fast BDOC oxidation.** The original C-GEM lacked an explicit SOD parameterisation. For the Saigon system, where benthic O$_2$ demand contributes 14--50% of total ecosystem respiration depending on water depth, an explicit SOD term was added. Similarly, a fast labile BDOC oxidation pathway operating in parallel with standard TOC degradation addresses the bimodal reactivity of the urban organic carbon pool.
+
+**Relationship to the RIVE biogeochemical model.** Six of the eleven new process equations draw on formulations established in the RIVE biogeochemical model [@WangShuaitao2024], a long-standing river water-quality framework with explicit bacterial groups, multiple biodegradability classes of organic matter, zooplankton, phytoplankton functional types, Langmuir phosphorus sorption, a diagenetic sediment layer, and periphyton dynamics [@BillenGilles1994; @GarnierJosette1995; @LeThiPhuongQuynh2015]. RIVE has been validated in temperate European systems and in the subtropical Red River, and resolves these processes with considerably greater mechanistic detail than C-GEM requires or the Saigon monitoring network can constrain.
+
+**Adopted processes and simplifications.** For each adopted process, RIVE's mechanistic formulation and our reduced-form adaptation are summarised below:
+
+(i) **Dual-rate organic matter decomposition.** RIVE tracks six organic matter pools (DOM$_1$--DOM$_3$, POM$_1$--POM$_3$) with bacteria-mediated Michaelis--Menten hydrolysis: decomposition rates depend explicitly on bacterial biomass and substrate affinity constants for each biodegradability class. We retained the conceptual distinction between fast and slow pools but collapsed them into a bulk TOC state variable with two parallel first-order aerobic pathways ($k_{ox}$, $k_{cbod,fast}$), eliminating the need for explicit bacterial state variables while preserving the bimodal reactivity of the urban organic carbon pool.
+
+(ii) **Langmuir phosphate adsorption--desorption.** RIVE implements both kinetic adsorption (damped relaxation) and Freundlich isotherm variants; its Python implementation (`py-rive`) solves a closed-form quadratic Langmuir equilibrium for PO$_4$ partitioning given total inorganic phosphorus and SPM concentration. We adopted the Langmuir formulation with an implicit kinetic relaxation scheme ($PIP_{new} = (PIP_{old} + k_{ads} \Delta t \cdot PIP_{eq}) / (1 + k_{ads} \Delta t)$), using literature-informed priors for adsorption capacity and half-saturation from Saigon River sediment experiments [@NguyenNgocTuyet2019a].
+
+(iii) **Phytoplankton gravitational settling.** RIVE assigns species-specific settling velocities coupled to an explicit sediment compartment with erosion and porosity dynamics. We simplified this to a single depth-scaled sinking loss ($w_s/H$) applied uniformly to each phytoplankton group, without tracking a benthic phytoplankton pool.
+
+(iv) **Depth-dependent benthic grazing.** RIVE resolves pelagic zooplankton grazing via Michaelis--Menten functional responses, and its Python implementation includes explicit benthic filter-feeder terms scaled by mussel biomass density and water depth. We adopted the depth-dependent concept ($k_{benth}/H$) but replaced the explicit mussel biomass state variable with a single effective clearance rate parameter, appropriate for systems lacking benthic macrofauna survey data.
+
+(v) **Sediment oxygen demand.** In RIVE, SOD emerges from coupled benthic-layer biogeochemistry: organic matter decomposition, bacterial respiration, and turbulent diffusive exchange across the sediment--water interface are resolved explicitly within a structured sediment compartment. We parameterised this as an areal flux modulated by Monod terms for dissolved oxygen and TOC ($r_{SOD}/H \cdot f(O_2) \cdot f(TOC)$), capturing the first-order sensitivity to oxygen depletion and organic loading without requiring the extensive sediment characterisation data (porosity, burial rates, diffusion coefficients) that the diagenetic approach demands.
+
+(vi) **Biogenic silica dissolution from diatom mortality.** RIVE tracks biogenic silica (BSi) as an explicit particulate state variable in both the water column and the benthic compartment, with temperature- and saturation-dependent dissolution kinetics ($k_{bSi} \cdot BSi \cdot (1 - DSi/Si_{sat})$) and benthic recycling fluxes ($DSi_{fluxBent} = -f_{SiO} \cdot SiDissRate$). We simplified this to a water-column-only fractional dissolution: a fixed fraction ($k_{si,diss}$ = 0.5) of the biogenic Si released by linear diatom mortality is instantaneously returned to the dissolved Si pool ($Si_{regen} = red_{Si} \cdot L_{mort,1} \cdot k_{si,diss}$), without tracking BSi as a separate state variable or resolving benthic Si dynamics.
+
+**Processes not adopted from RIVE.** Several major RIVE process families were deliberately excluded from the C-GEM adaptation because they would introduce state variables and calibration targets that cannot be constrained by the available Saigon monitoring data, or because they address freshwater-specific dynamics that are not relevant to C-GEM's estuarine domain:
+
+(i) **Explicit bacterial functional groups.** RIVE tracks four to six bacterial populations (small and large heterotrophs, ammonia- and nitrite-oxidising nitrifiers), each with growth, maintenance, and substrate-switching kinetics. Adopting these would multiply the identifiable parameter space while the Saigon monitoring network provides no bacterial biomass or activity measurements for calibration.
+
+(ii) **Multi-group zooplankton dynamics.** RIVE maintains two zooplankton size classes (rotifers and copepods/cladocerans) with group-specific grazing, assimilation, and mortality. C-GEM's effective quadratic closure ($k_{mort2} \cdot Phy^2$) and parameterised benthic grazing provide functional equivalents without requiring zooplankton abundance data.
+
+(iii) **Periphyton and scouring.** RIVE includes an attached-algae compartment with shear-dependent scouring and reattachment. In the deep, tidally dominated Saigon channel ($H$ = 6--20 m), benthic light levels are negligible (< 0.1% surface PAR) and periphyton contributions to primary production are expected to be minimal.
+
+(iv) **Full multi-class organic matter stoichiometry.** RIVE maintains class-specific C:N:P ratios for each of its six organic matter pools, enabling detailed elemental cycling. With only bulk TOC and BOD$_5$ observations available, resolving this stoichiometric detail would be under-constrained and prone to equifinality.
+
+(v) **Diagenetic sediment-layer state evolution.** RIVE tracks sediment mass, porosity, density, erosion availability, and dissolved-phase diffusion within an explicit benthic compartment. This mechanistic treatment requires sediment core data (organic content, pore-water profiles) that are unavailable for the Saigon system.
+
+(vi) **Fecal indicator bacteria and greenhouse gases.** RIVE optionally tracks fecal coliforms and N$_2$O/CH$_4$ as prognostic variables. These are orthogonal to the current C-GEM focus on eutrophication and carbonate chemistry.
+
+(vii) **Macrophytes and macro-algae.** RIVE includes submerged and floating macrophyte compartments with light- and nutrient-dependent growth, self-shading, and seasonal senescence. Floating macrophytes (water hyacinth, water lettuce) are observed in portions of the Saigon urban canals and at low-flow upstream reaches; however, their areal coverage is limited to shallow margins and stagnant side channels that are not resolved by the 1D cross-section-averaged framework. Including macrophytes would require spatially explicit habitat delineation and biomass survey data that are currently unavailable.
+
+Overall, the six adopted formulations retain the conceptual insights of RIVE while reducing the state dimension from ~30 to 13 variables and the number of biogeochemical parameters from >100 to ~40, consistent with the monitoring density achievable in data-scarce tropical megacity estuaries. The remaining five process equations address established estuarine mechanisms absent from the original C-GEM and RIVE: quadratic density-dependent mortality [@FennelK.2011], salinity osmotic stress [@VanderborghtJean-Pierre2007], CDOM light attenuation [@Kirk2010], spatially varying background extinction, and discharge-driven turbidity [@UnclesR.J.2002; @FettweisMichael2006]. These processes are not Saigon-specific and should be relevant to other tropical urban estuaries with strong monsoon hydrology.
+
+## Text S3. Calibration and validation details {.unnumbered}
+
+### S3.1 Hierarchical calibration protocol {.unnumbered}
+
+Calibration followed a hierarchical approach:
+
+1. **Hydrodynamic parameters** (tidal range, salinity intrusion): Chézy coefficients, storage ratios, and dispersion parameters were tuned to match tidal range at three stations and the seasonal salinity intrusion limit.
+2. **Sediment parameters** (SPM magnitude): Erosion coefficient and critical shear stress were adjusted to reproduce longitudinal SPM gradients.
+3. **Biogeochemical rates**: Using literature-informed priors (Table S3), rates were iteratively adjusted to minimise multi-variable bias across all monitoring stations.
+
+### S3.2 Metric definitions {.unnumbered}
+
+Model-data agreement was quantified using four metrics:
+
+$$
+r = \frac{\sum (O_i - \bar{O})(M_i - \bar{M})}{\sqrt{\sum (O_i - \bar{O})^2 \sum (M_i - \bar{M})^2}}
+$$ {#eq-pearson}
+
+$$
+\text{KGE} = 1 - \sqrt{(r - 1)^2 + \left(\frac{\sigma_M}{\sigma_O} - 1\right)^2 + \left(\frac{\bar{M}}{\bar{O}} - 1\right)^2}
+$$ {#eq-kge}
+
+where $O_i$ and $M_i$ are observed and modelled values, respectively, and $\sigma$ denotes the standard deviation. The KGE integrates correlation, bias ratio, and variability ratio into a single metric; KGE = 1 is perfect, KGE < $-0.41$ is worse than the climatological mean.
+
+- **Pearson $r$** (@eq-pearson): Linear correlation between modelled and observed temporal series at each station.
+- **Spearman $\rho$**: The Pearson correlation of rank-transformed values; provides a nonparametric measure of spatial agreement that is more reliable for small samples and non-normal distributions.
+- **KGE** (@eq-kge): Kling--Gupta Efficiency; uses Pearson $r$ internally.
+- **Percent bias (PBIAS)**: $100 \times (\bar{M} - \bar{O})/\bar{O}$; systematic over- or under-estimation as a percentage of observed mean.
+
+### S3.3 Warmup verification {.unnumbered}
+
+The 100-day warmup was verified by inspecting salinity and phytoplankton time series convergence. Concentrations reached <1% change from asymptotic values by day ~80, confirming adequate spin-up from initial conditions.
+
+### S3.4 SHAP surrogate model specification {.unnumbered}
+
+The gradient-boosted tree (GBT) surrogate for external-forcing attribution used `GradientBoostingRegressor` from `scikit-learn` with the following hyperparameters: `n_estimators` = 500, `max_depth` = 3, `learning_rate` = 0.05, `min_samples_leaf` = 10, `subsample` = 0.8, `n_iter_no_change` = 15, `validation_fraction` = 0.15. The target variable was log-transformed phytoplankton biomass ($\ln(1 + \text{Phy}_1)$).
+
+Iterative VIF screening (threshold 10) removed five collinear features from the initial set of 18 candidate predictors: $Q_{urban}$ (merged Vam Thuat + canal discharge), $Q_{Thi\ Tinh}$, $Q_{upstream,t-14}$, canal NH$_4^+$ load, and upstream Si load, retaining 13 features at all three monitoring stations.
+
+Temporal cross-validation used `TimeSeriesSplit` ($k$ = 3, gap = 7 days) to prevent data leakage from daily autocorrelation, following blocked temporal cross-validation practice recommended for biogeochemical time series where serial correlation can inflate apparent skill [@ButenschonMomme2016; @IrbyIsaacD.2016].
+
+Ranking stability was assessed in three ways. First, a Random Forest surrogate (`RandomForestRegressor`, 300 trees, same feature set) was fitted independently and produced concordant feature rankings (Spearman $\rho$ between GBT and RF importance vectors: 0.82 at Bach Dang, 0.56 at Nha Be, 0.81 at Phu Cuong; all $p < 0.05$). Second, the group-level hierarchy (flow 37--62%, nutrients 21--40%, climate/other 14--22%) was preserved across stations, with lagged upstream discharge consistently the top-ranked individual feature. Third, a temporal-resolution sensitivity test was performed by repeating the full GBT--SHAP pipeline on weekly-aggregated data ($n \approx 103$ per station). Weekly surrogates preserved the same feature hierarchy: $Q_{upstream,t-21}$ remained the top-ranked feature at all three stations (26--46%), and the grouped hydrodynamic contribution (38--61%) was consistent with the daily analysis (37--62%). Cross-validated $R^2$ remained negative at weekly resolution ($-1.20$ to $-0.36$), confirming that the negative $R^2_\text{CV}$ reflects the fundamental limitation of blocked temporal validation with $\leq 2$ complete seasonal cycles rather than day-to-day autocorrelation noise. These results show that the qualitative attribution structure is stable across model class, spatial location, and temporal resolution.
+
+### S3.5 Non-standard parameter justification: $P^B_{max}$, $K_N$, and $k_{turb}$ {.unnumbered}
+
+Three parameters require explicit discussion: $P^B_{max}$ = 30.0 d$^{-1}$ at 20$^\circ$C, $K_N$ = 20 mmol N m$^{-3}$, and $k_{turb}$ = 3.0 m$^{-1}$.
+
+$P^B_{max}$ exceeds typical literature maxima for diatoms, which generally span up to 12 d$^{-1}$ in estuarine compilations [@VoltaChiara2016], and functions as an effective calibration coefficient that compensates for structural underestimation of near-surface irradiance in the depth-averaged framework. In the urban corridor, the euphotic depth ($Z_{eu} \approx$ 1.4 m) is a small fraction of the water column ($H \approx$ 18.5 m), yielding a geometric dilution ratio $H/Z_{eu} \approx$ 13. Distributing production uniformly over the full depth biases depth-averaged growth downward by approximately this factor, so $P^B_{max}$ must be scaled upward by a comparable amount to reproduce observed biomass; the 14-fold increase relative to the Scheldt parameterisation ($P^B_{max,Scheldt}$ = 2.2 d$^{-1}$) is consistent with this geometric correction. This effective coefficient is therefore specific to the present depth-averaged Saigon setup and should not be transferred directly to vertically resolved or 3D models without reparameterisation.
+
+The light-limited initial slope $\alpha_{Phy}$ is jointly calibrated with $P^B_{max}$ (10$\times$ the Scheldt value), forming a compensatory $\{P^B_{max}, \alpha\}$ pair that preserves the shape of the P--I curve while rescaling it for the 1D depth-averaged framework; the implied light-saturation parameter $E_k = P^B_{max}/\alpha$ = 87 W m$^{-2}$ aligns well with optimal light intensities independently parameterized for pelagic coastal diatoms, such as 121.6 W m$^{-2}$ in highly turbid estuaries [@WangYihe2019], and falls within typical photosynthesis-irradiance ranges for estuarine communities [@DijkstraYoeriM.2019].
+
+$K_N$ exceeds the range commonly cited for temperate diatoms (1--10 mmol N m$^{-3}$; @Cloern1995) but falls within the broader half-saturation spectrum documented for coastal-estuarine phytoplankton (3--100 $\mu$M; @VoltaChiara2016). The net result is realistic net growth rates ($\mu_{net}$ ~ 0.2--0.6 d$^{-1}$ in bloom-permissive reaches), confirmed by sensitivity analysis (Table S11): all six one-at-a-time and co-adjusted perturbations of $P^B_{max}$ ($\pm$ 50%) and $K_N$ ($\pm$ 50%) preserve both the qualitative seasonal contrast and the spatial confinement of blooms to the urban corridor.
+
+The discharge-driven turbidity coefficient $k_{turb}$ = 3.0 m$^{-1}$ governs excess light attenuation during high-flow events via $K_{D,flow} = k_{turb} \cdot \max(0,\,Q/Q_{ref} - 1)^{0.5}$. This formulation is grounded in a well-established physical mechanism: monsoon discharge mobilises watershed sediment, resuspends bed material, and delivers lateral sediment inputs from floodplains and tributaries that are inherently unresolved by the depth-averaged 1D SPM state variable [@UnclesR.J.2002; @FettweisMichael2006]. The formulation is structurally analogous to discharge-dependent turbidity parameterisations used in other estuarine and riverine water-quality models [@ChapraStevenC.1997; @CashelFinnianS.2024]. At the mean wet-season upstream discharge ($Q = 147$ m$^3$ s$^{-1}$, $Q_{ref}$ = 90 m$^3$ s$^{-1}$), $K_{D,flow} = 2.4$ m$^{-1}$, yielding a total water-column extinction coefficient $K_D \approx 3$ m$^{-1}$. This is conservative relative to field-derived estimates from the Saigon system: Secchi disk observations during the wet season ($Z_{SD} = 0.1$--0.3 m) imply $K_D \approx 5$--17 m$^{-1}$ [@NguyenTruongAn2022], and comparable tropical monsoon estuaries report similar or higher turbidity during flood events [@BharathiM.D.2019; @BurfordM.A.2012; @CarrascoNavas-ParejoJuanCarlos2020]. The excess-discharge formulation activates only when $Q > Q_{ref}$, so dry-season light attenuation is entirely governed by the independently calibrated SPM- and CDOM-dependent components ($K_{D,flow} = 0$), ensuring that the parameter does not affect dry-season bloom dynamics. The process represented by $k_{turb}$ is not site-specific to the Saigon but is expected in any monsoon-influenced estuary where seasonal discharge variability exceeds a factor of 3.
+
+
+## Table S1. Geometric parameters {.unnumbered}
+
+| Parameter | Symbol | Value | Unit | Source/Method |
+|-----------|--------|-------|------|---------------|
+| Domain length | $L$ | 202,000 | m | Model configuration |
+| Grid spacing | $\Delta x$ | 2,000 | m | Model configuration |
+| Number of computational cells | $M$ | 102 | -- | $M=\lceil L/\Delta x\rceil$ |
+| Segment 1 width scale | $B_1$ | 3,887 | m | Model configuration |
+| Segment 1 convergence length | $LC_1$ | 30,000 | m | Active `INPUT/params.txt` configuration |
+| Segment 2 width scale | $B_2$ | 450 | m | Model configuration |
+| Segment 2 convergence length | $LC_2$ | 120,000 | m | Active `INPUT/params.txt` configuration |
+| Riverbed depth profile | -- | Riverbed profile input | -- | Observed profile |
+
+: Geometric parameters for idealised estuarine geometry configuration. {.unnumbered}
+
+
+## Table S2. Hydrodynamic model parameters {.unnumbered}
+
+| Parameter | Symbol | Value | Unit | Source/Method |
+|-----------|--------|-------|------|---------------|
+| Time step | $\Delta t$ | 360 | s | Model configuration |
+| Output interval | $TS \cdot \Delta t$ | 86,400 | s | Model configuration |
+| Warmup duration | -- | 100 | days | Model configuration |
+| Total simulation duration | -- | 830 | days | Model configuration |
+| Tidal amplitude at mouth | $\zeta_0$ | 1.6 | m | Model configuration |
+| Chézy coefficient (segment 1) | $C_1$ | 42.41 | m$^{1/2}$ s$^{-1}$ | Active `INPUT/params.txt` configuration |
+| Chézy coefficient (segment 2) | $C_2$ | 20.00 | m$^{1/2}$ s$^{-1}$ | Active `INPUT/params.txt` configuration |
+| Storage ratio (segment 1) | $R_{s,1}$ | 1.00 | -- | Active `INPUT/params.txt` configuration |
+| Storage ratio (segment 2) | $R_{s,2}$ | 1.55 | -- | Active `INPUT/params.txt` configuration |
+| Van der Burgh predictor scale | $C_{VDB}$ | 0.917 | -- | Active `INPUT/params.txt` configuration |
+| Mouth dispersion magnitude scale | $D_{0,cor}$ | 1.05 | -- | Active `INPUT/params.txt` configuration |
+| Discharge sensitivity of dispersion | $K_{discharge}$ | 1.30 | -- | Active `INPUT/params.txt` configuration |
+
+: Hydrodynamic model parameters. {.unnumbered}
+
+
+## Table S3. Biogeochemical parameters {.unnumbered}
+
+| Parameter | Symbol | Value | Unit | Reference |
+|-----------|--------|-------|------|-----------|
+| Maximum phytoplankton growth rate (Phy1) | $P^B_{max,1}$ | $3.472 \times 10^{-4}$ | s$^{-1}$ | Active `INPUT/params.txt` |
+| Maximum phytoplankton growth rate (Phy2) | $P^B_{max,2}$ | $2.45 \times 10^{-5}$ | s$^{-1}$ | Active `INPUT/params.txt` |
+| Initial slope of P-I curve (Phy1) | $\alpha_{Phy1}$ | $4.00 \times 10^{-6}$ | s$^{-1}$ (W m$^{-2}$)$^{-1}$ | Active `INPUT/params.txt` |
+| Initial slope of P-I curve (Phy2) | $\alpha_{Phy2}$ | $1.47 \times 10^{-6}$ | s$^{-1}$ (W m$^{-2}$)$^{-1}$ | Active `INPUT/params.txt` |
+| Phytoplankton mortality rate | $m_0$ | $5.787 \times 10^{-7}$ | s$^{-1}$ | Active `INPUT/params.txt` |
+| Benthic grazing clearance rate | $k_{benth}$ | $5.0 \times 10^{-5}$ | m s$^{-1}$ | Calibrated (4.32 m d$^{-1}$) |
+| Phytoplankton settling velocity | $w_s$ | $2.0 \times 10^{-5}$ | m s$^{-1}$ | Calibrated (1.73 m d$^{-1}$) |
+| Quadratic mortality (Phy1) | $k_{mort2,1}$ | $2.0 \times 10^{-8}$ | (mmol C m$^{-3}$)$^{-1}$ s$^{-1}$ | Active `INPUT/params.txt` |
+| Quadratic mortality (Phy2) | $k_{mort2,2}$ | $1.0 \times 10^{-8}$ | (mmol C m$^{-3}$)$^{-1}$ s$^{-1}$ | Active `INPUT/params.txt` |
+| Salinity mortality maximum | $k_{sal}$ | $2.0 \times 10^{-5}$ | s$^{-1}$ | Active `INPUT/params.txt` |
+| Salinity tolerance (diatoms) | $S_{tol,Phy1}$ | 5.0 | -- | Calibrated |
+| Salinity tolerance (non-diatoms) | $S_{tol,Phy2}$ | 15.0 | -- | Calibrated |
+| Half-saturation constant (N) | $K_N$ | 20 | mmol N m$^{-3}$ | Effective calibration coefficient |
+| Half-saturation constant (P) | $K_P$ | 1.5 | mmol P m$^{-3}$ | Active `INPUT/params.txt` |
+| Half-saturation constant (Si, diatoms) | $K_{Si}$ | 0.033 | mmol Si m$^{-3}$ | Active `INPUT/params.txt` |
+| Light extinction coefficient | $k_{bg,0}$ | 0.023 | m$^{-1}$ | Calibrated |
+| Upstream excess light extinction | $k_{bg,up}$ | 2.0 | m$^{-1}$ | Calibrated; reflects terrigenous DOM [@Kirk2010] |
+| Light transition midpoint | $x_{trans}$ | 80 | km | Distance from mouth for $k_{bg}$ transition |
+| Light transition half-width | $L_b$ | 5 | km | Tanh blend half-width |
+| Discharge turbidity coefficient | $k_{turb,Q}$ | 3.0 | m$^{-1}$ | Calibrated; excess-discharge turbidity |
+| Discharge turbidity reference | $Q_{ref}$ | 90.0 | m$^3$ s$^{-1}$ | Set above May discharge to protect dry-to-wet transition |
+| Discharge turbidity exponent | $\alpha_{turb}$ | 0.5 | -- | Square-root scaling |
+| Specific light extinction (SPM) | $k_{SPM}$ | 0.008 | m$^{-1}$ (g m$^{-3}$)$^{-1}$ | Active `INPUT/params.txt` |
+| Phytoplankton self-shading | $K_{D,Phy}$ | 0.001 | m$^{-1}$ (mmol C m$^{-3}$)$^{-1}$ | Active `INPUT/params.txt` |
+| CDOM attenuation coefficient | $k_{CDOM}$ | 0.0339 | m$^{-1}$ (mg C L$^{-1}$)$^{-1}$ | Active `INPUT/params.txt` |
+| Optimal light intensity | $I_{opt}$ | 150 | W m$^{-2}$ | @VoltaC.2016 |
+| C:Chl ratio | $C:Chl$ | 15 | g C:g Chl-a | @Geider1997; @Cloern1995 |
+| C:N ratio (phytoplankton) | $C:N$ | 6.6 | mol:mol | Redfield ratio |
+| C:P ratio (phytoplankton) | $C:P$ | 106 | mol:mol | Redfield ratio |
+| C:Si ratio (diatoms) | $C:Si$ | 6.6 | mol:mol | @VoltaC.2016 |
+| Aerobic degradation rate | $k_{ox}$ | $7.5 \times 10^{-7}$ | s$^{-1}$ | Calibrated |
+| Q$_{10}$ temperature coefficient | $Q_{10}$ | 2.0 | -- | @VoltaC.2016 |
+| Nitrification rate constant | $k_{nit}$ | $2.2 \times 10^{-4}$ | s$^{-1}$ | Calibrated |
+| Denitrification rate constant | $k_{den}$ | $5.4 \times 10^{-5}$ | s$^{-1}$ | Calibrated |
+| O$_2$ half-saturation (nitrification) | $K_{O2,nit}$ | 10.0 | mmol O$_2$ m$^{-3}$ | Active `INPUT/params.txt` |
+| O$_2$ half-saturation (fast BDOC) | $K_{O2,cbod}$ | 15.0 | mmol O$_2$ m$^{-3}$ | Active `INPUT/params.txt` |
+| O$_2$ half-saturation (SOD) | $K_{O2,SOD}$ | 31.0 | mmol O$_2$ m$^{-3}$ | Active `INPUT/params.txt` |
+| Gas-exchange scaling factor | $f_{gas}$ | 2.0 | -- | Active `INPUT/params.txt` |
+| Critical shear stress (seg. 1, downstream) | $\tau_{cr,1}$ | 0.13 | Pa | Calibrated |
+| Critical shear stress (seg. 2) | $\tau_{cr,2}$ | 1.36 | Pa | Calibrated |
+| Critical shear stress (seg. 3) | $\tau_{cr,3}$ | 1.35 | Pa | Calibrated |
+| Critical shear stress (seg. 4, upstream) | $\tau_{cr,4}$ | 2.0 | Pa | Calibrated |
+| Erosion coefficient (seg. 1) | $M_1$ | $1.3 \times 10^{-5}$ | kg m$^{-2}$ s$^{-1}$ | Calibrated |
+| Erosion coefficient (seg. 2) | $M_2$ | $2.1 \times 10^{-7}$ | kg m$^{-2}$ s$^{-1}$ | Calibrated |
+| Erosion coefficient (seg. 3) | $M_3$ | $3.8 \times 10^{-5}$ | kg m$^{-2}$ s$^{-1}$ | Calibrated |
+| Erosion coefficient (seg. 4) | $M_4$ | $2.0 \times 10^{-7}$ | kg m$^{-2}$ s$^{-1}$ | Calibrated |
+
+: Selected active biogeochemical and optical parameters from `INPUT/params.txt` for the present Saigon configuration. Several calibrated parameters act as effective coefficients in this reduced-complexity framework, and some transport/sediment entries remain stage-specific calibrations. {.unnumbered}
+
+**C:Chl ratio justification.** We adopt a carbon-to-chlorophyll-_a_ mass ratio of 15 g C g$^{-1}$ Chl-_a_ for converting model phytoplankton carbon (mmol C m$^{-3}$) to observational Chl-_a_ units ($\mu$g L$^{-1}$). This value reflects photoacclimation to the severely light-limited conditions of the Saigon estuary, where diffuse attenuation coefficients exceed 3 m$^{-1}$ throughout the urban corridor, confining the euphotic zone to the upper 1.5 m of a 19 m deep water column (8% of depth). Under such extreme shade, phytoplankton cells increase their chlorophyll content per unit carbon to maximize light harvesting. Laboratory photoacclimation models [@Geider1997] predict C:Chl as low as 10--20 under severe light limitation, and field measurements in turbid estuaries consistently report C:Chl = 15--30 [@Cloern1995]. The Saigon's phytoplankton, dominated by shade-adapted freshwater diatoms, operate near the low end of this range. Higher C:Chl ratios (40--50) are typical of well-lit, open-ocean or shallow-estuary conditions where cells down-regulate pigment content; applying such values to the Saigon would underestimate Chl-_a_ by 60% relative to observations. We note that the phytoplankton self-shading coefficient ($K_{D,Phy}$ = 0.001 m$^{-1}$ per mmol C m$^{-3}$) is independently calibrated to reproduce the observed light attenuation profile. The distinction arises because the optical absorption cross-section per unit Chl-_a_ is relatively invariant across taxa, while the cellular Chl-_a_ content per unit carbon varies with light history.
+
+## Table S4. Monitoring-era validation statistics {.unnumbered}
+
+| Variable | Season | R² | NSE | RMSE | Bias | PBIAS (%) | N |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Chl-a | dry | 0.993 | 0.957 | 3.424 | 2.517 | 17.7 | 3 |
+| Chl-a | rainy | 0.993 | 0.944 | 0.509 | 0.473 | 20.3 | 3 |
+| DO | dry | 0.446 | 0.323 | 1.178 | 0.216 | 5.7 | 6 |
+| DO | rainy | 0.823 | 0.590 | 0.759 | 0.041 | 1.1 | 6 |
+| DSi | dry | 0.149 | $-1.405$ | 0.341 | 0.192 | 23.2 | 3 |
+| DSi | rainy | 0.921 | $-55.707$ | 1.106 | 1.052 | 132.2 | 3 |
+| NH$_4^+$ | dry | 0.964 | 0.911 | 0.165 | $-0.079$ | $-17.1$ | 7 |
+| NH$_4^+$ | rainy | 0.922 | 0.799 | 0.240 | 0.045 | 9.8 | 7 |
+| NO$_3^-$ | dry | 0.177 | $-1.997$ | 0.158 | $-0.041$ | $-6.2$ | 3 |
+| NO$_3^-$ | rainy | 0.434 | $-18.329$ | 0.224 | $-0.200$ | $-34.9$ | 3 |
+| PO$_4^{3-}$ | dry | 0.137 | $-1.661$ | 0.020 | $-0.011$ | $-23.1$ | 7 |
+| PO$_4^{3-}$ | rainy | 0.644 | $-0.777$ | 0.014 | 0.003 | 6.8 | 7 |
+| Salinity | dry | 0.989 | 0.977 | 1.219 | 0.666 | 11.9 | 7 |
+| Salinity | rainy | 1.000 | 0.997 | 0.352 | 0.051 | 1.5 | 7 |
+| TOC | dry | 0.675 | $-0.353$ | 1.456 | $-1.218$ | $-26.1$ | 6 |
+| TOC | rainy | 0.667 | $-3.429$ | 1.568 | $-0.582$ | $-13.4$ | 6 |
+| TSS | dry | 0.691 | 0.386 | 68.276 | $-39.769$ | $-36.2$ | 7 |
+| TSS | rainy | 0.641 | 0.522 | 27.786 | 12.809 | 17.1 | 7 |
+
+: Model performance statistics for longitudinal spatial profiles of the monitoring-era variables (dry and rainy season averages; compared against 2017--2018 monitoring observations). {#tbl-spatial-performance-S .unnumbered}
+
+
+## Table S7. External-forcing SHAP attribution {.unnumbered}
+
+| Feature | Nha Be (%) | Bach Dang (%) | Phu Cuong (%) |
+|---|---:|---:|---:|
+| **Hydrodynamics-related** | | | |
+| $Q_{upstream}$ | 4.2 | 2.8 | 1.4 |
+| $Q_{upstream,t-7}$ | 3.5 | 9.6 | 28.0 |
+| $Q_{upstream,t-21}$ | 26.0 | 46.8 | 22.5 |
+| $Q_{Dong\ Nai}$ | 3.5 | 0.4 | 10.3 |
+| *Flow subtotal* | *37.2* | *59.6* | *62.2* |
+| **Nutrient loads** | | | |
+| Upstream DIN load | 21.1 | 4.9 | 8.9 |
+| Canal NO$_3^-$ load | 4.6 | 13.5 | 7.1 |
+| Canal PO$_4^{3-}$ load | 10.2 | 6.9 | 2.6 |
+| Upstream PO$_4^{3-}$ load | 4.6 | 1.7 | 2.9 |
+| *Nutrient subtotal* | *40.5* | *27.0* | *21.5* |
+| **Climate / other** | | | |
+| $T_{water}$ | 6.0 | 2.8 | 6.0 |
+| PAR$_{surface}$ | -- | 0.4 | 0.5 |
+| Wind speed | 3.3 | 1.2 | 2.7 |
+| Upstream TOC load | 4.2 | 3.2 | 3.1 |
+| Upstream SPM | 7.9 | 5.9 | 4.1 |
+
+: External-forcing SHAP attribution at each monitoring station (daily resolution, $n$ = 709 per station). Gradient-boosted tree surrogates trained on $\ln(1 + \text{Phy}_1)$ with early stopping. Iterative VIF screening (threshold 10) removed five collinear predictors from the initial 18 candidates ($Q_{urban}$ = Vam Thuat + canal discharge, $Q_{Thi\ Tinh}$, $Q_{upstream,t-14}$, canal NH$_4^+$ load, and upstream Si load), retaining 13 features. $R^2_\text{fit}$ = 0.993--0.996; $R^2_\text{CV}$ (3-fold `TimeSeriesSplit`, 7-day gap) = $-0.77$ to $-0.16$. Hydrodynamics-related predictors dominate at the upstream stations (60--62%) while nutrient loads are most influential near the urban discharge (40% at Nha Be). {.unnumbered}
+
+
+## Table S8. Net ecosystem metabolism budget {.unnumbered}
+
+| Section | Season | GPP (mmol C m$^{-2}$ d$^{-1}$) | CR (mmol C m$^{-2}$ d$^{-1}$) | NEM (mmol C m$^{-2}$ d$^{-1}$) |
+|---|---|---|---|---|
+| Upstream | Dry | 20.63 | 349.25 | $-328.62$ |
+| Upstream | Rainy | 1.12 | 339.56 | $-338.44$ |
+| Urban | Dry | 445.38 | 800.38 | $-355.00$ |
+| Urban | Rainy | 34.50 | 726.51 | $-692.01$ |
+| Downstream | Dry | 43.20 | 445.45 | $-402.25$ |
+| Downstream | Rainy | 5.61 | 410.69 | $-405.08$ |
+
+: Net ecosystem metabolism by section and season. Negative NEM indicates net heterotrophy. Values are section-integrated areal rates reconstructed from the current source-consistent carbon budget: NPP, `Reaction_DIC`, `Reaction_CO2_exchange`, and benthic SOD. {.unnumbered}
+
+
+
+## Table S10. Damköhler regime summary {#tbl-da-regime .unnumbered}
+
+| Section | Season | $RT$ (d) | $\mu_{net}$ (d$^{-1}$) | $Da$ | $Da > 1$ (%) | Chl-a ($\mu$g L$^{-1}$) |
+|---|---|---|---|---|---|---|
+| Upstream | Dry | 34.1 $\pm$ 8.5 | 0.41 | 16.1 | 43 | 2.1 |
+| Upstream | Rainy | 13.1 $\pm$ 3.7 | $-0.36$ | $-4.3$ | 11 | 0.5 |
+| Urban | Dry | 52.6 $\pm$ 14.9 | 0.63 | 33.4 | 45 | 20.7 |
+| Urban | Rainy | 20.2 $\pm$ 6.3 | $-0.02$ | 0.6 | 35 | 2.9 |
+| Downstream | Dry | 33.2 $\pm$ 18.0 | $-0.74$ | $-25.1$ | 26 | 3.9 |
+| Downstream | Rainy | 12.7 $\pm$ 5.9 | $-0.75$ | $-10.0$ | 3 | 0.9 |
+
+: Damköhler number regime summary by estuary section and season. $Da = \mu_{net} \cdot RT$, where $\mu_{net}$ = gross growth minus total losses (linear mortality + quadratic mortality + salinity stress + benthic grazing + settling). The dry-season urban and upstream sections are strongly growth-favourable on average, while downstream means remain negative. With the discharge-driven turbidity formulation, the rainy-season urban $\mu_{net}$ approaches zero ($-0.02$ d$^{-1}$), indicating near-complete light-limited shutdown of net growth, consistent with the observed approximately sevenfold dry-to-wet Chl-a contrast. {.unnumbered}
+
+
+## Table S11. $P^B_{max}$ and $K_N$ sensitivity analysis {#tbl-sensitivity .unnumbered}
+
+| Scenario | $P^B_{max}$ (d$^{-1}$) | $K_N$ (mmol N m$^{-3}$) | Chl-a dry ($\mu$g L$^{-1}$) | Chl-a wet ($\mu$g L$^{-1}$) | Dry/wet ratio |
+|---|---|---|---|---|---|
+| Baseline | 30.0 | 20 | 36.4 | 5.3 | 7:1 |
+| $P^B_{max}$ $-50$% | 15.0 | 20 | 20.0 | 3.4 | 6:1 |
+| $P^B_{max}$ +50% | 45.0 | 20 | 42.6 | 7.3 | 6:1 |
+| $K_N$ $-50$% | 30.0 | 10 | 39.1 | 5.8 | 7:1 |
+| $K_N$ +50% | 30.0 | 30 | 33.7 | 4.8 | 7:1 |
+| Co-adjusted low | 15.0 | 10 | 23.2 | 3.5 | 7:1 |
+| Co-adjusted high | 45.0 | 30 | 40.7 | 6.6 | 6:1 |
+
+: $P^B_{max}$ and $K_N$ sensitivity analysis. Chl-a values at Bach Dang (km 70) from full transient C-GEM model runs (830 days including 100-day warmup). All scenarios preserve the qualitative seasonal contrast and spatial bloom confinement. {.unnumbered}
+
+
+## Figure S1. Biogeochemical reaction diagram (clean version) {.unnumbered}
+
+![Biogeochemical reaction network of the C-GEM model showing all 13 transported state variables (ellipses), diagnostic carbonate outputs, and coupled processes (arrows), presented without visual distinction between existing and new processes. An annotated version highlighting the developments introduced in this study is provided in the main manuscript.](../figures/draw_io/biogeochemical_diagram){.unnumbered}
+
+
+## Figure S2. CO$_2$ flux budget {.unnumbered}
+
+![Spatial distribution of $pCO_2$ and computed CO$_2$ air--water flux by estuary section and season. Central total evasion estimate: 142.9 Gg C yr$^{-1}$.](../figures/fig_S03_co2_flux_budget){.unnumbered}
+
+
+## Figure S3. Quantitative process rate decomposition {.unnumbered}
+
+![Quantitative longitudinal profiles of model-simulated reaction rates (net primary production, aerobic degradation, nitrification, denitrification) extracted from C-GEM output for dry and rainy seasons, showing absolute rates (mmol m$^{-3}$ d$^{-1}$) at each computational cell. Note that aerobic degradation rates appear low relative to denitrification even in oxygen-replete downstream reaches; this reflects the model's low calibrated aerobic degradation rate constant ($k_{ox}$ = $7.48 \times 10^{-7}$ s$^{-1}$, Table S3) coupled with the fast labile BDOC pathway (B4, $k_{cbod}$ = $1.22 \times 10^{-6}$ s$^{-1}$) that carries most of the water-column O$_2$ demand. Together, the two pathways yield total aerobic carbon consumption comparable to denitrification in the urban corridor.](../figures/fig_S06_process_rates_longitudinal){.unnumbered}
+
+
+## Figure S4. Process rate seasonal bars {.unnumbered}
+
+![Section-integrated process rates (GPP, aerobic degradation, nitrification, denitrification, SOD) by estuary section and season. Bar heights represent seasonal means; error bars indicate monthly variability.](../figures/fig_S06b_process_rates_seasonal_bars){.unnumbered}
+
+
+## Figure S5. Limitation-factor Hovmöller diagrams {.unnumbered}
+
+![Spatio-temporal limitation factors shown as Hovmöller diagrams, retained in the Supporting Information as mechanistic support rather than a primary line of evidence. *(a)* Nutrient limitation (Liebig minimum of $f(N)$, $f(P)$, $f(Si)$). *(b)* Light limitation $f(I)$. *(c)* Overall growth limitation ($f_{nut} \times f(I)$). Vertical dashed lines mark the urban corridor (km 70--100). Panels *(a)* and *(b)* use a 0--1 colour scale; panel *(c)* uses 0--0.5 to resolve combined limitation.](../figures/figA3_limitation_factors){.unnumbered}
+
+
+## Figure S6. Molar stoichiometry analysis {.unnumbered}
+
+![Molar nutrient ratios (DIN:PO$_4$, Si:DIN) by estuary section and season, compared to Redfield thresholds (N:P = 16, Si:N = 1). Ratios above Redfield indicate excess of the numerator species.](../figures/fig_S07b_stoichiometry){.unnumbered}
+
+
+## Figure S7. Target + Taylor diagrams {.unnumbered}
+
+![Combined validation summary. *(a)* Target diagram (Jolliff et al., 2009): normalised unbiased RMSD vs normalised bias; concentric circles indicate total RMSD skill. *(b)* Taylor diagram: angular position = Pearson $R$, radial distance = $\sigma_{mod}/\sigma_{obs}$; star = reference point.](../figures/fig_S08_target_taylor_combined){.unnumbered}
+
+
+## Figure S8. Residence time spatial mapping {.unnumbered}
+
+![Spatial and temporal distribution of residence time across estuary sections, showing the 2.6-fold seasonal contrast in the urban corridor (53 d dry to 20 d wet).](../figures/fig_S09_residence_time){.unnumbered}
+
+
+## Figure S9. Phosphate--SPM temporal dynamics at Phu Cuong {.unnumbered}
+
+![Daily simulated dissolved PO$_4^{3-}$ and suspended particulate matter (SPM) at Phu Cuong (km 114) during 2017--2018. Dry-season months are shaded to highlight the seasonal co-variation used to diagnose limitations of the Langmuir adsorption parameterisation. PIP is not plotted in this time-series panel because the purpose is to compare the observable PO$_4^{3-}$--SPM coupling used to constrain the Langmuir formulation; the role of PIP is summarised separately in Table S9 and Text S4.](../figures/figA5_po4_spm_temporal){.unnumbered}
+
+
+## Figure S10. Bootstrap distribution of $RT_{crit}$ {.unnumbered}
+
+![Block-bootstrap distribution ($n_{boot}$ = 2000, block length = 14 d) of the logistic inflection point $RT_{crit}$ from the urban Chl-a vs. residence time relationship. Red solid line: median; red dashed lines: 95% percentile confidence interval (30.8--32.6 d). A 14-day block length accounts for daily autocorrelation in residence time; the resulting interval is wider than the i.i.d. bootstrap (31.5--32.1 d), providing a conservative uncertainty estimate.](../figures/figS_bootstrap_rt_crit){.unnumbered}
+
+
+## Text S4. Ablation study: structural adaptations verification {.unnumbered}
+
+### S4.1 Rationale {.unnumbered}
+
+The original C-GEM framework [@VoltaC.2014; @VoltaC.2016] was developed for the Scheldt Estuary. Adapting C-GEM to the Saigon River required structural modifications beyond simple parameter recalibration. This section verifies those changes using a systematic leave-one-out ablation analysis in which exactly one feature at a time is removed from the full validated Saigon model ($S_{Full}$) and the resulting degradation in model performance is quantified against observations. This design is more informative than one-at-a-time addition because the new processes interact non-linearly.
+
+### S4.2 Complete inventory of structural changes {.unnumbered}
+
+The adaptations fall into three categories: (A) runtime code corrections, (B) new process equations, and (C) recalibrated kinetic parameters.
+
+**Runtime code corrections:**
+
+| # | Change | Original C-GEM (Wei et al. 2022) | Saigon Implementation |
+|---|--------|----------------------|----------------------|
+| A1 | Light underflow guard | Returns zero when $E_{bottom} < 10^{-30}$ | Asymptotic continued-fraction avoids discontinuity |
+| A2 | Light bottom integral | $-(\ln p_{bot} + \gamma + P(p_{bot}))$ | $-(\ln p_{bot} + \gamma - P(p_{bot}))$ (corrected sign) |
+| A3 | Mortality temperature | $k_{mort} \cdot e^{0.07T}$ | $k_{mort} \cdot 1.067^{(T-20)} \cdot f_{trop}(T)$ |
+
+: Code-level corrections. A2 corrects a sign error; A3 prevents unphysical mortality escalation above 35$^\circ$C. The tropical temperature limiter $f_{trop}(T)$ is a Gaussian decline applied when $T > T_{opt}$ = 32$^\circ$C: $f_{trop}(T) = \exp\!\left(-\left(\frac{T - T_{opt}}{\sigma_T}\right)^2\right)$ for $T > T_{opt}$, and $f_{trop}(T) = 1$ otherwise, with $\sigma_T$ = 3$^\circ$C. This limiter is applied to all temperature-dependent rate constants ($P^B_{max}$, $k_{mort}$, $k_{ox}$, $k_{nit}$, $k_{den}$, $k_{maint}$), consistent with the RIVE framework's recognition that tropical water temperatures can exceed the optimum range of Q$_{10}$-based parameterisations [@GarnierJosette2019]. {.unnumbered}
+
+**New process equations:**
+
+| # | Process | Equation | Parameters |
+|---|---------|----------|------------|
+| B1 | Quadratic mortality closure | $L_{mort2} = k_{mort2} \cdot [Phy]^2$ | $k_{mort2}$ = $2.0 \times 10^{-8}$ s$^{-1}$ (mmol C m$^{-3}$)$^{-1}$ |
+| B2 | Depth-dependent benthic grazing | $L_{benth} = (k_{benth}/H) \cdot [Phy]$ | $k_{benth}$ = $5.0 \times 10^{-5}$ m s$^{-1}$ |
+| B3 | Salinity osmotic stress | $L_{sal} = k_{sal} \cdot S^2/(S^2 + S_{tol}^2) \cdot [Phy]$ | $S_{tol,1}$ = 5.0, $S_{tol,2}$ = 15.0 |
+| B4 | Fast labile BDOC pathway | $R_{cbod} = k_{cbod} \cdot f(TOC) \cdot f(O_2) \cdot [TOC]$ | $k_{cbod}$ = $1.22 \times 10^{-6}$ s$^{-1}$ |
+| B5 | Sediment oxygen demand | $SOD = (r_{SOD}/H) \cdot f(O_2) \cdot f(TOC)$ | $r_{SOD}$ = $6.69 \times 10^{-3}$ mmol O$_2$ m$^{-2}$ s$^{-1}$ |
+| B6 | CDOM light attenuation | $K_D \mathrel{+}= k_{CDOM} \cdot [DOC]$ | $k_{CDOM}$ = $3.39 \times 10^{-2}$ m$^{-1}$ (mg C L$^{-1}$)$^{-1}$ |
+| B7 | Phytoplankton gravitational sinking | $L_{sink} = (w_s/H) \cdot [Phy]$ | $w_s$ = $2.0 \times 10^{-5}$ m s$^{-1}$ |
+| B8 | Elevated allochthonous C:N ratio | $R_{NH_4} = R_{adegrad} / C\!:\!N_{toc}$ | $C\!:\!N_{toc}$ = 20 |
+| B9 | PIP Langmuir adsorption | $PIP_{eq} = P_{ac} \cdot SPM \cdot PO_4/(PO_4 + K_{ps})$ | $P_{ac}$ = 10.0, $K_{ps}$ = 5.0 |
+| B10 | Spatially varying background light | $k_{bg}(x) = k_{bg,0} + k_{bg,up} \cdot \tfrac{1}{2}[1 + \tanh((x - x_{trans})/L_b)]$ | $k_{bg,0}$ = 0.023, $k_{bg,up}$ = 2.0 m$^{-1}$, $x_{trans}$ = 80 km, $L_b$ = 5 km |
+| B11 | Discharge-driven turbidity | $K_{D,flow} = k_{turb,Q} \cdot \max(0, Q/Q_{ref} - 1)^{\alpha_{turb}}$ | $k_{turb,Q}$ = 3.0 m$^{-1}$, $Q_{ref}$ = 90.0 m$^3$ s$^{-1}$, $\alpha_{turb}$ = 0.5 |
+
+: New biogeochemical process equations (B1--B11) added in the Saigon implementation. {.unnumbered}
+
+**Sediment transport parameterisation:**
+
+| # | Process | Equation | Parameters |
+|---|---------|----------|------------|
+| B12 | Multi-segment erosion/deposition | Partheniades--Krone with 4 longitudinal segments | $M_1$--$M_4$, $\tau_{cr,1}$--$\tau_{cr,4}$ (Table S3) |
+
+: Sediment transport parameterisation change (not counted among the eleven new biogeochemical process equations; retained from the original C-GEM framework with spatially segmented coefficients). {.unnumbered}
+
+**Recalibrated kinetic parameters:**
+
+| Parameter | Symbol | Original (Scheldt) | Saigon (Calibrated) | Ratio |
+|-----------|--------|-------------------|--------------------:|------:|
+| Max photosynthesis rate | $P^B_{max,1}$ | $2.58 \times 10^{-5}$ s$^{-1}$ | $3.472 \times 10^{-4}$ s$^{-1}$ | $\times 13.5$ |
+| Light-saturation slope | $\alpha_{Phy1}$ | $4.11 \times 10^{-7}$ | $4.00 \times 10^{-6}$ | $\times 9.7$ |
+| Linear mortality rate | $m_0$ | $1.56 \times 10^{-6}$ s$^{-1}$ | $5.787 \times 10^{-7}$ s$^{-1}$ | $\times 0.37$ |
+| Aerobic degradation | $k_{ox}$ | $1.20 \times 10^{-3}$ s$^{-1}$ | $7.48 \times 10^{-7}$ s$^{-1}$ | $\times 0.0006$ |
+| Nitrification | $k_{nit}$ | $5.00 \times 10^{-4}$ s$^{-1}$ | $2.15 \times 10^{-4}$ s$^{-1}$ | $\times 0.43$ |
+| Denitrification | $k_{den}$ | $5.05 \times 10^{-4}$ s$^{-1}$ | $5.44 \times 10^{-5}$ s$^{-1}$ | $\times 0.11$ |
+| Background light extinction | $k_{bg}$ | 0.3 m$^{-1}$ | 0.023 m$^{-1}$ | $\times 0.08$ |
+| SPM-specific extinction | $k_{spm}$ | 0.06 m$^{-1}$ (g m$^{-3}$)$^{-1}$ | 0.008 m$^{-1}$ (g m$^{-3}$)$^{-1}$ | $\times 0.13$ |
+
+: Recalibrated kinetic parameters. Original Scheldt values from @VoltaC.2016 and @WeiXi2022; Saigon values calibrated to 2017--2018 observations. The linear mortality rate ($m_0$ = 0.05 d$^{-1}$) is moderate in isolation but acts in concert with four other loss pathways (quadratic closure, salinity stress, benthic grazing, settling) that together achieve a composite loss of 0.4--0.7 d$^{-1}$ in freshwater reaches (see Eq. @eq-mortality). The individual linear mortality rate (0.05 d$^{-1}$) falls within the 0.02--0.2 d$^{-1}$ range documented for phytoplankton mortality; the higher composite reflects the additional depth-dependent and density-dependent pathways required in this deep urban channel. The mineral-SPM specific extinction ($k_{SPM}$ = 0.008 m$^{-1}$ per g m$^{-3}$) lies within the Changjiang estuary mineral-SPM range (0.008--0.012) and is lower than Kirk [-@Kirk2010] bulk reference values (0.01--0.06) partly because background non-SPM attenuation is captured by the spatially varying $k_{bg}(x)$ (Eq. @eq-kbg-spatial) and the CDOM term. The $\{P^B_{max}, \alpha\}$ pair (10--14$\times$ Scheldt) compensates for the depth-averaged dilution of the euphotic zone over the full water column ($H/Z_{eu} =$ 13 in the urban corridor). {.unnumbered}
+
+### S4.3 Ablation design {.unnumbered}
+
+Starting from the full validated Saigon model ($S_{Full}$), each ablation scenario disables exactly one structural feature. Performance is evaluated using the Kling--Gupta Efficiency:
+
+$$
+KGE = 1 - \sqrt{(r - 1)^2 + \left(\frac{\sigma_m}{\sigma_o} - 1\right)^2 + \left(\frac{\mu_m}{\mu_o} - 1\right)^2}
+$$ {#eq-kge-S .unnumbered}
+
+**Ablation scenarios:**
+
+| Symbol | Description | Parameter Override |
+|--------|-------------|--------------------|
+| $S_{-Quad}$ | Without Quadratic mortality | kmort2 = 0 |
+| $S_{-Benth}$ | Without Benthic grazing | k\_benth\_graze = 0 |
+| $S_{-Sal}$ | Without Salinity mortality | kmort\_sal = 0 |
+| $S_{-BDOC}$ | Without fast BDOC oxidation | kcbod\_fast = 0 |
+| $S_{-SOD}$ | Without SOD | SOD\_rate = 0 |
+| $S_{-CDOM}$ | Without CDOM attenuation | kCDOM = 0 |
+| $S_{-Sink}$ | Without Phyto sinking | ws\_phy = 0 |
+| $S_{-CN}$ | Without High C:N (Redfield) | CN\_toc = 6.625 |
+| $S_{-PIP}$ | Without PIP Adsorption | P\_ac $\to$ 0, k\_ads $\to$ 0 |
+| $S_{-KDflow}$ | Without discharge-driven turbidity | k\_turb\_Q = 0 |
+| $S_{-kbgUp}$ | Without upstream CDOM gradient | kbg\_upstream = 0 |
+| $S_{+FortMort}$ | With original mortality kinetics | biogeo\_fortran\_compat = 1 |
+| $S_{+FortOptic}$ | With original optical parameters | $k_{bg}$ = 0.3, $k_{spm}$ = 0.06 |
+| $S_{+FortGrow}$ | With original growth rates | $P^B_{max}$ = $2.58 \times 10^{-5}$, $\alpha$ = $4.11 \times 10^{-7}$ |
+| $S_{+FortHet}$ | With original heterotrophic rates | $k_{ox}$ = $1.2 \times 10^{-3}$, $k_{den}$ = $5.05 \times 10^{-4}$ |
+
+: Ablation scenario definitions. Each scenario removes exactly one structural feature from $S_{Full}$. {.unnumbered}
+
+### S4.4 KGE results {.unnumbered}
+
+| Scenario | Chl-a | O$_2$ | NH$_4^+$ | NO$_3^-$ | TOC | PO$_4^{3-}$ | SPM | pH |
+|----------|------:|------:|---------:|---------:|----:|------------:|----:|---:|
+| European C-GEM Baseline [@VoltaC.2016; @WeiXi2022] | $-0.031$ | $-0.458$ | $-0.990$ | 0.054 | $-0.499$ | $-1.069$ | $-0.545$ | $-0.015$ |
+| **Saigon Full** | **0.353** | **$-0.449$** | **$-0.255$** | **0.239** | **$-0.345$** | **$-0.089$** | **$-0.728$** | **0.091** |
+| $S_{-Quad}$ | 0.341 | $-0.429$ | $-0.244$ | 0.222 | $-0.348$ | $-0.084$ | $-0.728$ | 0.091 |
+| $S_{-Benth}$ | $-0.222$ | $-0.252$ | $-0.249$ | 0.157 | $-0.352$ | $-0.114$ | $-0.728$ | 0.107 |
+| $S_{-Sal}$ | 0.369 | $-0.474$ | $-0.253$ | 0.241 | $-0.345$ | $-0.077$ | $-0.728$ | 0.095 |
+| $S_{-BDOC}$ | 0.354 | 0.003 | $-0.216$ | $-0.231$ | $-0.510$ | $-0.098$ | $-0.728$ | 0.094 |
+| $S_{-SOD}$ | 0.339 | $-0.431$ | $-0.239$ | 0.218 | $-0.343$ | $-0.087$ | $-0.728$ | 0.113 |
+| $S_{-CDOM}$ | 0.141 | $-0.322$ | $-0.243$ | 0.184 | $-0.347$ | $-0.099$ | $-0.728$ | 0.112 |
+| $S_{-Sink}$ | 0.277 | $-0.406$ | $-0.248$ | 0.216 | $-0.347$ | $-0.094$ | $-0.728$ | 0.098 |
+| $S_{-CN}$ | 0.356 | $-0.456$ | $-0.236$ | 0.226 | $-0.345$ | $-0.094$ | $-0.728$ | 0.104 |
+| $S_{+FortMort}$ | 0.197 | $-0.484$ | $-0.300$ | 0.285 | $-0.355$ | $-0.119$ | $-0.728$ | 0.068 |
+| $S_{+FortOptic}$ | $-0.023$ | $-0.411$ | $-0.402$ | 0.300 | $-0.346$ | $-0.269$ | $-0.728$ | 0.020 |
+| $S_{+FortGrow}$ | $-0.080$ | $-0.416$ | $-0.417$ | 0.299 | $-0.348$ | $-0.291$ | $-0.728$ | 0.015 |
+| $S_{+FortHet}$ | 0.238 | $-0.571$ | $-0.241$ | $-0.049$ | $-0.247$ | $-0.108$ | $-0.728$ | $-0.020$ |
+| $S_{-PIP}$ | 0.355 | $-0.452$ | $-0.248$ | 0.234 | $-0.346$ | $-0.087$ | $-0.728$ | 0.094 |
+| $S_{-KDflow}$ | $-0.050$ | $-0.091$ | $-0.268$ | 0.189 | $-0.349$ | $-0.132$ | $-0.728$ | 0.070 |
+| $S_{-kbgUp}$ | $-0.708$ | 0.071 | $-0.284$ | 0.001 | $-0.353$ | $-0.183$ | $-0.728$ | 0.114 |
+
+: KGE for each ablation scenario against 2017--2018 urban observations. {.unnumbered}
+
+### S4.5 Feature impact visualisation {.unnumbered}
+
+![Ablation waterfall: mean concentration change at the urban station (km 80) when each structural adaptation is individually removed from the full validated model ($S_{Full}$). Variables shown: Chl-a (Phy$_1$), O$_2$, NH$_4^+$, and $pCO_2$. Positive values indicate the model overestimates (or reduces consumption of) the variable without that adaptation. All eleven adaptations produce >15% degradation at one or more stations.](../sections/outputs/ablation/ablation_waterfall.png){.unnumbered}
+
+![KGE heatmap for all ablation scenarios across observed variables. Red hues indicate degraded performance relative to $S_{Full}$.](../sections/outputs/ablation/ablation_kge_heatmap.png){.unnumbered}
+
+![Ablation waterfall for PO$_4^{3-}$, PIP, pH, and NO$_3^-$.](../sections/outputs/ablation/ablation_waterfall_po4_pip_ph_no3.png){.unnumbered}
+
+### S4.6 Temporal dynamics {.unnumbered}
+
+![Time series comparison at the urban station for $S_{Full}$ (black), European C-GEM Baseline [@VoltaC.2016; @WeiXi2022] (grey), and selected ablation scenarios. Observations overlaid as scatter points.](../sections/outputs/ablation/ablation_timeseries.png){.unnumbered}
+
+### S4.7 Longitudinal profiles {.unnumbered}
+
+![Longitudinal profiles for $S_{Full}$, European C-GEM Baseline [@VoltaC.2016; @WeiXi2022], and selected high-impact ablation scenarios. Variables: Phy1, O$_2$, NH$_4^+$, $pCO_2$, NO$_3^-$, PO$_4^{3-}$.](../sections/outputs/ablation/ablation_profiles.png){.unnumbered}
+
+### S4.8 Physical interpretation {.unnumbered}
+
+Note: Percentage changes reported below are averaged across all three monitored stations (Nha Be km 44, Bach Dang km 70, Phu Cuong km 114) and therefore differ from the urban-station (km 80) values shown in the main-text waterfall figure.
+
+**Bloom density control (B1).** Removing quadratic mortality increases mean Phy1 by +13.1% (3-station average), with a maximum of +17.0% at Phu Cuong. Although the urban-station KGE change is negligible ($\Delta$KGE 0), the quadratic closure is structurally necessary to prevent unrealistic biomass divergence during extended low-flushing periods: without it, peak Chl-a exceeds 120 $\mu$g L$^{-1}$ (vs. observed maxima of $60$ $\mu$g L$^{-1}$), and the density-dependent feedback required for stable multi-year integration is lost.
+
+**Spatial bloom confinement (B2).** Removing benthic grazing produces +103.6% Phy1 increase (3-station average; +217% at Phu Cuong). The depth-dependent formulation creates a 1.9-fold differential in loss rates between shallow upstream ($H =$ 10 m) and the deep urban channel ($H =$ 19 m).
+
+**Halocline extinction (B3).** Salinity stress has modest impact at the freshwater urban station ($\Delta$Phy1 = +3.8%) but is important for downstream spatial pattern fidelity: removing it increases phytoplankton at Nha Be (km 44, mean salinity 2.3 g kg$^{-1}$). Without this term, freshwater diatoms unrealistically persist into the brackish zone, destroying the observed downstream Chl-a gradient. This process is thus location-dependent; the urban-station metric underestimates its system-wide importance.
+
+**Urban hypoxia decoupling (B4).** Removing fast BDOC produces the largest single-feature impact on dissolved oxygen (+78.3% 3-station average; +167% at the urban station). Without the decoupled labile pathway, the model does not generate sufficient O$_2$ demand from urban wastewater.
+
+**Benthic respiration (B5).** SOD provides +16.0% O$_2$ change (3-station average; +14.7% at the urban station), localised to shallow, organically enriched reaches.
+
+**Light climate (B6).** CDOM attenuation increases phytoplankton biomass by +29.2% when removed ($\Delta$Phy1, 3-station average; +47% at Nha Be). Tropical rivers carry substantial dissolved organic matter from peatland and mangrove catchments; the CDOM term adds 0.3--0.5 m$^{-1}$ to $K_D$ in the urban corridor.
+
+**Settling (B7).** Phyto sinking ($\Delta$Phy1 = +29.9%, 3-station average; +57% at Phu Cuong) removes diatom biomass with a depth-dependent loss rate proportional to $w_s/H$, preferentially depleting shallow upstream reaches.
+
+**Allochthonous C:N stoichiometry (B8).** Setting $C\!:\!N_{toc}$ from 20 to Redfield 6.625 increases nitrogen release per unit carbon degraded, boosting Phy1 by +30.3% (3-station average; +43% at Phu Cuong).
+
+**Phosphorus buffering (B9).** Removing PIP adsorption increases dissolved PO$_4^{3-}$ by +7.6% (3-station average) and eliminates particulate-bound phosphorus entirely ($\Delta$PIP = $-$100%). The Langmuir isotherm buffers dissolved phosphate onto suspended clay particles.
+
+**Discharge-driven turbidity (B10).** Removing KD$_{flow}$ increases mean Phy1 by +30.7% (3-station average; +75% at Bach Dang) and degrades Chl-a KGE from 0.339 to $-0.227$. The discharge-dependent light attenuation is essential for suppressing blooms during high-flow events.
+
+**Upstream background extinction (B11).** Removing kbg$_{upstream}$ increases mean Phy1 by +122.2% (3-station average; +366% at Phu Cuong). The tanh-based spatial gradient in background extinction confines blooms to the lower estuary where terrigenous DOM concentrations are lower.
+
+### S4.9 Synthesis: which adaptations are essential? {.unnumbered}
+
+| Category | Feature | Impact on Phy1 (or key variable) |
+|----------|---------|----------------------------------|
+| Essential | Upstream kbg (B11) | 122.2% |
+| Essential | Benthic grazing (B2) | 103.6% |
+| Essential | Fast labile BDOC (B4) | 78.3% (O$_2$) |
+| Essential | Salinity mortality (B3) | 63.0% |
+| Essential | Discharge-driven KD (B10) | 30.7% |
+| Essential | High C:N ratio (B8) | 30.3% |
+| Essential | Phyto sinking (B7) | 29.9% |
+| Essential | CDOM light attenuation (B6) | 29.2% |
+| Essential | SOD benthic resp. (B5) | 16.0% (O$_2$) |
+| Essential | Quadratic mortality (B1) | 13.1% (peak control) |
+| Essential | PIP adsorption (B9) | 100% (PIP) |
+
+: Synthesis ranking. Essential: >15% impact at any monitored station or critical structural role. Important: 3--15%. Impacts are evaluated at all three monitored stations (Nha Be km 44, Bach Dang km 70, Phu Cuong km 114); single-station metrics can mischaracterise spatially heterogeneous processes. {.unnumbered}
+
+All eleven structural adaptations are essential at the system scale: removing any one degrades performance by >15% at one or more monitoring stations. The most influential are the two light-climate terms (B11 and B10), benthic grazing (B2), and fast labile BDOC oxidation (B4), confirming that bloom dynamics depend jointly on light regime, loss processes, and wastewater carbon reactivity. Reverting kinetic groups further shows that parameter recalibration alone cannot reproduce the Saigon behaviour; the system requires a different *model structure*, not merely different parameter values.
+
+### S4.10 European C-GEM baseline vs Saigon full model {.unnumbered}
+
+The European C-GEM Baseline refers to the original C-GEM framework [@VoltaC.2016; @WeiXi2022] run with its default temperate-estuary parameterisation (Scheldt) but forced with Saigon boundary conditions, without any of the eleven structural adaptations described above.
+
+| Variable | European C-GEM KGE | Saigon KGE | Improvement |
+|----------|------------:|-----------:|------------:|
+| Chl-a (Phy1) | $-0.031$ | 0.339 | +0.370 |
+| O$_2$ | $-0.458$ | $-0.457$ | +0.001 |
+| NH$_4^+$ | $-0.990$ | $-0.253$ | +0.737 |
+| NO$_3^-$ | 0.054 | 0.253 | +0.199 |
+| TOC | $-0.499$ | $-0.338$ | +0.161 |
+| PO$_4^{3-}$ | $-1.069$ | $-0.079$ | +0.990 |
+| SPM | $-0.545$ | $-0.728$ | $-0.183$ |
+| pH | $-0.015$ | 0.111 | +0.126 |
+
+: Direct KGE comparison. The Saigon model improves Phy1 (+0.37), PO$_4^{3-}$ (+0.99), NH$_4^+$ (+0.74), NO$_3^-$ (+0.20), TOC (+0.16), and pH (+0.13). O$_2$ KGE is essentially unchanged (+0.00); SPM degrades slightly, reflecting the trade-off between biogeochemical fidelity and transport-dominated variables. The combined effect is substantially larger than any single modification, confirming the synergistic nature of the framework changes. {.unnumbered}

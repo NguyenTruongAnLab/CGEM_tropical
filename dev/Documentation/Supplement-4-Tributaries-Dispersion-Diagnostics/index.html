@@ -1,0 +1,1476 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for C-GEM — 1-D Reactive-Transport Model for Tropical Estuaries">
+      
+      
+        <meta name="author" content="Nguyen Truong An">
+      
+      
+      
+        <link rel="prev" href="../Supplement-3-Model-Flowcharts/">
+      
+      
+        <link rel="next" href="../../Analysis-Tools/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>S4 — Tributaries & Dispersion - C-GEM Tropical</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:300,300i,400,400i,700,700i%7CRegular:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Google Sans";--md-code-font:"Regular"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/customization.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#supplement-4-tributaries-dispersion-and-diagnostics-peerreview-note" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="C-GEM Tropical" class="md-header__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            C-GEM Tropical
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S4 — Tributaries & Dispersion
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Getting-Started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Chapter-1-Introduction/" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Chapter-6-Implementation/" class="md-tabs__link">
+          
+  
+  
+  Implementation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Supplement-1-Variables/" class="md-tabs__link">
+          
+  
+  
+  Supplements
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Analysis-Tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Analysis Tools
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="C-GEM Tropical" class="md-nav__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    C-GEM Tropical
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Getting-Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-1-Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-2-Hydrodynamic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydrodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-3-Numerical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerical Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-4-Transports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-5-Biogeochemical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Biogeochemistry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Implementation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-6-Implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Calibration_Preparation_Guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calibration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supplements
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Supplements
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-1-Variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 — Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-2-inorganic-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 — Inorganic Carbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-3-Model-Flowcharts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 — Flowcharts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 — Tributaries & Dispersion
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 — Tributaries & Dispersion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-scientific-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scientific foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tributary-implementation-fischer-1979" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Tributary implementation (Fischer 1979)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-predictive-dispersion-gisen-2015-van-der-burgh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Predictive dispersion (Gisen 2015 + Van der Burgh)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-warmup-and-boundary-forcing-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Warmup and boundary forcing consistency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-massbalance-diagnostics-with-tributary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Mass‑balance diagnostics with tributary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-configuration-summary-minimal-literaturebased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configuration summary (minimal, literature‑based)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-edge-cases-and-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Edge cases and guarantees
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-validation-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Validation protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Analysis-Tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysis Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-scientific-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scientific foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tributary-implementation-fischer-1979" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Tributary implementation (Fischer 1979)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-predictive-dispersion-gisen-2015-van-der-burgh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Predictive dispersion (Gisen 2015 + Van der Burgh)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-warmup-and-boundary-forcing-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Warmup and boundary forcing consistency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-massbalance-diagnostics-with-tributary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Mass‑balance diagnostics with tributary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-configuration-summary-minimal-literaturebased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configuration summary (minimal, literature‑based)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-edge-cases-and-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Edge cases and guarantees
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-validation-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Validation protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="supplement-4-tributaries-dispersion-and-diagnostics-peerreview-note">Supplement 4 — Tributaries, Dispersion, and Diagnostics (Peer‑review note)<a class="headerlink" href="#supplement-4-tributaries-dispersion-and-diagnostics-peerreview-note" title="Permanent link">&para;</a></h1>
+<p>This document formalizes the recent transport improvements and diagnostics so they can be evaluated on scientific grounds and reproduced across estuaries with or without tributaries.</p>
+<h2 id="1-scientific-foundations">1. Scientific foundations<a class="headerlink" href="#1-scientific-foundations" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Confluence mixing and tributary mass addition follow Fischer et al. (1979), ch. 7. We model tributaries as direct mass sources to the advection–dispersion equation; mixing and redistribution occur through the main solver. This prevents non-physical overwrites and guarantees accumulation toward a transport-driven steady state.</li>
+<li>Longitudinal dispersion follows the predictive framework of Gisen et al. (2015), anchored at the mouth by a physics-based estimate and propagated upstream by the Van der Burgh relationship (Savenije, 2012). This maintains a geometry/hydrodynamics-first philosophy and minimizes tunable parameters.</li>
+</ul>
+<h2 id="2-tributary-implementation-fischer-1979">2. Tributary implementation (Fischer 1979)<a class="headerlink" href="#2-tributary-implementation-fischer-1979" title="Permanent link">&para;</a></h2>
+<p>We implement tributary inflows as mass source terms in the concentration equation for species C:</p>
+<div class="arithmatex">\[
+\frac{\partial C}{\partial t} + \frac{\partial (uC)}{\partial x} = \frac{\partial}{\partial x}\left( D\, \frac{\partial C}{\partial x} \right) + S_C(x,t),\quad\text{with}\quad S_C=\frac{Q_{\mathrm{trib}}}{V_{\mathrm{eff}}}\big(C_{\mathrm{trib}}-C\big)\ \text{in the confluence cell.}
+\]</div>
+<ul>
+<li>Per time step of duration <span class="arithmatex">\(\Delta t\)</span>, the concentration increment added in the confluence control volume is</li>
+</ul>
+<div class="arithmatex">\[
+\Delta C = \left(\frac{Q_{\mathrm{trib}}}{V_{\mathrm{eff}}}\right)\big(C_{\mathrm{trib}}-C\big)\,\Delta t.
+\]</div>
+<ul>
+<li>Near‑field mixing volume. Following Fischer (1979, ch. 7) the near‑field confluence mixing zone has a longitudinal extent of a few channel widths. We represent this subgrid effect by an effective junction volume</li>
+</ul>
+<div class="arithmatex">\[
+V_{\mathrm{eff}} = A\,L_{\mathrm{mix}}, \qquad L_{\mathrm{mix}} = \min\big(\Delta x,\ k_{\mathrm{mix}}\,B\big),\ \ k_{\mathrm{mix}}\in [2,5].
+\]</div>
+<p>Here <span class="arithmatex">\(A\)</span> is cross‑sectional area, <span class="arithmatex">\(B\)</span> width, and <span class="arithmatex">\(\Delta x\)</span> the grid spacing. The default <span class="arithmatex">\(k_{\mathrm{mix}}=3\)</span> can be considered a literature‑based constant; it should not be case‑tuned unless clear site evidence exists.</p>
+<ul>
+<li>
+<p>Rationale. This preserves volume in the 1‑D main channel while correctly adding mass. The sign of the source is physically consistent: if <span class="arithmatex">\(C_{\mathrm{trib}}&lt;C\)</span>, then <span class="arithmatex">\(S_C&lt;0\)</span> (dilution), and if <span class="arithmatex">\(C_{\mathrm{trib}}&gt;C\)</span>, then <span class="arithmatex">\(S_C&gt;0\)</span> (enrichment). It prevents non‑physical “instant overwrite to <span class="arithmatex">\(C_{\mathrm{trib}}\)</span>” and yields bounded accumulation across steps, approaching a steady transport balance near urban inputs.</p>
+</li>
+<li>
+<p>Non‑negativity. After transport we enforce <span class="arithmatex">\(C\ge 0\)</span> for all biogeochemical tracers; any negative value is clamped to zero to respect physical bounds.</p>
+</li>
+</ul>
+<p>Implementation</p>
+<ul>
+<li>File <code>src/transport.c</code>: <code>applyTributarySourceTerms()</code> computes <span class="arithmatex">\(\Delta C\)</span> and adds it to the confluence cell using <span class="arithmatex">\(V_{\mathrm{eff}}\)</span>.</li>
+<li>Config (read from <code>INPUT/params.txt</code>): <code>enable_subgrid_confluence_mixing</code> (default 1), <code>junction_kmix_widths</code> (default 3.0 widths). Both are literature‑driven, not calibration targets.</li>
+</ul>
+<h2 id="3-predictive-dispersion-gisen-2015-van-der-burgh">3. Predictive dispersion (Gisen 2015 + Van der Burgh)<a class="headerlink" href="#3-predictive-dispersion-gisen-2015-van-der-burgh" title="Permanent link">&para;</a></h2>
+<p>Mouth dispersion <span class="arithmatex">\(D_0\)</span> is predicted from hydrodynamics and geometry (Gisen et al., 2015, Eq. 41):</p>
+<div class="arithmatex">\[
+\frac{D_0}{v\,E}=0.3958\,N_r^{0.57}\left(\frac{g}{C^2}\right)^{0.21},\qquad N_r=\frac{\Delta\rho/\rho\ \ g\ H\ Q_r\ T}{v^2\ A\ E}.
+\]</div>
+<ul>
+<li><span class="arithmatex">\(v\)</span> is the tidal velocity amplitude (we use the first velocity interface), <span class="arithmatex">\(E = v\,T/\pi\)</span> is the tidal excursion, <span class="arithmatex">\(T\)</span> is the M2 period, <span class="arithmatex">\(C\)</span> is the Chezy coefficient, <span class="arithmatex">\(g\)</span> gravity, <span class="arithmatex">\(H\)</span> depth, <span class="arithmatex">\(A\)</span> cross‑sectional area, <span class="arithmatex">\(Q_r\)</span> the net river discharge magnitude, and <span class="arithmatex">\(\Delta\rho/\rho\)</span> stratification parameter (Savenije, 2012). Scalar checks and floors avoid division by zero.</li>
+<li>Upstream profile. We map <span class="arithmatex">\(D_0\)</span> inland using the Van der Burgh relationship tied to geometry:</li>
+</ul>
+<div class="arithmatex">\[
+D(x)=D_0\left( \frac{A(x)}{A_0} \right)^{K_{\mathrm{VDB}}},\qquad K_{\mathrm{VDB}}\in[0.5,0.8].
+\]</div>
+<ul>
+<li>Safety rails. We constrain <span class="arithmatex">\(D\in[\text{MIN\_DISP\_COEFF},\text{MAX\_DISP\_COEFF}]\)</span> to prevent unphysical extremes; these are not calibration targets but numerical guards.</li>
+</ul>
+<p>Implementation</p>
+<ul>
+<li>File <code>src/transport.c</code>: <code>Dispcoef()</code> implements the equations above. Parameters are configuration‑driven: <code>K_VDB_ENHANCED</code> (the single recommended tuning knob), <code>DELTA_RHO_OVER_RHO_PARAM</code> (fixed 0.02–0.03), and optional <code>MIN/MAX</code> clamps.</li>
+</ul>
+<p>Minimal tunable set</p>
+<ul>
+<li>Predictive‑first philosophy: tune at most one number, <span class="arithmatex">\(K_{\mathrm{VDB}}\)</span>. The density ratio and clamps should remain fixed. An optional global multiplier (<code>enhancement_factor</code>) can be set to 1.0 to remove it entirely.</li>
+</ul>
+<h2 id="4-warmup-and-boundary-forcing-consistency">4. Warmup and boundary forcing consistency<a class="headerlink" href="#4-warmup-and-boundary-forcing-consistency" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Time series policy. Hourly series (elevation, light) remain dynamic during warmup; daily series (upstream net discharge, tributary discharges and concentrations, chemical BCs) are held constant at “day 1” for steady transport equilibration. Thus, tributaries inject mass continuously during warmup with stable daily values—no shock at the warmup/post‑warmup boundary.</li>
+<li>Auto‑equilibration. Optionally extend warmup until transport reaches steady state: compute relative day‑to‑day change of domain‑mean (NH4, NO3, Sal) and require <span class="arithmatex">\(\max\Delta\le \varepsilon\)</span> (default <span class="arithmatex">\(1\%\)</span>) for <span class="arithmatex">\(N\)</span> consecutive days (default 3). This prevents starting reactive simulations from a non‑equilibrated transport state.</li>
+</ul>
+<h2 id="5-massbalance-diagnostics-with-tributary-sources">5. Mass‑balance diagnostics with tributary sources<a class="headerlink" href="#5-massbalance-diagnostics-with-tributary-sources" title="Permanent link">&para;</a></h2>
+<p>Let total domain mass for species <span class="arithmatex">\(C\)</span> be <span class="arithmatex">\(M=\sum_i C_i V_i\)</span>. Over a validation interval <span class="arithmatex">\(\Delta t_v\)</span> we estimate</p>
+<div class="arithmatex">\[
+\frac{\mathrm{d}M}{\mathrm{d}t}\frac{M(t)-M(t-\Delta t_v)}{\Delta t_v}.
+\]</div>
+<p>We now account for internal source terms from tributaries:</p>
+<div class="arithmatex">\[
+R = \frac{\mathrm{d}M}{\mathrm{d}t} - S_{\mathrm{trib}},\qquad S_{\mathrm{trib}}=\sum_k Q_{\mathrm{trib},k}\,C_{\mathrm{trib},k},
+\]</div>
+<p>with <span class="arithmatex">\(R\)</span> the residual. In reactions‑off mode, <span class="arithmatex">\(R\)</span> should be small when boundary conditions are consistent. The diagnostic reports <span class="arithmatex">\(\mathrm{d}M/\mathrm{d}t\)</span>, <span class="arithmatex">\(S_{\mathrm{trib}}\)</span>, and the residual.</p>
+<p>Implementation</p>
+<ul>
+<li>File <code>src/transport.c</code>: accumulates per‑species <span class="arithmatex">\(S_{\mathrm{trib}}\)</span> each step.</li>
+<li>File <code>src/diagnostics.c</code>: <code>validate_mass_conservation()</code> subtracts <span class="arithmatex">\(S_{\mathrm{trib}}\)</span> for the tested species (e.g., NH4). Salinity checks remain unaffected (no internal source).</li>
+</ul>
+<h2 id="6-configuration-summary-minimal-literaturebased">6. Configuration summary (minimal, literature‑based)<a class="headerlink" href="#6-configuration-summary-minimal-literaturebased" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Subgrid confluence mixing (Fischer 1979):</li>
+<li><code>enable_subgrid_confluence_mixing</code> (default 1)</li>
+<li><code>junction_kmix_widths</code> (default 3.0 widths; literature 2–5; treat as fixed unless field evidence suggests otherwise)</li>
+<li>Predictive dispersion (Gisen 2015 + Van der Burgh):</li>
+<li><code>K_VDB_ENHANCED</code> (0.5–0.8): recommended single tuning knob</li>
+<li><code>DELTA_RHO_OVER_RHO_PARAM</code> (0.02–0.03): fixed physics</li>
+<li><code>MIN_DISP_COEFF</code>, <code>MAX_DISP_COEFF</code>: safety rails (not calibration)</li>
+<li><code>enhancement_factor</code>: set 1.0 to remove; optional otherwise</li>
+</ul>
+<h2 id="7-edge-cases-and-guarantees">7. Edge cases and guarantees<a class="headerlink" href="#7-edge-cases-and-guarantees" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Non‑negativity: <span class="arithmatex">\(C\ge 0\)</span> enforced after each transport step.</li>
+<li>No tributaries: the source term is simply zero; transport remains predictive.</li>
+<li>Stability: junction source is mass‑only; hydrodynamic volume is preserved; <span class="arithmatex">\(L_{\mathrm{mix}}\le \Delta x\)</span> prevents nonlocal updates.</li>
+<li>Time step: no <span class="arithmatex">\(\Delta t\)</span> change is required.</li>
+</ul>
+<h2 id="8-validation-protocol">8. Validation protocol<a class="headerlink" href="#8-validation-protocol" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Phase‑1 (reactions OFF): verify accumulation at urban confluences in steady warmup, then persistence along the main stem. NH4 budget: check <span class="arithmatex">\(\mathrm{d}M/\mathrm{d}t\)</span>, <span class="arithmatex">\(S_{\mathrm{trib}}\)</span>, residual.</li>
+<li>Sensitivity (optional): if peaks are overly smoothed, adjust only <span class="arithmatex">\(K_{\mathrm{VDB}}\)</span> within 0.5–0.8; keep other parameters fixed.</li>
+</ul>
+<h2 id="9-references">9. References<a class="headerlink" href="#9-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fischer, H. B., List, E. J., Koh, R. C. Y., Imberger, J., &amp; Brooks, N. H. (1979). Mixing in Inland and Coastal Waters. Academic Press. (Confluences: Chapter 7)</li>
+<li>Savenije, H. H. G. (2012). Salinity and Tides in Alluvial Estuaries. Completely Revised 2nd Edition. Delft Academic Press.</li>
+<li>Gisen, J. I. A., Savenije, H. H. G., &amp; Nijzink, R. C. (2015). Revised predictive equations for salt intrusion modelling in estuaries. Hydrol. Earth Syst. Sci., 19, 2791–2803.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../Supplement-3-Model-Flowcharts/" class="md-footer__link md-footer__link--prev" aria-label="Previous: S3 — Flowcharts">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                S3 — Flowcharts
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../Analysis-Tools/" class="md-footer__link md-footer__link--next" aria-label="Next: Analysis Tools">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Analysis Tools
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p> Copyright &copy; 2025-<script>document.write(new Date().getFullYear())</script> Nguyen Truong An. All Rights Reserved</p>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.highlight", "content.code.copy", "navigation.tracking", "toc.follow", "navigation.sections", "navigation.tabs", "navigation.expand", "content.tooltips", "search.suggest", "navigation.footer", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../assets/javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+    
+  </body>
+</html>

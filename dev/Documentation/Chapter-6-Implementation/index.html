@@ -1,0 +1,2122 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for C-GEM — 1-D Reactive-Transport Model for Tropical Estuaries">
+      
+      
+        <meta name="author" content="Nguyen Truong An">
+      
+      
+      
+        <link rel="prev" href="../Chapter-5-Biogeochemical/">
+      
+      
+        <link rel="next" href="../Calibration_Preparation_Guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Code Architecture - C-GEM Tropical</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:300,300i,400,400i,700,700i%7CRegular:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Google Sans";--md-code-font:"Regular"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/customization.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-6-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="C-GEM Tropical" class="md-header__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            C-GEM Tropical
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Code Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Getting-Started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Chapter-1-Introduction/" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Implementation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Supplement-1-Variables/" class="md-tabs__link">
+          
+  
+  
+  Supplements
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Analysis-Tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Analysis Tools
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="C-GEM Tropical" class="md-nav__button md-logo" aria-label="C-GEM Tropical" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    C-GEM Tropical
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NguyenTruongAnLab/CGEM_tropical" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Getting-Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-1-Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-2-Hydrodynamic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydrodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-3-Numerical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerical Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-4-Transports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chapter-5-Biogeochemical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Biogeochemistry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Implementation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Source files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-main-simulation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Main simulation loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-key-data-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Key data structures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Key data structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-variables-struct-verb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State variables: struct Verb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species-enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species enum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hydrodynamic-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hydrodynamic arrays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boundary-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boundary conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tributaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tributaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Configuration files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 Configuration files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paramstxt-model-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        params.txt — model parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config_inputtxt-forcing-file-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config_input.txt — forcing file paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forcing-csv-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forcing CSV format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Build system
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.6 Build system">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-platform-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-platform support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#68-calibration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 Calibration (optional)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#69-extending-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 Extending the model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.9 Extending the model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-state-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new state variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-tributary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new tributary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-the-geometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modifying the geometry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Calibration_Preparation_Guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calibration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supplements
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Supplements
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-1-Variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 — Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-2-inorganic-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 — Inorganic Carbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-3-Model-Flowcharts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 — Flowcharts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Supplement-4-Tributaries-Dispersion-Diagnostics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 — Tributaries & Dispersion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Analysis-Tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysis Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Source files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-main-simulation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Main simulation loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-key-data-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Key data structures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Key data structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-variables-struct-verb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State variables: struct Verb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species-enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species enum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hydrodynamic-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hydrodynamic arrays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boundary-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boundary conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tributaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tributaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Configuration files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 Configuration files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paramstxt-model-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        params.txt — model parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config_inputtxt-forcing-file-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config_input.txt — forcing file paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forcing-csv-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forcing CSV format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Build system
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.6 Build system">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-platform-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-platform support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#68-calibration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 Calibration (optional)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#69-extending-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 Extending the model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.9 Extending the model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-state-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new state variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-tributary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new tributary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-the-geometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modifying the geometry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-6-implementation">Chapter 6 — Implementation<a class="headerlink" href="#chapter-6-implementation" title="Permanent link">&para;</a></h1>
+<p>This chapter describes the actual source code architecture of C-GEM: how the<br />
+files are organized, how data flows through the simulation, and how to extend<br />
+or modify the model.</p>
+<hr />
+<h2 id="61-source-files">6.1 Source files<a class="headerlink" href="#61-source-files" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main.c</code></td>
+<td>Entry point — parses environment variables, calls <code>Init()</code>, runs the main time loop</td>
+</tr>
+<tr>
+<td><code>init.c</code> / <code>init.h</code></td>
+<td>Model initialization: reads <code>params.txt</code> and <code>config_input.txt</code>, allocates arrays, sets default rate constants, builds the grid</td>
+</tr>
+<tr>
+<td><code>variables.c</code> / <code>variables.h</code></td>
+<td>Global state: all arrays, structs, enums, and extern declarations</td>
+</tr>
+<tr>
+<td><code>define.h</code></td>
+<td>Preprocessor constants (<code>MAXV</code>, <code>MAXM</code>, <code>MAX_TIMESERIES</code>, <code>TIDAL_PERIOD</code>, <code>G</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>hydrodynamics.c</code></td>
+<td>Saint-Venant solver: <code>Hyd()</code> → <code>Newbc()</code> → <code>Coeffa()</code> → <code>NewUH()</code> → <code>Update()</code> → <code>Tridag()</code></td>
+</tr>
+<tr>
+<td><code>transport.c</code> / <code>transport.h</code></td>
+<td>TVD advection + Crank–Nicolson dispersion: <code>Transport()</code> → <code>Adv()</code> / <code>Disp()</code> / <code>TVD()</code></td>
+</tr>
+<tr>
+<td><code>biogeo.c</code> / <code>biogeo.h</code></td>
+<td>NPZD reactions, carbonate chemistry, gas exchange: <code>Biogeo()</code></td>
+</tr>
+<tr>
+<td><code>biogeout.c</code></td>
+<td>Biogeochemical rate accessors (<code>Pbmax()</code>, <code>kmort()</code>, <code>Fnit()</code>, <code>O2sat()</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>bcforcing.c</code></td>
+<td>Boundary-condition interpolation: <code>bgboundary()</code>, <code>Tide()</code>, <code>Discharge_ups()</code></td>
+</tr>
+<tr>
+<td><code>io_input.c</code></td>
+<td>Parameter file reader (<code>read_parameters()</code>) and numeric two-column forcing loader (<code>readFile()</code>)</td>
+</tr>
+<tr>
+<td><code>io_output.c</code></td>
+<td>Output writers: per-variable CSV/BINARY streams, geometry snapshot, and diagnostics under <code>OUT/</code></td>
+</tr>
+<tr>
+<td><code>diagnostics.c</code> / <code>diagnostics.h</code></td>
+<td>Runtime sanity checks: NaN detection, bound violations, numerical stability</td>
+</tr>
+<tr>
+<td><code>utilities.c</code> / <code>utilities.h</code></td>
+<td>Math helpers: interpolation, date parsing, moving averages</td>
+</tr>
+<tr>
+<td><code>file.h</code></td>
+<td>Cross-platform file path macros</td>
+</tr>
+<tr>
+<td><code>calibration.c</code> / <code>calibration.h</code></td>
+<td>Multi-stage NLopt calibration driver (optional, compile-time)</td>
+</tr>
+<tr>
+<td><code>calibration_helpers.c</code> / <code>calibration_helpers.h</code></td>
+<td>Observation matching and KGE/RMSE scoring for calibration</td>
+</tr>
+<tr>
+<td><code>calibration_stub.c</code></td>
+<td>No-op fallback when calibration is disabled (<code>-DCGEM_ENABLE_CALIBRATION=OFF</code>)</td>
+</tr>
+<tr>
+<td><code>nlopt_winshim.c</code></td>
+<td>Windows DLL runtime loader for NLopt</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="62-main-simulation-loop">6.2 Main simulation loop<a class="headerlink" href="#62-main-simulation-loop" title="Permanent link">&para;</a></h2>
+<p>The core loop in <code>main.c</code> runs at a fixed time step (<code>DELTI</code>, configured in<br />
+<code>INPUT/params.txt</code>; the bundled public example uses <code>360 s</code>):</p>
+<div class="language-c highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// From main.c (simplified for clarity)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Init</span><span class="p">();</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">MAXT</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">DELTI</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">Hyd</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">             </span><span class="c1">// Saint-Venant: water level + velocity</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">bgboundary</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">      </span><span class="c1">// Interpolate boundary concentrations</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">Transport</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">       </span><span class="c1">// TVD advection + dispersion for all species</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n">check_numerical_stability</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">  </span><span class="c1">// NaN / bound checks</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">enable_biogeochemical_reactions</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">enable_carbonate_diagnostics</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="n">Biogeo</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">      </span><span class="c1">// NPZD reactions + carbonate equilibrium</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="n">updateSuspendedSediment</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">    </span><span class="c1">// Erosion / deposition</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="n">SaveAllWaterQuality</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w">        </span><span class="c1">// Write state output at configured intervals</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="c1">// Fluxwrite(species, t) is then called for each enabled transported variable</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Execution order matters</strong>: hydrodynamics must run first (provides velocity<br />
+and water depth), then boundary conditions are interpolated, then transport<br />
+advects/disperses all species, and finally biogeochemistry modifies<br />
+concentrations in place.</p>
+<hr />
+<h2 id="63-key-data-structures">6.3 Key data structures<a class="headerlink" href="#63-key-data-structures" title="Permanent link">&para;</a></h2>
+<h3 id="state-variables-struct-verb">State variables: <code>struct Verb</code><a class="headerlink" href="#state-variables-struct-verb" title="Permanent link">&para;</a></h3>
+<p>Each transported variable (Phy1, NO3, O2, DIC, etc.) is stored in a <code>Verb</code> struct:</p>
+<div class="language-c highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// From variables.h</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Verb</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w">              </span><span class="c1">// Display name (e.g., &quot;Phy1&quot;)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">env</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Active flag</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">MAXM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w">        </span><span class="c1">// Concentration at each grid cell</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">clb</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Lower boundary value</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">cub</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Upper boundary value</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">avg</span><span class="p">[</span><span class="n">MAXM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w">      </span><span class="c1">// Running average</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">concflux</span><span class="p">[</span><span class="n">MAXM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c1">// Concentration flux</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">advflux</span><span class="p">[</span><span class="n">MAXM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w">  </span><span class="c1">// Advective flux</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">disflux</span><span class="p">[</span><span class="n">MAXM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w">  </span><span class="c1">// Dispersive flux</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">};</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">extern</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">Verb</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="n">MAXV</span><span class="p">];</span><span class="w">     </span><span class="c1">// MAXV = CHEM_COUNT</span>
+</code></pre></div>
+<p>Concentrations are accessed as <code>v[species].c[cell]</code>, where <code>species</code> is an<br />
+enum value (e.g., <code>v[NO3].c[50]</code> gives NO₃ at cell 50).</p>
+<h3 id="species-enum">Species enum<a class="headerlink" href="#species-enum" title="Permanent link">&para;</a></h3>
+<div class="language-c highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// From variables.h</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">Phy1</span><span class="p">,</span><span class="w"> </span><span class="n">Phy2</span><span class="p">,</span><span class="w"> </span><span class="n">Si</span><span class="p">,</span><span class="w"> </span><span class="n">NO3</span><span class="p">,</span><span class="w"> </span><span class="n">NH4</span><span class="p">,</span><span class="w"> </span><span class="n">PO4</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">PIP</span><span class="p">,</span><span class="w">   </span><span class="c1">// Particulate Inorganic Phosphorus</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">O2</span><span class="p">,</span><span class="w"> </span><span class="n">TOC</span><span class="p">,</span><span class="w"> </span><span class="n">Sal</span><span class="p">,</span><span class="w"> </span><span class="n">SPM</span><span class="p">,</span><span class="w"> </span><span class="n">DIC</span><span class="p">,</span><span class="w"> </span><span class="n">AT</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="n">pCO2</span><span class="p">,</span><span class="w">  </span><span class="c1">// auto-calculated from DIC + AT</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">PH</span><span class="p">,</span><span class="w">    </span><span class="c1">// auto-calculated</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">CO2</span><span class="p">,</span><span class="w">   </span><span class="c1">// auto-calculated</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="n">CHEM_COUNT</span><span class="w">  </span><span class="c1">// = 17</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span><span class="w"> </span><span class="n">Chem</span><span class="p">;</span>
+</code></pre></div>
+<p>Four species (<code>pCO2</code>, <code>PH</code>, <code>CO2</code>, <code>PIP</code>) are auto-calculated and not<br />
+independently transported. The remaining 13 are solved by the transport<br />
+equation.</p>
+<h3 id="hydrodynamic-arrays">Hydrodynamic arrays<a class="headerlink" href="#hydrodynamic-arrays" title="Permanent link">&para;</a></h3>
+<p>Hydrodynamic state uses simple global arrays (not structs):</p>
+<table>
+<thead>
+<tr>
+<th>Array</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>level[MAXM+1]</code></td>
+<td>Water level</td>
+<td>m</td>
+</tr>
+<tr>
+<td><code>velocity[MAXM+1]</code></td>
+<td>Flow velocity</td>
+<td>m/s</td>
+</tr>
+<tr>
+<td><code>waterDepth[MAXM+1]</code></td>
+<td>Water depth</td>
+<td>m</td>
+</tr>
+<tr>
+<td><code>totalArea[MAXM+1]</code></td>
+<td>Cross-sectional area</td>
+<td>m²</td>
+</tr>
+<tr>
+<td><code>width[MAXM+1]</code></td>
+<td>Channel width</td>
+<td>m</td>
+</tr>
+<tr>
+<td><code>Chezy[MAXM+1]</code></td>
+<td>Chézy roughness coefficient</td>
+<td>m^½/s</td>
+</tr>
+<tr>
+<td><code>C[MAXM+1][5]</code></td>
+<td>Tridiagonal matrix coefficients</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="boundary-conditions">Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permanent link">&para;</a></h3>
+<p>Each species has upstream and downstream boundary arrays:</p>
+<div class="language-c highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// From variables.h</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">time</span><span class="p">;</span><span class="w">       </span><span class="c1">// Time stamps (seconds since simulation start)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w">       </span><span class="c1">// Concentration values</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filePath</span><span class="p">;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">required</span><span class="p">;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dataSize</span><span class="p">;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span><span class="w"> </span><span class="n">BCArray</span><span class="p">;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="k">extern</span><span class="w"> </span><span class="n">BCArray</span><span class="w"> </span><span class="n">upstreamBC</span><span class="p">[</span><span class="n">CHEM_COUNT</span><span class="p">];</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">extern</span><span class="w"> </span><span class="n">BCArray</span><span class="w"> </span><span class="n">downstreamBC</span><span class="p">[</span><span class="n">CHEM_COUNT</span><span class="p">];</span>
+</code></pre></div>
+<p>At each time step, <code>bgboundary()</code> interpolates these arrays to get the current<br />
+boundary concentration.</p>
+<h3 id="tributaries">Tributaries<a class="headerlink" href="#tributaries" title="Permanent link">&para;</a></h3>
+<div class="language-c highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// From variables.h</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">50</span><span class="p">];</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">cellIndex</span><span class="p">;</span><span class="w">                         </span><span class="c1">// Grid cell where tributary enters</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">dischargeFile</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">dischargeTime</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">discharge</span><span class="p">;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dischargeDataSize</span><span class="p">;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">filePath</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">timeArray</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">dataArray</span><span class="p">;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">dataSize</span><span class="p">;</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">chemicalData</span><span class="p">[</span><span class="n">CHEM_COUNT</span><span class="p">];</span><span class="w">           </span><span class="c1">// Per-species forcing</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">concentration</span><span class="p">[</span><span class="n">CHEM_COUNT</span><span class="p">];</span><span class="w">      </span><span class="c1">// Current interpolated values</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">is_urban</span><span class="p">;</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span><span class="w"> </span><span class="n">Tributary</span><span class="p">;</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="k">extern</span><span class="w"> </span><span class="n">Tributary</span><span class="w"> </span><span class="o">*</span><span class="n">tributaries</span><span class="p">;</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numTributaries</span><span class="p">;</span>
+</code></pre></div>
+<p>Tributaries inject mass using the Fischer (1979) instantaneous-mixing formula,<br />
+implemented in <code>applyTributarySourceTerms()</code> in <code>transport.c</code>.</p>
+<hr />
+<h2 id="64-configuration-files">6.4 Configuration files<a class="headerlink" href="#64-configuration-files" title="Permanent link">&para;</a></h2>
+<h3 id="paramstxt-model-parameters"><code>params.txt</code> — model parameters<a class="headerlink" href="#paramstxt-model-parameters" title="Permanent link">&para;</a></h3>
+<p>Key-value format, one parameter per line. Lines starting with <code>#</code> or <code>!</code> are<br />
+comments. Example entries:</p>
+<div class="language-ini highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Grid</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="na">EL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">202000</span><span class="w">           </span><span class="c1"># Estuary length [m]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="na">DELXI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2000</span><span class="w">          </span><span class="c1"># Grid spacing [m]</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="na">DELTI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">360</span><span class="w">           </span><span class="c1"># Time step [s]</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Tidal forcing</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="na">AMPL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.5</span><span class="w">            </span><span class="c1"># Tidal amplitude at mouth [m]</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Segment geometry (up to 4 segments)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="na">num_segments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="na">index_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="na">B1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5850.0</span><span class="w">           </span><span class="c1"># Width at segment 1 start [m]</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="na">LC1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">43000</span><span class="w">           </span><span class="c1"># Convergence length [m]</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="na">Chezy1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">57.0</span><span class="w">         </span><span class="c1"># Chézy coefficient [m^(1/2)/s]</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="na">Rs1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w">             </span><span class="c1"># Storage width ratio [-]</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># Biogeochemistry</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="na">Pb_Phy1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2.0e-4</span><span class="w">      </span><span class="c1"># Max growth rate phytoplankton [s⁻¹]</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="na">KN_Phy1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">25.0</span><span class="w">        </span><span class="c1"># Half-saturation N [mmol N/m³]</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="na">kbg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0.2</span><span class="w">             </span><span class="c1"># Background light attenuation [m⁻¹]</span>
+</code></pre></div>
+<p>The full parameter list is read by <code>read_parameters()</code> in <code>io_input.c</code>.<br />
+Any parameter not found in the file keeps its default value from<br />
+<code>assignBiogeochemicalRateConstants()</code> in <code>init.c</code>.</p>
+<p>For most applications, adapting the model means editing <code>INPUT/params.txt</code> and<br />
+<code>INPUT/config_input.txt</code>, not changing the source code. Geometry, forcing-file<br />
+paths, runtime switches, calibration settings, and output format are all driven<br />
+from these configuration files.</p>
+<h3 id="config_inputtxt-forcing-file-paths"><code>config_input.txt</code> — forcing file paths<a class="headerlink" href="#config_inputtxt-forcing-file-paths" title="Permanent link">&para;</a></h3>
+<p>Specifies which forcing files provide data for boundaries and tributaries.<br />
+Format example:</p>
+<div class="language-ini highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Upstream boundary</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="na">discharge</span><span class="o">=</span><span class="s">INPUT/Boundary/UB/discharge.csv</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="na">Sal</span><span class="o">=</span><span class="s">INPUT/Boundary/UB/Sal.csv</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="na">NO3</span><span class="o">=</span><span class="s">INPUT/Boundary/UB/NO3.csv</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Downstream boundary</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="na">elevation</span><span class="o">=</span><span class="s">INPUT/Boundary/LB/elevation.csv</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="na">light</span><span class="o">=</span><span class="s">INPUT/Boundary/LB/Light.csv</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># Tributaries</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="na">numTributaries</span><span class="o">=</span><span class="s">4</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="na">name</span><span class="o">=</span><span class="s">DongNai</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="na">cellIndex</span><span class="o">=</span><span class="s">31</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="na">discharge</span><span class="o">=</span><span class="s">INPUT/Tributaries/Dongnai/discharge.csv</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="na">NO3</span><span class="o">=</span><span class="s">INPUT/Tributaries/Dongnai/NO3.csv</span>
+</code></pre></div>
+<h3 id="forcing-csv-format">Forcing CSV format<a class="headerlink" href="#forcing-csv-format" title="Permanent link">&para;</a></h3>
+<p>All forcing files use the same two-column format:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>1,15.6
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>2,14.8
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>3,16.2
+</code></pre></div>
+<p>Column 1 is a <strong>numeric time index</strong>, not a calendar-date string; column 2 is<br />
+the value. The temporal meaning of that index comes from the corresponding<br />
+block in <code>config_input.txt</code> (<code>resolution=daily</code> or <code>resolution=hourly</code>). Units<br />
+must match what the model expects (see <code>INPUT/README.md</code>).</p>
+<hr />
+<h2 id="65-output">6.5 Output<a class="headerlink" href="#65-output" title="Permanent link">&para;</a></h2>
+<p>All output is written to the <code>OUT/</code> directory. The public runtime writes one<br />
+top-level file per variable/diagnostic, using either <code>.csv</code> or <code>.bin</code><br />
+depending on <code>output_storage_format</code>:</p>
+<table>
+<thead>
+<tr>
+<th>File pattern</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OUT/&lt;Var&gt;.csv</code> or <code>OUT/&lt;Var&gt;.bin</code></td>
+<td>State variables and hydrodynamics (for example <code>Sal</code>, <code>O2</code>, <code>DIC</code>, <code>velocity</code>, <code>waterDepth</code>, <code>Discharge</code>)</td>
+</tr>
+<tr>
+<td><code>OUT/Flux_Advection_&lt;Var&gt;.*</code> and <code>OUT/Flux_Dispersion_&lt;Var&gt;.*</code></td>
+<td>Advective and dispersive flux diagnostics when <code>enable_flux_output = 1</code></td>
+</tr>
+<tr>
+<td><code>OUT/Reaction_&lt;Name&gt;.*</code> and <code>OUT/Diag_&lt;Name&gt;.*</code></td>
+<td>Reaction and limitation diagnostics when <code>enable_reaction_output = 1</code></td>
+</tr>
+<tr>
+<td><code>OUT/geometry.csv</code></td>
+<td>Geometry snapshot used by plotting tools</td>
+</tr>
+<tr>
+<td><code>OUT/figures/</code> and <code>OUT/tables/</code></td>
+<td>Analysis products generated later by the Python scripts</td>
+</tr>
+</tbody>
+</table>
+<p>The bundled Python tools read both CSV and CGEM binary output through<br />
+<code>tools/cgem_read.py</code>, so the post-processing workflow stays the same when you<br />
+switch storage format.</p>
+<hr />
+<h2 id="66-build-system">6.6 Build system<a class="headerlink" href="#66-build-system" title="Permanent link">&para;</a></h2>
+<p>The project uses CMake with one optional feature flag:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Without calibration</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCGEM_ENABLE_CALIBRATION<span class="o">=</span>OFF
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># With calibration (requires NLopt)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCGEM_ENABLE_CALIBRATION<span class="o">=</span>ON
+</code></pre></div>
+<p>When calibration is disabled, <code>calibration_stub.c</code> provides no-op function<br />
+stubs so the rest of the code compiles unchanged. When enabled,<br />
+<code>calibration.c</code> and <code>calibration_helpers.c</code> are compiled and linked against<br />
+NLopt.</p>
+<h3 id="cross-platform-support">Cross-platform support<a class="headerlink" href="#cross-platform-support" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Linux/macOS</strong>: GCC or Clang, standard CMake build</li>
+<li><strong>Windows</strong>: MSVC via Visual Studio or CMake. NLopt is loaded at runtime via<br />
+<code>nlopt_winshim.c</code> (no link-time dependency)</li>
+<li>All source is C99. No platform-specific APIs are used in the core solver.</li>
+</ul>
+<hr />
+<h2 id="67-testing">6.7 Testing<a class="headerlink" href="#67-testing" title="Permanent link">&para;</a></h2>
+<p>The project includes 21 CTest tests in the <code>tests/</code> directory:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>-C<span class="w"> </span>Release<span class="w"> </span>--output-on-failure
+</code></pre></div>
+<p>Tests cover:</p>
+<ul>
+<li><strong>Transport</strong>: mass conservation, boundary conditions, dispersion–discharge<br />
+  parity, tributary Fischer mixing, control-volume length</li>
+<li><strong>Hydrodynamics</strong>: tributary source-term scaling</li>
+<li><strong>Biogeochemistry</strong>: growth limiting, CO₂ exchange sign, O₂/TOC/Phy budget<br />
+  parity, carbonate–nutrient alkalinity coupling</li>
+<li><strong>Calibration</strong>: score breakdown, time-base alignment, target summary</li>
+<li><strong>Forcing</strong>: continuity across warmup boundary, light/temperature consistency</li>
+<li><strong>Defensive</strong>: abort on NaN/Inf, abort on negative concentrations</li>
+</ul>
+<p>Each test is a standalone C file that links against the model source and<br />
+exercises one aspect of the solver.</p>
+<hr />
+<h2 id="68-calibration-optional">6.8 Calibration (optional)<a class="headerlink" href="#68-calibration-optional" title="Permanent link">&para;</a></h2>
+<p>When compiled with <code>-DCGEM_ENABLE_CALIBRATION=ON</code>, the model supports<br />
+automated multi-stage parameter optimization using NLopt:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Target</th>
+<th>Parameters tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Tidal range + salinity</td>
+<td>Chézy, Rs, C_VDB, D0, AMPL correction (9 params)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SPM profiles</td>
+<td>Erosion/deposition rates (15 params)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nutrients, O₂, Chl-a</td>
+<td>Biogeochemical rates (20 params)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>pCO₂, pH, DIC, AT</td>
+<td>Gas exchange scaling (1 param)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calibration workflow:</strong></p>
+<ol>
+<li>Set <code>calibration_mode</code> in <code>params.txt</code> to an NLopt algorithm (e.g., <code>5</code> for BOBYQA).</li>
+<li>Set <code>calibration_stage</code> to the stage number (1–4).</li>
+<li>Define parameter bounds in <code>INPUT/Calibration/calibration_parameters.csv</code>.</li>
+<li>Provide observation targets in <code>INPUT/Calibration/targets_tidal.csv</code> (Stage 1)<br />
+   or <code>INPUT/Calibration/targets_seasonal_unified.csv</code> (Stages 2–4).</li>
+<li>Run the model. The calibration driver (<code>run_hydrodynamic_calibration_from_params()</code><br />
+   in <code>calibration.c</code>) iterates the solver, computes KGE/RMSE scores against<br />
+   observations, and writes the best parameters to <code>params_calibrated.txt</code>.</li>
+</ol>
+<p>Calibration can be disabled at runtime with <code>CGEM_FORCE_NO_CALIBRATION=1</code>.</p>
+<hr />
+<h2 id="69-extending-the-model">6.9 Extending the model<a class="headerlink" href="#69-extending-the-model" title="Permanent link">&para;</a></h2>
+<h3 id="adding-a-new-state-variable">Adding a new state variable<a class="headerlink" href="#adding-a-new-state-variable" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Add the species to the <code>Chem</code> enum in <code>variables.h</code> (before <code>CHEM_COUNT</code>).</li>
+<li>Initialize its default parameters in <code>assignBiogeochemicalRateConstants()</code> in <code>init.c</code>.</li>
+<li>Add reaction terms in <code>Biogeo()</code> in <code>biogeo.c</code>.</li>
+<li>Provide upstream/downstream boundary CSVs and register paths in <code>config_input.txt</code>.</li>
+<li>Add a test in <code>tests/</code> to verify the new species budget.</li>
+</ol>
+<h3 id="adding-a-new-tributary">Adding a new tributary<a class="headerlink" href="#adding-a-new-tributary" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Create a folder under <code>INPUT/Tributaries/</code> with forcing CSVs.</li>
+<li>Add a block in <code>INPUT/config_input.txt</code> with the tributary name, cell index,<br />
+   and file paths.</li>
+<li>Increment <code>numTributaries</code> at the top of <code>config_input.txt</code>.</li>
+</ol>
+<h3 id="modifying-the-geometry">Modifying the geometry<a class="headerlink" href="#modifying-the-geometry" title="Permanent link">&para;</a></h3>
+<p>Edit <code>INPUT/Geometry/river_bed_profile.txt</code> (distance vs. depth) and adjust<br />
+segment parameters (<code>B</code>, <code>LC</code>, <code>Chezy</code>, <code>Rs</code>) and grid settings (<code>EL</code>, <code>DELXI</code>)<br />
+in <code>INPUT/params.txt</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../Chapter-5-Biogeochemical/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Biogeochemistry">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Biogeochemistry
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Calibration_Preparation_Guide/" class="md-footer__link md-footer__link--next" aria-label="Next: Calibration Guide">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Calibration Guide
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p> Copyright &copy; 2025-<script>document.write(new Date().getFullYear())</script> Nguyen Truong An. All Rights Reserved</p>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.highlight", "content.code.copy", "navigation.tracking", "toc.follow", "navigation.sections", "navigation.tabs", "navigation.expand", "content.tooltips", "search.suggest", "navigation.footer", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../assets/javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+    
+  </body>
+</html>

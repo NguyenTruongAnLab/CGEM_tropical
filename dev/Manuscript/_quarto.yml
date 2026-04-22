@@ -1,0 +1,67 @@
+project:
+  type: manuscript
+  title: "Evidence of hydrodynamic control of phytoplankton seasonality in a tropical urban estuary"
+  output-dir: _output
+  render:
+    - index.qmd
+
+# Bibliography configuration
+bibliography: zotero.bib
+csl: copernicus.csl
+
+# Resources - include figures and tables from parent manuscripts/ folder
+resources:
+  - ../figures/**
+  - ../tables/**
+
+# Manuscript configuration
+manuscript:
+  article: index.qmd
+
+# Output formats
+format:
+  pdf:
+    documentclass: article
+    classoption:
+      - 11pt
+      - oneside
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=2.5cm
+      - right=2.5cm
+    fontsize: 11pt
+    linestretch: 1.5
+    lof: false
+    lot: false
+    toc: false
+    toc-depth: 2
+    number-sections: true
+    cite-method: citeproc
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    default-image-extension: pdf
+
+  docx:
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    default-image-extension: png
+
+# Execution options
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+  freeze: auto
+
+# Cross-referencing
+crossref:
+  chapters: false
+  fig-prefix: "Fig."
+  tbl-prefix: "Table"
+  sec-prefix: "Sect."
+  eq-prefix: "Eq."
+
+# Figure defaults
+fig-dpi: 300
