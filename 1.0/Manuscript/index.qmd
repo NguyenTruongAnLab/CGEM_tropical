@@ -1,0 +1,99 @@
+---
+title: "Evidence of hydrodynamic control of phytoplankton seasonality in a tropical urban estuary"
+author:
+  - name: Truong-An Nguyen
+    corresponding: true
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Julien Némery
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Nicolas Gratiot
+    affiliations:
+      - ref: uge
+      - ref: care
+  - name: Josette Garnier
+    affiliations:
+      - ref: metis
+  - name: Thanh-Son Dao
+    affiliations:
+      - ref: fern
+  - name: Vincent Thieu
+    affiliations:
+      - ref: metis
+  - name: Goulven G. Laruelle
+    affiliations:
+      - ref: ulb
+affiliations:
+  - id: uge
+    name: Université Grenoble Alpes, CNRS, IRD, INRAE, Grenoble-INP, IGE
+    city: Grenoble
+    postal-code: "38000"
+    country: France
+  - id: care
+    name: Centre for Asian Research on Water (CARE), Ho Chi Minh City University of Technology (HCMUT)
+    address: 268 Ly Thuong Kiet Street, Dien Hong Ward
+    city: Ho Chi Minh City
+    country: Vietnam
+  - id: metis
+    name: Sorbonne Université, CNRS, EPHE, UMR 7619 METIS
+    address: BP 123, Tour 56-55, Etage 3, 4 Place Jussieu
+    city: Paris
+    postal-code: "75005"
+    country: France
+  - id: fern
+    name: Faculty of Environment and Natural Resources (FERN), Ho Chi Minh City University of Technology (HCMUT), VNU-HCM
+    address: 268 Ly Thuong Kiet Street, Dien Hong Ward
+    city: Ho Chi Minh City
+    country: Vietnam
+  - id: ulb
+    name: Department of Geoscience, Environment & Society (DGES)-BGEOSYS, Université Libre de Bruxelles
+    city: Brussels
+    postal-code: "1050"
+    country: Belgium
+date: today
+date-format: "D MMMM YYYY"
+
+keywords:
+  - eutrophication
+  - biogeochemical modeling
+  - Saigon River
+  - Vietnam
+---
+
+# Abstract {.unnumbered}
+
+Tropical urban estuaries receive year-round nutrient loads, yet their strongest phytoplankton blooms often occur in the dry season. The proximate control on this seasonality remains unresolved in wastewater-impacted tropical systems. Here we apply a transient one-dimensional Carbon Generic Estuarine Model (C-GEM) to the Saigon River Estuary, southern Vietnam, and evaluate it against 24 months of monitoring data (2017--2018) and longitudinal surveys. Simulated dry-season chlorophyll-a at the urban station reached $37$ $\mu$g L$^{-1}$, matching observations and reproducing the observed approximately sevenfold dry-to-wet contrast. Within the calibrated model, urban residence time increased from approximately $20$ d during the monsoon to approximately $53$ d during the dry season, and the chlorophyll--residence-time relationship showed an inflection at a modelled $RT_{crit} \approx 32$ d. The corresponding Damköhler number shifted from $Da \approx 33$ in the dry season to $Da \approx 1$ in the wet season, consistent with a transition from bloom-permissive to bloom-suppressive conditions. A within-model SHAP surrogate recovered the same control structure: hydrodynamics-related predictors explained 60--62% of simulated phytoplankton variability at the upstream bloom-forming stations, whereas nutrient loads contributed 21--27%; near the urban discharge sources, nutrients accounted for up to 40%. The coupled carbonate module showed persistent urban CO$_2$ supersaturation ($pCO_2$ > 10,000 $\mu$atm) and mean estuarine evasion of 142.9 Gg C yr$^{-1}$. These results show that hydraulic residence time is the dominant proximate control on bloom expression in this hyper-eutrophic estuary. Wastewater reduction remains the durable management solution, whereas flow augmentation may serve only as a constrained near-term complement in regulated tropical systems. Similar growth--flushing behaviour is most likely in tropical megacity estuaries that combine chronic nutrient excess with strong monsoon-driven retention swings.
+
+## Highlights {.unnumbered}
+
+- Transient C-GEM reproduces the Saigon sevenfold dry-to-wet chlorophyll contrast
+- Modelled bloom onset occurs near a 32 d residence-time threshold
+- Hydrodynamic predictors explain 60--62% of upstream bloom-station variability
+- Chronic nutrient excess is expressed only under dry-season hydrodynamic confinement
+- Retention-driven blooms coincide with persistent urban CO$_2$ supersaturation
+
+# Introduction
+
+Tropical urban estuaries are increasingly shaped by megacity wastewater discharge, monsoonal hydrology, and rapid coastal transformation. Across Southeast Asia, poorly treated sewage intensifies eutrophication, hypoxia, and greenhouse-gas emissions in downstream estuaries [@NguyenNgocTuyet2019; @NguyenTruongAn2022]. Yet bloom severity does not simply scale with annual nutrient loading. Many tropical estuaries instead show their strongest phytoplankton blooms and oxygen depletion during the dry season rather than the nutrient-rich wet season [@CostaL.S.2009; @NguyenTruongAn2022a; @BharathiM.D.2019]. This creates a tropical eutrophication paradox: bloom expression peaks when nutrient delivery is not at its seasonal maximum. Unlike temperate estuaries, tropical systems retain favourable growth conditions year-round, so the wet-season collapse of biomass points more directly to flushing and turbidity control.
+
+Hydrodynamic control has increasingly emerged as the missing link between nutrient availability and bloom expression. Idealized mathematical models have demonstrated that estuaries shift between distinct bloom and no-bloom regimes governed entirely by the dimensionless ratio of physical flushing to biological net growth [@LiuBo2015]. This balance has been formally proven through analytical solutions in 1D estuarine models, demonstrating that exponential bloom growth can only initiate when the net specific growth rate exceeds the physical flushing rate [@SunDetong2022]. Bloom accumulation requires biological growth to outpace physical export, so residence time must exceed a system-specific growth timescale [@GarnierJosette1995; @LucasLisaV.2009; @SunDetong2022]. When monsoon discharge shortens flushing time below that threshold, phytoplankton are washed out before biomass can accumulate, even under nutrient-replete conditions [@LiuBo2015; @BadylakSusan2016]. High-flow periods also increase suspended sediment and turbidity, further suppressing biomass through light limitation in monsoon-affected estuaries [@BurfordM.A.2012; @BharathiM.D.2019]. In this framework, nutrient excess defines growth potential, whereas hydrodynamic retention determines whether that potential is expressed as bloom biomass.
+
+The Saigon River provides a particularly stringent test of these ideas. Flowing through Ho Chi Minh City, the estuary receives large untreated domestic wastewater inputs via urban canals, with strong enrichments in ammonium and phosphate [@NguyenNgocTuyet2019; @NguyenNgocTuyet2020]. Dry-season phytoplankton blooms frequently reach hypertrophic levels (Chl-a $>$ 100 $\mu$g L$^{-1}$; @NguyenTruongAn2022a), while field surveys reveal extreme supersaturation of CO$_2$, CH$_4$, and N$_2$O [@NguyenTruongAn2021; @NguyenTruongAn2022]. What remains unresolved is whether its seasonal bloom cycle is governed primarily by nutrient delivery, hydraulic retention, or their interaction with light climate and loss processes.
+
+Addressing this question requires a modelling framework that is both process-based and transferable. The Carbon Generic Estuarine Model (C-GEM) provides that balance. Although originally developed for temperate estuaries, 1D C-GEM applications reproduce system-scale biogeochemical budgets with reasonable fidelity while requiring far less bathymetric detail, fewer boundary constraints, and lower computational cost than higher-dimensional models [@VoltaC.2014; @VoltaC.2016; @WeiXi2022]. These advantages matter especially in data-sparse settings. Representing a tropical urban estuary such as the Saigon, however, demands transient hydrodynamics, stronger organic loading, carbonate-system coupling, and tropical process formulations absent from earlier implementations.
+
+Our main objective is to test whether hydraulic residence time is the dominant proximate control on seasonal bloom expression in a hyper-eutrophic tropical system. We address this question with a transient C-GEM application for the Saigon River Estuary, evaluated against 24 months of observations (2017--2018), and with three convergent diagnostics:
+
+1. Reproduce the seasonal bloom contrast and the main longitudinal biogeochemical structure, including supporting carbonate diagnostics.
+2. Quantify the growth--flushing transition using residence-time and Damköhler diagnostics.
+3. Test whether the same control structure emerges from SHapley Additive exPlanations (SHAP) used as a within-model attribution tool for simulated phytoplankton variability.
+
+
+{{< include methods.qmd >}}
+
+{{< include results_discussion.qmd >}}
+
+{{< include backmatter.qmd >}}
